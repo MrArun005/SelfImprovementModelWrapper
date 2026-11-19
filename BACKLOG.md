@@ -18,6 +18,15 @@ DECISIONS.md updated for any non-obvious choice, README claims backed by generat
 
 ## Next, in order
 
+0. **Capability levers (user asked to make the model as capable as possible).** In order of expected gain:
+   a. **Bigger model if the smoke run shows time headroom** (e.g. `qwen2.5-coder:1.5b`/`3b`): the biggest single lever;
+      decide from measured seconds per request, before the baseline runs, never mid-experiment.
+   b. **Self-repair inside an attempt**: on train, show the model its own failing code + test output and let it fix it
+      (bounded by `agent.maxAttemptsPerProblem`). On holdout, only the examples already in the problem statement may be
+      used as feedback (never the hidden tests), so the score stays honest. Ship as a new lever + variant so its effect
+      is measured against the control, not assumed.
+   c. **Better lessons**: give the reflection prompt the exact expected/actual values; keep only lessons that helped
+      on a retry (verified lessons) instead of every reflection.
 1. **Workflow robustness.** Retry the Ollama download/pull with backoff; a warm-up request that fails fast with a
    clear message if the model doesn't answer; a test that the workflow's step order and `if:` conditions keep smoke
    runs from committing.
