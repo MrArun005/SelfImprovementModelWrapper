@@ -63,7 +63,7 @@ export function buildReport(cfg, a) {
   L.push('## Variants');
   L.push('');
   L.push(table(['variant', 'track', 'levers', 'evaluated runs', 'accepted lessons', 'accepted skills', 'prompt'],
-    Object.values(a.variants).map((v) => [`${v.label}${v.control ? ' (control)' : ''}`, v.track, leverText(v.levers), v.runs.length, v.liveLessons, v.liveSkills, v.promptVersion ?? 'n/a'])));
+    Object.values(a.variants).map((v) => [`${v.label}${v.control && !/control/i.test(v.label) ? ' (control)' : ''}`, v.track, leverText(v.levers), v.runs.length, v.liveLessons, v.liveSkills, v.promptVersion ?? 'n/a'])));
   L.push('');
 
   // Headline
@@ -77,7 +77,7 @@ export function buildReport(cfg, a) {
       t.variants.map((name) => {
         const v = a.variants[name];
         const c = comp.get(name);
-        return [`${v.label}${v.control ? ' (control)' : ''}`, pct(v.latest?.passRate), v.latest ? ci(v.latest.ciLow, v.latest.ciHigh) : 'n/a', v.latest ? `${v.latest.n} x ${v.latest.repeats}` : 'n/a',
+        return [`${v.label}${v.control && !/control/i.test(v.label) ? ' (control)' : ''}`, pct(v.latest?.passRate), v.latest ? ci(v.latest.ciLow, v.latest.ciHigh) : 'n/a', v.latest ? `${v.latest.n} x ${v.latest.repeats}` : 'n/a',
           v.vsBaseline ? ptsCI(v.vsBaseline) : 'n/a', v.control ? 'n/a' : v.vsBaselineAdjusted ? ptsCI(v.vsBaselineAdjusted) : 'n/a', v.control ? 'n/a' : c ? ptsCI(c) : 'n/a'];
       })));
     L.push('');
