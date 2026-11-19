@@ -72,6 +72,22 @@ Ollama build could change, the runner could change. **Every headline comparison 
 same day and the same problems**, plus a difference-in-differences (variant's change since its start minus the
 control's change over the same period).
 
+## 4b. Self-repair lever (added before the baseline runs)
+
+The most reliable inference-time gain for code models is letting them debug from test feedback. New lever
+`selfRepair` (variant `self-repair`; also in `full`):
+- **Train:** a failed attempt's code and its real test output go into the next attempt's prompt
+  (`prompts/repair.md`), within `agent.maxAttemptsPerProblem`.
+- **Holdout:** feedback may come **only from the worked examples in the problem statement** (`// >>> f(x)` /
+  `// expected`), turned into a test script (`src/agent/public-tests.js`). The hidden grading tests are never shown
+  on holdout; a test plants a marker in hidden tests and checks it never reaches a holdout prompt. Up to
+  `eval.selfRepairAttempts` (1) repair per problem; the eval budget is planned for the worst case.
+- Coverage is honest about its limits: 154 of the 158 HumanEval-JS prompts that have examples yield usable checks
+  (439 examples; an example whose expected value is not a JS expression is skipped). MBPP prompts have no
+  examples, so on those holdout problems self-repair cannot help. The mutation track has no public examples
+  beyond the failing tests already in the prompt, so its holdout gets no repair either.
+- Measured like every other lever: against the same-day control, with CIs.
+
 ## 5. Evaluation and statistics
 
 - **Repeats:** every holdout evaluation runs `eval.repeats` = 3 times at `eval.temperature` 0.2. Repeat `r` of

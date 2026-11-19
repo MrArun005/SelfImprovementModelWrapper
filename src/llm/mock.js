@@ -38,6 +38,7 @@ export function createMock(cfg, deps = {}) {
     const sameFamily = [...byId.entries()].filter(([id, m]) => m.family === fam && id !== opts.meta?.problemId && m.correct);
     if (sameFamily.some(([, m]) => all.includes(m.correct.trim()))) p += syn.skillBoost; // a related solved function is shown
     if (syn.promptBoostPhrase && all.includes(syn.promptBoostPhrase)) p += syn.promptBoost;
+    if (syn.repairMarker && all.includes(syn.repairMarker)) p += syn.repairBoost;
     const u = rng(hash32(`${opts.seed ?? cfg.llm.seed}|${opts.meta?.problemId}|${opts.temperature}|${hash32(all)}|${mc.seed}`))();
     return u < Math.min(p, syn.maxPass);
   }

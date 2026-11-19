@@ -7,6 +7,7 @@ import { loadOrCreateSplit } from '../dataset/split.js';
 import { extractCode } from '../agent/solve.js';
 import { runTests } from '../judge/run-tests.js';
 import { seededShuffle } from '../util.js';
+import { publicTestSource } from '../agent/public-tests.js';
 
 function commentText(prompt) {
   return prompt.split('\n').filter((l) => l.trim().startsWith('//')).join(' ');
@@ -28,6 +29,7 @@ export async function createMultiplETrack(cfg, deps = {}) {
   const split = loadOrCreateSplit(statePath(cfg, 'split'), [...tasks.keys()], cfg.split);
   const mockById = new Map(problems.filter((p) => p.mock).map((p) => [p.id, p.mock]));
   let order = null;
+  const publicCache = new Map();
 
   return {
     name: 'multipl-e',
@@ -55,6 +57,11 @@ export async function createMultiplETrack(cfg, deps = {}) {
     },
     onTrainResult() { return null; },
     extractCode: (reply, task) => extractCode(reply, task),
+    /** Test script built from the worked examples in the problem statement (null when there are none). */
+    publicTests: (task) => {
+      if (!publicCache.has(task.id)) publicCache.set(task.id, publicTestSource(task.prompt, task.entryPoint, cfg.curriculum.ecmaVersion));
+      return publicCache.get(task.id);
+    },
     judge: (code, task) => runTests(code, task.tests, cfg.judge),
   };
 }

@@ -33,7 +33,7 @@ export function variantBudget(cfg, name) {
 
 export function variantConfig(cfg, name) {
   const v = getVariant(cfg, name);
-  const levers = { lessons: false, skills: false, promptOptimizer: false, ...v.levers };
+  const levers = { lessons: false, skills: false, promptOptimizer: false, selfRepair: false, ...v.levers };
   return {
     ...cfg,
     variant: { ...v, levers },

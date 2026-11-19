@@ -155,7 +155,9 @@
               "boolean"
             ]
           }
-        }
+        },
+        "repairBoost": 0.25,
+        "repairMarker": "Your previous attempt failed"
       },
       "evolveAnswer": "Check edge cases (empty input, boundaries, negative numbers) before answering."
     },
@@ -172,8 +174,8 @@
     "ollamaContextLength": 8192
   },
   "budget": {
-    "totalRequestsPerRun": 2940,
-    "totalRequestsPerDay": 3360,
+    "totalRequestsPerRun": 3360,
+    "totalRequestsPerDay": 3840,
     "holdoutFraction": 0.72,
     "maxRunMinutes": 125,
     "reserveMinutesForHoldout": 70
@@ -203,7 +205,12 @@
     "maxLessonTags": 6,
     "reflectOutputChars": 800,
     "retryFailedAfterRuns": 1,
-    "rejectProblemSpecificLessons": true
+    "rejectProblemSpecificLessons": true,
+    "repairOutputChars": 900,
+    "feedbackLabels": {
+      "train": "Test output",
+      "eval": "Results on the examples from the problem statement"
+    }
   },
   "retrieve": {
     "minTokenLength": 3,
@@ -320,7 +327,8 @@
     "gateLog": "gate-log.jsonl",
     "chartsDir": ".",
     "reportFile": "REPORT.md",
-    "readme": "README.md"
+    "readme": "README.md",
+    "repairTemplate": "repair.md"
   },
   "chart": {
     "width": 760,
@@ -540,13 +548,24 @@
       "color": "#16a34a"
     },
     {
+      "name": "self-repair",
+      "label": "Self-repair",
+      "track": "multipl-e",
+      "levers": {
+        "selfRepair": true
+      },
+      "budgetShare": 1,
+      "color": "#0891b2"
+    },
+    {
       "name": "full",
-      "label": "Full (+ prompt optimizer)",
+      "label": "Full (+ self-repair, prompt optimizer)",
       "track": "multipl-e",
       "levers": {
         "lessons": true,
         "skills": true,
-        "promptOptimizer": true
+        "promptOptimizer": true,
+        "selfRepair": true
       },
       "budgetShare": 1,
       "color": "#9333ea"
@@ -575,7 +594,8 @@
     "repeats": 3,
     "temperature": 0.2,
     "seedStride": 1,
-    "seedMode": "per-run"
+    "seedMode": "per-run",
+    "selfRepairAttempts": 1
   },
   "stats": {
     "bootstrapResamples": 2000,

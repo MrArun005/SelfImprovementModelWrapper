@@ -35,10 +35,12 @@ export function extractCode(text, problem) {
  * One solve attempt. `memory` = { systemPrompt, lessons, skills } visible to this attempt.
  * @returns {Promise<{code, reply, messages, usedLessons, usedSkills, usage}>}
  */
-export async function solve({ llm, problem, memory, templates, cfg, temperature, seed, reserve, extract = extractCode }) {
+export async function solve({ llm, problem, memory, templates, cfg, temperature, seed, reserve, extract = extractCode, feedback = null }) {
   const usedLessons = retrieveLessons(problem, memory.lessons, cfg);
   const usedSkills = retrieveSkills(problem, memory.skills, cfg);
   const messages = buildMessages({ systemPrompt: memory.systemPrompt, userTemplate: templates.solveUser, problem, lessons: usedLessons, skills: usedSkills, cfg });
+  // self-repair: show the previous failing attempt and the feedback it got
+  if (feedback) messages[1].content += fill(templates.repair, { code: feedback.code.trimEnd(), output: feedback.output.slice(0, cfg.agent.repairOutputChars), feedbackLabel: feedback.label });
   const reply = await llm.chat(messages, { temperature, seed, reserve, meta: { kind: 'solve', problemId: problem.id } });
   return { code: extract(reply, problem), reply, messages, usedLessons, usedSkills, usage: { ...(llm.lastUsage ?? { tokensIn: 0, tokensOut: 0 }) } };
 }
