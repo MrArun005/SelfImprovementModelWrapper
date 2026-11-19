@@ -5,7 +5,7 @@ at writing JavaScript, one day at a time. It keeps **lessons** from its failures
 from its successes, and can rewrite its own **system prompt**. Unit tests are the only judge. Every change
 has to beat the current version on held-out problems, with a confidence interval, before it is kept.
 
-**[Dashboard](https://mrarun005.github.io/self-improving-coder/)** (GitHub Pages: replays, lesson genealogy, gate log)
+**[Dashboard](https://mrarun005.github.io/SelfImprovementModelWrapper/)** (GitHub Pages: replays, lesson genealogy, gate log)
 · **[REPORT.md](REPORT.md)** (generated from the data, bad news included)
 · **[docs/power.md](docs/power.md)** (what effect sizes this setup can detect)
 · **[DECISIONS.md](DECISIONS.md)** (every non-obvious choice)
