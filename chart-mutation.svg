@@ -17,12 +17,12 @@
 <text x="394" y="354" text-anchor="middle" fill="#6b7280">run date (MM-DD) · bands = 95% bootstrap CI over holdout problems</text>
 <line x1="52" x2="736" y1="270.65840000000003" y2="270.65840000000003" stroke="#f59e0b" stroke-dasharray="6 4" stroke-width="1.5"/>
 <text x="58" y="285.65840000000003" fill="#f59e0b">starting baseline 16.7%</text>
-<line class="band" data-variant="mutation-baseline" x1="394" x2="394" y1="303.7416" y2="237.60000000000002" stroke="#6b7280" stroke-opacity="0.44999999999999996" stroke-width="8"/>
+<line class="band" data-variant="mutation-baseline" x1="394" x2="394" y1="295.4584" y2="237.60000000000002" stroke="#6b7280" stroke-opacity="0.44999999999999996" stroke-width="8"/>
 <polyline data-variant="mutation-baseline" fill="none" stroke="#6b7280" stroke-width="2" points="394,270.65840000000003"/>
-<circle cx="394" cy="270.65840000000003" r="4" fill="#6b7280" stroke="#ffffff"><title>Mutation: no memory 2026-11-19: 16.7% [3.3–30.0] n=30×3, gate baseline</title></circle>
-<line class="band" data-variant="mutation-lessons" x1="394" x2="394" y1="303.7416" y2="237.60000000000002" stroke="#2563eb" stroke-opacity="0.44999999999999996" stroke-width="8"/>
+<circle cx="394" cy="270.65840000000003" r="4" fill="#6b7280" stroke="#ffffff"><title>Mutation: no memory 2026-11-19: 16.7% [6.7–30.0] n=30×3, gate baseline</title></circle>
+<line class="band" data-variant="mutation-lessons" x1="394" x2="394" y1="295.4584" y2="237.60000000000002" stroke="#2563eb" stroke-opacity="0.44999999999999996" stroke-width="8"/>
 <polyline data-variant="mutation-lessons" fill="none" stroke="#2563eb" stroke-width="2" points="394,270.65840000000003"/>
-<circle cx="394" cy="270.65840000000003" r="4" fill="#2563eb" stroke="#ffffff"><title>Mutation: lessons 2026-11-19: 16.7% [3.3–30.0] n=30×3, gate baseline</title></circle>
+<circle cx="394" cy="270.65840000000003" r="4" fill="#2563eb" stroke="#ffffff"><title>Mutation: lessons 2026-11-19: 16.7% [6.7–30.0] n=30×3, gate baseline</title></circle>
 <rect x="52" y="32" width="12" height="12" rx="2" fill="#6b7280"/><text x="70" y="44" fill="#111827">Mutation: no memory</text>
 <rect x="202" y="32" width="12" height="12" rx="2" fill="#2563eb"/><text x="220" y="44" fill="#111827">Mutation: lessons</text>
 </svg>

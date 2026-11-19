@@ -1,7 +1,7 @@
 {
-  "runId": "gh44604991368-20261119T200601",
-  "runIndex": 1,
-  "timestamp": "2026-11-19T20:06:01.487Z",
+  "runId": "gh44612176813-20261119T205308",
+  "runIndex": 2,
+  "timestamp": "2026-11-19T20:53:08.099Z",
   "variant": "mutation-baseline",
   "decision": "baseline",
   "baselineMode": true,
@@ -14,7 +14,7 @@
   },
   "champion": {
     "passRate": 0.16666666666666666,
-    "ciLow": 0.03333333333333333,
+    "ciLow": 0.06666666666666667,
     "ciHigh": 0.3,
     "n": 30,
     "repeats": 3,
@@ -24,10 +24,10 @@
   "diff": null,
   "pruned": [],
   "requestsUsed": 90,
-  "requestsToday": 90,
+  "requestsToday": 180,
   "tokensIn": 64890,
-  "tokensOut": 16462,
-  "llmMs": 764972,
+  "tokensOut": 16117,
+  "llmMs": 587253,
   "budgetPerRun": 420,
   "maxRunMinutes": 125
 }
