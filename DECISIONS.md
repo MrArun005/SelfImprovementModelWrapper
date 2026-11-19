@@ -27,6 +27,14 @@ parameters) before any baseline was recorded, so no comparison straddles the cha
 to fit (`budget.maxRunMinutes` 125, `reserveMinutesForHoldout` 70, job timeout 170); a second smoke run checks it.
 Still small on purpose: it leaves room to improve, and 7B on a CPU runner would not fit the daily budget.
 
+**Smoke run 2 with 1.5B** (run 44603610122): ~6.8 s per request on MultiPL-E (24 requests in 164 s incl. tests)
+and ~8.7 s on mutation prompts, so a full 420-request variant budget takes ~48-61 min of the 125-min cycle limit.
+Lessons became general rules ("check up to the square root when testing primality", "iterate through the whole
+string, including the last character"). On the mutation holdout the 1.5B model fixed 2 of 3 (0.5B: 0 of 3), so
+the floor effect is gone, and the gate rejected a set of lessons that lowered that score. 3B was not chosen: about
+2x slower again (the full budget would leave little margin under the job limit), and its higher MultiPL-E
+starting point would risk a ceiling effect.
+
 ## 3. Tracks
 
 ### 3a. MultiPL-E (HumanEval + MBPP in JavaScript)
@@ -191,7 +199,8 @@ Output is identical for the same seed (tested). Data from it is labelled "Demo d
 
 ## 12. Not yet measured
 
-Installing Ollama in the build session was blocked, so **no real-model numbers exist yet**: no baseline, no
-per-call speed, and no check that the GEPA path works against Ollama. The first scheduled runs will produce them;
+Installing Ollama in the build session was blocked, so the first real numbers came from two smoke runs on
+GitHub Actions (§2). Baseline run 1 started 2026-11-19 (run 44604991368). Still unverified: whether the GEPA
+path works against Ollama (the smoke runs' `full` variant ran it every run; check its gate-log `optimizer` field). The first scheduled runs will produce them;
 REPORT.md and the dashboard fill in automatically. Update §5 (repeats) and §7 (budget) once the real per-call
 time is known.
