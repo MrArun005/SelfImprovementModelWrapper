@@ -1,0 +1,2422 @@
+[
+  {
+    "id": "mut-holdout-L1-177953848",
+    "split": "holdout",
+    "level": 1,
+    "seed": 177953848,
+    "operators": [
+      "wrong-return"
+    ],
+    "functions": [
+      "lib/utils.js#encodeUserinfo#0"
+    ],
+    "sourceHash": 2492469210,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-holdout-L1-194731467",
+    "split": "holdout",
+    "level": 1,
+    "seed": 194731467,
+    "operators": [
+      "wrong-return"
+    ],
+    "functions": [
+      "index.js#parse#0"
+    ],
+    "sourceHash": 940510798,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-holdout-L1-211509086",
+    "split": "holdout",
+    "level": 1,
+    "seed": 211509086,
+    "operators": [
+      "flip-comparison"
+    ],
+    "functions": [
+      "index.js#copyHost#0"
+    ],
+    "sourceHash": 1359528503,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-holdout-L1-245064324",
+    "split": "holdout",
+    "level": 1,
+    "seed": 245064324,
+    "operators": [
+      "flip-logical"
+    ],
+    "functions": [
+      "lib/schemes.js#urnuuidParse#0"
+    ],
+    "sourceHash": 1849259174,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-holdout-L1-278619562",
+    "split": "holdout",
+    "level": 1,
+    "seed": 278619562,
+    "operators": [
+      "flip-logical"
+    ],
+    "functions": [
+      "lib/utils.js#normalizeIPv6Address#0"
+    ],
+    "sourceHash": 2416343958,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-holdout-L1-295397181",
+    "split": "holdout",
+    "level": 1,
+    "seed": 295397181,
+    "operators": [
+      "flip-logical"
+    ],
+    "functions": [
+      "index.js#equal#0"
+    ],
+    "sourceHash": 3650660443,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-holdout-L1-43732896",
+    "split": "holdout",
+    "level": 1,
+    "seed": 43732896,
+    "operators": [
+      "flip-logical"
+    ],
+    "functions": [
+      "index.js#hasMalformedComponentPercentEncoding#0"
+    ],
+    "sourceHash": 2367179803,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-holdout-L1-60510515",
+    "split": "holdout",
+    "level": 1,
+    "seed": 60510515,
+    "operators": [
+      "flip-logical"
+    ],
+    "functions": [
+      "index.js#hasMalformedComponentPercentEncoding#0"
+    ],
+    "sourceHash": 611642123,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-holdout-L1-1049947899",
+    "split": "holdout",
+    "level": 1,
+    "seed": 1049947899,
+    "operators": [
+      "flip-logical"
+    ],
+    "functions": [
+      "lib/schemes.js#replaceLoneSurrogates#0"
+    ],
+    "sourceHash": 2191981394,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-holdout-L1-1033170280",
+    "split": "holdout",
+    "level": 1,
+    "seed": 1033170280,
+    "operators": [
+      "swap-arguments"
+    ],
+    "functions": [
+      "lib/utils.js#recomposeZonedIPv6Host#0"
+    ],
+    "sourceHash": 1608355632,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-holdout-L2-2888513501",
+    "split": "holdout",
+    "level": 2,
+    "seed": 2888513501,
+    "operators": [
+      "drop-branch",
+      "off-by-one"
+    ],
+    "functions": [
+      "lib/schemes.js#mailtoEncodeDomain#0",
+      "lib/schemes.js#mailtoEncodeDomain#0"
+    ],
+    "sourceHash": 2944872445,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-holdout-L2-2854958263",
+    "split": "holdout",
+    "level": 2,
+    "seed": 2854958263,
+    "operators": [
+      "drop-branch",
+      "wrong-return"
+    ],
+    "functions": [
+      "index.js#validateScheme#0",
+      "index.js#validateScheme#0"
+    ],
+    "sourceHash": 4225321872,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-holdout-L2-2838180644",
+    "split": "holdout",
+    "level": 2,
+    "seed": 2838180644,
+    "operators": [
+      "drop-branch",
+      "flip-logical"
+    ],
+    "functions": [
+      "lib/schemes.js#wsParse#0",
+      "lib/schemes.js#wsParse#0"
+    ],
+    "sourceHash": 79284665,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-holdout-L2-2821403025",
+    "split": "holdout",
+    "level": 2,
+    "seed": 2821403025,
+    "operators": [
+      "flip-comparison",
+      "drop-branch"
+    ],
+    "functions": [
+      "lib/utils.js#findToken#0",
+      "lib/utils.js#findToken#0"
+    ],
+    "sourceHash": 203118824,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-holdout-L2-2804625406",
+    "split": "holdout",
+    "level": 2,
+    "seed": 2804625406,
+    "operators": [
+      "flip-comparison",
+      "off-by-one"
+    ],
+    "functions": [
+      "lib/utils.js#percentEncodeNonAscii#0",
+      "lib/utils.js#percentEncodeNonAscii#0"
+    ],
+    "sourceHash": 4171643258,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-holdout-L2-2787847787",
+    "split": "holdout",
+    "level": 2,
+    "seed": 2787847787,
+    "operators": [
+      "flip-logical",
+      "wrong-return"
+    ],
+    "functions": [
+      "lib/schemes.js#wsSerialize#0",
+      "lib/schemes.js#wsSerialize#0"
+    ],
+    "sourceHash": 3718001059,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-holdout-L2-2754292549",
+    "split": "holdout",
+    "level": 2,
+    "seed": 2754292549,
+    "operators": [
+      "flip-comparison",
+      "flip-comparison"
+    ],
+    "functions": [
+      "index.js#normalize#0",
+      "index.js#normalize#0"
+    ],
+    "sourceHash": 3567734539,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-holdout-L2-2737514930",
+    "split": "holdout",
+    "level": 2,
+    "seed": 2737514930,
+    "operators": [
+      "wrong-return",
+      "swap-arguments"
+    ],
+    "functions": [
+      "lib/schemes.js#urnSerialize#0",
+      "lib/schemes.js#urnSerialize#0"
+    ],
+    "sourceHash": 2507844525,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-holdout-L2-4010197518",
+    "split": "holdout",
+    "level": 2,
+    "seed": 4010197518,
+    "operators": [
+      "flip-logical",
+      "flip-logical"
+    ],
+    "functions": [
+      "index.js#canonicalizeHost#0",
+      "index.js#canonicalizeHost#0"
+    ],
+    "sourceHash": 2403605711,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-holdout-L2-4026975137",
+    "split": "holdout",
+    "level": 2,
+    "seed": 4026975137,
+    "operators": [
+      "wrong-return",
+      "drop-branch"
+    ],
+    "functions": [
+      "index.js#getParseError#0",
+      "index.js#getParseError#0"
+    ],
+    "sourceHash": 1803922606,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-holdout-L3-631132790",
+    "split": "holdout",
+    "level": 3,
+    "seed": 631132790,
+    "operators": [
+      "wrong-return",
+      "off-by-one"
+    ],
+    "functions": [
+      "index.js#normalizeStringWithStatus#0",
+      "lib/schemes.js#encodeWithAllow#0"
+    ],
+    "sourceHash": 3047624371,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-holdout-L3-647910409",
+    "split": "holdout",
+    "level": 3,
+    "seed": 647910409,
+    "operators": [
+      "wrong-return",
+      "wrong-return"
+    ],
+    "functions": [
+      "lib/utils.js#percentEncodeNonAscii#0",
+      "lib/schemes.js#httpSerialize#0"
+    ],
+    "sourceHash": 2489284715,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-holdout-L3-597577552",
+    "split": "holdout",
+    "level": 3,
+    "seed": 597577552,
+    "operators": [
+      "flip-logical",
+      "wrong-return"
+    ],
+    "functions": [
+      "index.js#hasMalformedPercentEncoding#0",
+      "index.js#normalizeStringWithStatus#0"
+    ],
+    "sourceHash": 3553121337,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-holdout-L3-614355171",
+    "split": "holdout",
+    "level": 3,
+    "seed": 614355171,
+    "operators": [
+      "flip-logical",
+      "wrong-return"
+    ],
+    "functions": [
+      "lib/schemes.js#urnParse#0",
+      "index.js#getParseError#0"
+    ],
+    "sourceHash": 1864421797,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-holdout-L3-698243266",
+    "split": "holdout",
+    "level": 3,
+    "seed": 698243266,
+    "operators": [
+      "drop-branch",
+      "wrong-return"
+    ],
+    "functions": [
+      "index.js#copyHost#0",
+      "index.js#normalizeString#0"
+    ],
+    "sourceHash": 3919833006,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-holdout-L3-715020885",
+    "split": "holdout",
+    "level": 3,
+    "seed": 715020885,
+    "operators": [
+      "wrong-return",
+      "off-by-one"
+    ],
+    "functions": [
+      "lib/schemes.js#httpSerialize#0",
+      "lib/schemes.js#allowSet#0"
+    ],
+    "sourceHash": 4086528326,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-holdout-L3-664688028",
+    "split": "holdout",
+    "level": 3,
+    "seed": 664688028,
+    "operators": [
+      "flip-comparison",
+      "flip-logical"
+    ],
+    "functions": [
+      "lib/utils.js#normalizeQueryFragmentEncoding#0",
+      "lib/utils.js#recomposeZonedIPv6Host#0"
+    ],
+    "sourceHash": 3895750411,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-holdout-L3-681465647",
+    "split": "holdout",
+    "level": 3,
+    "seed": 681465647,
+    "operators": [
+      "wrong-return",
+      "flip-comparison"
+    ],
+    "functions": [
+      "lib/schemes.js#mailtoEncodeHeaderName#0",
+      "lib/schemes.js#isValidSchemeName#0"
+    ],
+    "sourceHash": 1759171746,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-holdout-L3-765353742",
+    "split": "holdout",
+    "level": 3,
+    "seed": 765353742,
+    "operators": [
+      "flip-comparison",
+      "flip-logical"
+    ],
+    "functions": [
+      "lib/utils.js#isZoneIdentifier#0",
+      "index.js#equal#0"
+    ],
+    "sourceHash": 2897934856,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-holdout-L3-782131361",
+    "split": "holdout",
+    "level": 3,
+    "seed": 782131361,
+    "operators": [
+      "wrong-return",
+      "flip-comparison"
+    ],
+    "functions": [
+      "lib/utils.js#normalizePathEncoding#0",
+      "index.js#getParseError#0"
+    ],
+    "sourceHash": 2624710195,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-2933530904",
+    "split": "train",
+    "level": 1,
+    "seed": 2933530904,
+    "operators": [
+      "wrong-return"
+    ],
+    "functions": [
+      "lib/utils.js#compressIPv6ZeroRun#0"
+    ],
+    "sourceHash": 2505180584,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-2950308523",
+    "split": "train",
+    "level": 1,
+    "seed": 2950308523,
+    "operators": [
+      "flip-logical"
+    ],
+    "functions": [
+      "lib/schemes.js#getSchemeHandler#0"
+    ],
+    "sourceHash": 3518776674,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-2967086142",
+    "split": "train",
+    "level": 1,
+    "seed": 2967086142,
+    "operators": [
+      "flip-logical"
+    ],
+    "functions": [
+      "lib/utils.js#normalizePercentEncoding#0"
+    ],
+    "sourceHash": 253606406,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-2983863761",
+    "split": "train",
+    "level": 1,
+    "seed": 2983863761,
+    "operators": [
+      "flip-comparison"
+    ],
+    "functions": [
+      "lib/utils.js#normalizeIPv6#0"
+    ],
+    "sourceHash": 832488518,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-3000641380",
+    "split": "train",
+    "level": 1,
+    "seed": 3000641380,
+    "operators": [
+      "swap-arguments"
+    ],
+    "functions": [
+      "index.js#normalizeString#0"
+    ],
+    "sourceHash": 2844949411,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-train-L1-3017418999",
+    "split": "train",
+    "level": 1,
+    "seed": 3017418999,
+    "operators": [
+      "off-by-one"
+    ],
+    "functions": [
+      "lib/utils.js#isEscapeSafe#0"
+    ],
+    "sourceHash": 424613248,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-3034196618",
+    "split": "train",
+    "level": 1,
+    "seed": 3034196618,
+    "operators": [
+      "wrong-return"
+    ],
+    "functions": [
+      "index.js#normalizeString#0"
+    ],
+    "sourceHash": 2575453109,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-2799309952",
+    "split": "train",
+    "level": 1,
+    "seed": 2799309952,
+    "operators": [
+      "wrong-return"
+    ],
+    "functions": [
+      "lib/schemes.js#getSchemeHandler#0"
+    ],
+    "sourceHash": 3723695380,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-1835300571",
+    "split": "train",
+    "level": 1,
+    "seed": 1835300571,
+    "operators": [
+      "flip-comparison"
+    ],
+    "functions": [
+      "lib/utils.js#findToken#0"
+    ],
+    "sourceHash": 3861904702,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-1818522952",
+    "split": "train",
+    "level": 1,
+    "seed": 1818522952,
+    "operators": [
+      "flip-comparison"
+    ],
+    "functions": [
+      "lib/utils.js#serializePathEncoding#0"
+    ],
+    "sourceHash": 92945398,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-1902411047",
+    "split": "train",
+    "level": 1,
+    "seed": 1902411047,
+    "operators": [
+      "swap-arguments"
+    ],
+    "functions": [
+      "lib/utils.js#escapePreservingEscapes#0"
+    ],
+    "sourceHash": 2268669170,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-1734634857",
+    "split": "train",
+    "level": 1,
+    "seed": 1734634857,
+    "operators": [
+      "flip-comparison"
+    ],
+    "functions": [
+      "index.js#isHostOnlyURL#0"
+    ],
+    "sourceHash": 2595541063,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-1717857238",
+    "split": "train",
+    "level": 1,
+    "seed": 1717857238,
+    "operators": [
+      "flip-logical"
+    ],
+    "functions": [
+      "index.js#hasMalformedPercentEncoding#0"
+    ],
+    "sourceHash": 1491818699,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-1969668618",
+    "split": "train",
+    "level": 1,
+    "seed": 1969668618,
+    "operators": [
+      "flip-comparison"
+    ],
+    "functions": [
+      "lib/utils.js#isEscapeSafe#0"
+    ],
+    "sourceHash": 278808542,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-1936113380",
+    "split": "train",
+    "level": 1,
+    "seed": 1936113380,
+    "operators": [
+      "off-by-one"
+    ],
+    "functions": [
+      "lib/utils.js#isEscapeSafe#0"
+    ],
+    "sourceHash": 547909857,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-1902558142",
+    "split": "train",
+    "level": 1,
+    "seed": 1902558142,
+    "operators": [
+      "flip-comparison"
+    ],
+    "functions": [
+      "lib/utils.js#normalizeIPv6#0"
+    ],
+    "sourceHash": 3383883862,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-1919335761",
+    "split": "train",
+    "level": 1,
+    "seed": 1919335761,
+    "operators": [
+      "flip-comparison"
+    ],
+    "functions": [
+      "lib/schemes.js#wsSerialize#0"
+    ],
+    "sourceHash": 2639676542,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-1885780523",
+    "split": "train",
+    "level": 1,
+    "seed": 1885780523,
+    "operators": [
+      "flip-logical"
+    ],
+    "functions": [
+      "lib/schemes.js#getSchemeHandler#0"
+    ],
+    "sourceHash": 1742994526,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-train-L1-1835447666",
+    "split": "train",
+    "level": 1,
+    "seed": 1835447666,
+    "operators": [
+      "flip-comparison"
+    ],
+    "functions": [
+      "index.js#isIPLiteral#0"
+    ],
+    "sourceHash": 138507999,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-1852225285",
+    "split": "train",
+    "level": 1,
+    "seed": 1852225285,
+    "operators": [
+      "wrong-return"
+    ],
+    "functions": [
+      "lib/utils.js#compressIPv6ZeroRun#0"
+    ],
+    "sourceHash": 3484377946,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-3681132851",
+    "split": "train",
+    "level": 1,
+    "seed": 3681132851,
+    "operators": [
+      "flip-logical"
+    ],
+    "functions": [
+      "lib/schemes.js#httpSerialize#0"
+    ],
+    "sourceHash": 768594198,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-3664355232",
+    "split": "train",
+    "level": 1,
+    "seed": 3664355232,
+    "operators": [
+      "flip-logical"
+    ],
+    "functions": [
+      "index.js#normalizeComparableURI#0"
+    ],
+    "sourceHash": 2097564379,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-3714688089",
+    "split": "train",
+    "level": 1,
+    "seed": 3714688089,
+    "operators": [
+      "swap-arguments"
+    ],
+    "functions": [
+      "lib/utils.js#normalizePercentEncoding#0"
+    ],
+    "sourceHash": 3205114912,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-3697910470",
+    "split": "train",
+    "level": 1,
+    "seed": 3697910470,
+    "operators": [
+      "flip-comparison"
+    ],
+    "functions": [
+      "lib/schemes.js#encodeWithAllow#0"
+    ],
+    "sourceHash": 2709827815,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-3748243327",
+    "split": "train",
+    "level": 1,
+    "seed": 3748243327,
+    "operators": [
+      "swap-arguments"
+    ],
+    "functions": [
+      "lib/schemes.js#mailtoEncodeHeaderName#0"
+    ],
+    "sourceHash": 3062868378,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-train-L1-3781798565",
+    "split": "train",
+    "level": 1,
+    "seed": 3781798565,
+    "operators": [
+      "swap-arguments"
+    ],
+    "functions": [
+      "index.js#normalizeStringWithStatus#0"
+    ],
+    "sourceHash": 1956311275,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-train-L1-3815353803",
+    "split": "train",
+    "level": 1,
+    "seed": 3815353803,
+    "operators": [
+      "wrong-return"
+    ],
+    "functions": [
+      "index.js#normalize#0"
+    ],
+    "sourceHash": 686353169,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-3798576184",
+    "split": "train",
+    "level": 1,
+    "seed": 3798576184,
+    "operators": [
+      "swap-arguments"
+    ],
+    "functions": [
+      "index.js#normalize#0"
+    ],
+    "sourceHash": 3549546907,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-train-L1-3781945660",
+    "split": "train",
+    "level": 1,
+    "seed": 3781945660,
+    "operators": [
+      "swap-arguments"
+    ],
+    "functions": [
+      "index.js#equal#0"
+    ],
+    "sourceHash": 3380061413,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-3815500898",
+    "split": "train",
+    "level": 1,
+    "seed": 3815500898,
+    "operators": [
+      "wrong-return"
+    ],
+    "functions": [
+      "index.js#validateScheme#0"
+    ],
+    "sourceHash": 803134903,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-3932944231",
+    "split": "train",
+    "level": 1,
+    "seed": 3932944231,
+    "operators": [
+      "wrong-return"
+    ],
+    "functions": [
+      "lib/utils.js#encodeQuery#0"
+    ],
+    "sourceHash": 257071585,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-3849203231",
+    "split": "train",
+    "level": 1,
+    "seed": 3849203231,
+    "operators": [
+      "flip-comparison"
+    ],
+    "functions": [
+      "lib/utils.js#normalizeIPv6Address#0"
+    ],
+    "sourceHash": 3996276646,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-3815647993",
+    "split": "train",
+    "level": 1,
+    "seed": 3815647993,
+    "operators": [
+      "drop-branch"
+    ],
+    "functions": [
+      "index.js#validateScheme#0"
+    ],
+    "sourceHash": 1529641350,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-3782092755",
+    "split": "train",
+    "level": 1,
+    "seed": 3782092755,
+    "operators": [
+      "flip-comparison"
+    ],
+    "functions": [
+      "lib/utils.js#recomposeZonedIPv6Host#0"
+    ],
+    "sourceHash": 637842678,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-4016979421",
+    "split": "train",
+    "level": 1,
+    "seed": 4016979421,
+    "operators": [
+      "drop-branch"
+    ],
+    "functions": [
+      "lib/schemes.js#urnParse#0"
+    ],
+    "sourceHash": 3124722042,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-4000201802",
+    "split": "train",
+    "level": 1,
+    "seed": 4000201802,
+    "operators": [
+      "drop-branch"
+    ],
+    "functions": [
+      "lib/utils.js#encodeComponent#0"
+    ],
+    "sourceHash": 777344301,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-1802583976",
+    "split": "train",
+    "level": 1,
+    "seed": 1802583976,
+    "operators": [
+      "flip-comparison"
+    ],
+    "functions": [
+      "index.js#hasForbiddenDomainHost#0"
+    ],
+    "sourceHash": 1670867471,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-1819361595",
+    "split": "train",
+    "level": 1,
+    "seed": 1819361595,
+    "operators": [
+      "wrong-return"
+    ],
+    "functions": [
+      "lib/utils.js#nonSimpleMailtoDomain#0"
+    ],
+    "sourceHash": 1668496035,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-1903249690",
+    "split": "train",
+    "level": 1,
+    "seed": 1903249690,
+    "operators": [
+      "flip-logical"
+    ],
+    "functions": [
+      "lib/utils.js#removeDotSegmentsRelative#0"
+    ],
+    "sourceHash": 4105023074,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-1920027309",
+    "split": "train",
+    "level": 1,
+    "seed": 1920027309,
+    "operators": [
+      "off-by-one"
+    ],
+    "functions": [
+      "lib/schemes.js#replaceLoneSurrogates#0"
+    ],
+    "sourceHash": 374411032,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-1886472071",
+    "split": "train",
+    "level": 1,
+    "seed": 1886472071,
+    "operators": [
+      "flip-comparison"
+    ],
+    "functions": [
+      "lib/schemes.js#urnSerialize#0"
+    ],
+    "sourceHash": 2367244830,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-train-L1-1718695881",
+    "split": "train",
+    "level": 1,
+    "seed": 1718695881,
+    "operators": [
+      "flip-comparison"
+    ],
+    "functions": [
+      "index.js#isHostOnlyURL#0"
+    ],
+    "sourceHash": 3926540735,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-1920174404",
+    "split": "train",
+    "level": 1,
+    "seed": 1920174404,
+    "operators": [
+      "flip-logical"
+    ],
+    "functions": [
+      "lib/schemes.js#urnuuidSerialize#0"
+    ],
+    "sourceHash": 2548525618,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-1853063928",
+    "split": "train",
+    "level": 1,
+    "seed": 1853063928,
+    "operators": [
+      "swap-arguments"
+    ],
+    "functions": [
+      "lib/utils.js#normalizeIPv6#0"
+    ],
+    "sourceHash": 1703516730,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-1886619166",
+    "split": "train",
+    "level": 1,
+    "seed": 1886619166,
+    "operators": [
+      "swap-arguments"
+    ],
+    "functions": [
+      "lib/schemes.js#urnSerialize#0"
+    ],
+    "sourceHash": 2504329406,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-1785953452",
+    "split": "train",
+    "level": 1,
+    "seed": 1785953452,
+    "operators": [
+      "flip-logical"
+    ],
+    "functions": [
+      "lib/schemes.js#replaceLoneSurrogates#0"
+    ],
+    "sourceHash": 1096285042,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-1548654025",
+    "split": "train",
+    "level": 1,
+    "seed": 1548654025,
+    "operators": [
+      "flip-comparison"
+    ],
+    "functions": [
+      "index.js#normalize#0"
+    ],
+    "sourceHash": 2143231263,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-1565431644",
+    "split": "train",
+    "level": 1,
+    "seed": 1565431644,
+    "operators": [
+      "swap-arguments"
+    ],
+    "functions": [
+      "lib/utils.js#encodeUserinfo#0"
+    ],
+    "sourceHash": 2736132474,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-train-L1-1582209263",
+    "split": "train",
+    "level": 1,
+    "seed": 1582209263,
+    "operators": [
+      "flip-comparison"
+    ],
+    "functions": [
+      "index.js#hasMalformedComponentPercentEncoding#0"
+    ],
+    "sourceHash": 2749372535,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-train-L1-1598986882",
+    "split": "train",
+    "level": 1,
+    "seed": 1598986882,
+    "operators": [
+      "swap-arguments"
+    ],
+    "functions": [
+      "lib/schemes.js#mailtoEncodeHeaderName#0"
+    ],
+    "sourceHash": 3013018716,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-1632542120",
+    "split": "train",
+    "level": 1,
+    "seed": 1632542120,
+    "operators": [
+      "swap-arguments"
+    ],
+    "functions": [
+      "lib/utils.js#encodeFragment#0"
+    ],
+    "sourceHash": 3296119380,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-train-L1-1599133977",
+    "split": "train",
+    "level": 1,
+    "seed": 1599133977,
+    "operators": [
+      "wrong-return"
+    ],
+    "functions": [
+      "lib/utils.js#escapePreservingEscapes#0"
+    ],
+    "sourceHash": 14722701,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-1548801120",
+    "split": "train",
+    "level": 1,
+    "seed": 1548801120,
+    "operators": [
+      "off-by-one"
+    ],
+    "functions": [
+      "lib/utils.js#findToken#0"
+    ],
+    "sourceHash": 4050215629,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-1666244453",
+    "split": "train",
+    "level": 1,
+    "seed": 1666244453,
+    "operators": [
+      "drop-branch"
+    ],
+    "functions": [
+      "index.js#normalize#0"
+    ],
+    "sourceHash": 2117304558,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-1632689215",
+    "split": "train",
+    "level": 1,
+    "seed": 1632689215,
+    "operators": [
+      "flip-comparison"
+    ],
+    "functions": [
+      "lib/schemes.js#encodeWithAllow#0"
+    ],
+    "sourceHash": 2174197390,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-2351717155",
+    "split": "train",
+    "level": 1,
+    "seed": 2351717155,
+    "operators": [
+      "flip-logical"
+    ],
+    "functions": [
+      "lib/utils.js#normalizePathEncoding#0"
+    ],
+    "sourceHash": 255648934,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-2334939536",
+    "split": "train",
+    "level": 1,
+    "seed": 2334939536,
+    "operators": [
+      "flip-comparison"
+    ],
+    "functions": [
+      "index.js#equal#0"
+    ],
+    "sourceHash": 1036687263,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-2418827631",
+    "split": "train",
+    "level": 1,
+    "seed": 2418827631,
+    "operators": [
+      "flip-comparison"
+    ],
+    "functions": [
+      "lib/utils.js#stringArrayToHexStripped#0"
+    ],
+    "sourceHash": 2839278511,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-train-L1-2452382869",
+    "split": "train",
+    "level": 1,
+    "seed": 2452382869,
+    "operators": [
+      "flip-logical"
+    ],
+    "functions": [
+      "lib/utils.js#isZoneIdentifier#0"
+    ],
+    "sourceHash": 2145474166,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L1-640252922",
+    "split": "train",
+    "level": 1,
+    "seed": 640252922,
+    "operators": [
+      "wrong-return"
+    ],
+    "functions": [
+      "lib/schemes.js#mailtoNormalizeDomain#0"
+    ],
+    "sourceHash": 3158141610,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-3475870141",
+    "split": "train",
+    "level": 2,
+    "seed": 3475870141,
+    "operators": [
+      "flip-logical",
+      "wrong-return"
+    ],
+    "functions": [
+      "lib/schemes.js#httpParse#0",
+      "lib/schemes.js#httpParse#0"
+    ],
+    "sourceHash": 222310487,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-3459092522",
+    "split": "train",
+    "level": 2,
+    "seed": 3459092522,
+    "operators": [
+      "flip-logical",
+      "flip-comparison"
+    ],
+    "functions": [
+      "lib/utils.js#isEscapeSafe#0",
+      "lib/utils.js#isEscapeSafe#0"
+    ],
+    "sourceHash": 2204816971,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-3442314903",
+    "split": "train",
+    "level": 2,
+    "seed": 3442314903,
+    "operators": [
+      "flip-comparison",
+      "flip-logical"
+    ],
+    "functions": [
+      "index.js#getParseError#0",
+      "index.js#getParseError#0"
+    ],
+    "sourceHash": 1757210611,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-3425537284",
+    "split": "train",
+    "level": 2,
+    "seed": 3425537284,
+    "operators": [
+      "flip-logical",
+      "flip-comparison"
+    ],
+    "functions": [
+      "index.js#normalizeComparableURI#0",
+      "index.js#normalizeComparableURI#0"
+    ],
+    "sourceHash": 1124876595,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-3408759665",
+    "split": "train",
+    "level": 2,
+    "seed": 3408759665,
+    "operators": [
+      "wrong-return",
+      "flip-comparison"
+    ],
+    "functions": [
+      "lib/schemes.js#wsSerialize#0",
+      "lib/schemes.js#wsSerialize#0"
+    ],
+    "sourceHash": 186508139,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-3391982046",
+    "split": "train",
+    "level": 2,
+    "seed": 3391982046,
+    "operators": [
+      "wrong-return",
+      "off-by-one"
+    ],
+    "functions": [
+      "lib/utils.js#removeDotSegmentsRelative#0",
+      "lib/utils.js#removeDotSegmentsRelative#0"
+    ],
+    "sourceHash": 698391748,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-train-L2-3375204427",
+    "split": "train",
+    "level": 2,
+    "seed": 3375204427,
+    "operators": [
+      "flip-comparison",
+      "drop-branch"
+    ],
+    "functions": [
+      "index.js#copyHost#0",
+      "index.js#copyHost#0"
+    ],
+    "sourceHash": 2509319636,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-3358426808",
+    "split": "train",
+    "level": 2,
+    "seed": 3358426808,
+    "operators": [
+      "swap-arguments",
+      "flip-comparison"
+    ],
+    "functions": [
+      "lib/schemes.js#mailtoEncodeDomain#0",
+      "lib/schemes.js#mailtoEncodeDomain#0"
+    ],
+    "sourceHash": 976068582,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-train-L2-3324871570",
+    "split": "train",
+    "level": 2,
+    "seed": 3324871570,
+    "operators": [
+      "wrong-return",
+      "off-by-one"
+    ],
+    "functions": [
+      "lib/utils.js#normalizePercentEncoding#0",
+      "lib/utils.js#normalizePercentEncoding#0"
+    ],
+    "sourceHash": 2250783228,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-train-L2-2881083630",
+    "split": "train",
+    "level": 2,
+    "seed": 2881083630,
+    "operators": [
+      "flip-comparison",
+      "flip-logical"
+    ],
+    "functions": [
+      "lib/schemes.js#urnParse#0",
+      "lib/schemes.js#urnParse#0"
+    ],
+    "sourceHash": 3758344918,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-2897861249",
+    "split": "train",
+    "level": 2,
+    "seed": 2897861249,
+    "operators": [
+      "swap-arguments",
+      "flip-comparison"
+    ],
+    "functions": [
+      "index.js#normalizeComparableURI#0",
+      "index.js#normalizeComparableURI#0"
+    ],
+    "sourceHash": 2547279751,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-train-L2-2847528392",
+    "split": "train",
+    "level": 2,
+    "seed": 2847528392,
+    "operators": [
+      "flip-logical",
+      "flip-comparison"
+    ],
+    "functions": [
+      "index.js#equal#0",
+      "index.js#equal#0"
+    ],
+    "sourceHash": 733816975,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-2864306011",
+    "split": "train",
+    "level": 2,
+    "seed": 2864306011,
+    "operators": [
+      "swap-arguments",
+      "flip-comparison"
+    ],
+    "functions": [
+      "lib/schemes.js#wsSerialize#0",
+      "lib/schemes.js#wsSerialize#0"
+    ],
+    "sourceHash": 1214175278,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-2948194106",
+    "split": "train",
+    "level": 2,
+    "seed": 2948194106,
+    "operators": [
+      "drop-branch",
+      "drop-branch"
+    ],
+    "functions": [
+      "lib/utils.js#percentEncodeNonAscii#0",
+      "lib/utils.js#percentEncodeNonAscii#0"
+    ],
+    "sourceHash": 3886961364,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-2931416487",
+    "split": "train",
+    "level": 2,
+    "seed": 2931416487,
+    "operators": [
+      "swap-arguments",
+      "flip-comparison"
+    ],
+    "functions": [
+      "index.js#normalizeComparableURI#0",
+      "index.js#normalizeComparableURI#0"
+    ],
+    "sourceHash": 1512896711,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-train-L2-2780270821",
+    "split": "train",
+    "level": 2,
+    "seed": 2780270821,
+    "operators": [
+      "flip-comparison",
+      "flip-logical"
+    ],
+    "functions": [
+      "lib/schemes.js#replaceLoneSurrogates#0",
+      "lib/schemes.js#replaceLoneSurrogates#0"
+    ],
+    "sourceHash": 144092713,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-2746715583",
+    "split": "train",
+    "level": 2,
+    "seed": 2746715583,
+    "operators": [
+      "wrong-return",
+      "flip-comparison"
+    ],
+    "functions": [
+      "lib/schemes.js#urnParse#0",
+      "lib/schemes.js#urnParse#0"
+    ],
+    "sourceHash": 791502258,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-2729937964",
+    "split": "train",
+    "level": 2,
+    "seed": 2729937964,
+    "operators": [
+      "wrong-return",
+      "off-by-one"
+    ],
+    "functions": [
+      "lib/utils.js#recomposeZonedIPv6Host#0",
+      "lib/utils.js#recomposeZonedIPv6Host#0"
+    ],
+    "sourceHash": 2462543582,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-2696382726",
+    "split": "train",
+    "level": 2,
+    "seed": 2696382726,
+    "operators": [
+      "swap-arguments",
+      "off-by-one"
+    ],
+    "functions": [
+      "lib/utils.js#normalizePercentEncoding#0",
+      "lib/utils.js#normalizePercentEncoding#0"
+    ],
+    "sourceHash": 1489335785,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-2914491773",
+    "split": "train",
+    "level": 2,
+    "seed": 2914491773,
+    "operators": [
+      "flip-logical",
+      "flip-comparison"
+    ],
+    "functions": [
+      "lib/utils.js#normalizePathEncoding#0",
+      "lib/utils.js#normalizePathEncoding#0"
+    ],
+    "sourceHash": 108208173,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-2679458012",
+    "split": "train",
+    "level": 2,
+    "seed": 2679458012,
+    "operators": [
+      "flip-comparison",
+      "off-by-one"
+    ],
+    "functions": [
+      "lib/schemes.js#allowSet#0",
+      "lib/schemes.js#allowSet#0"
+    ],
+    "sourceHash": 532447850,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-2696235631",
+    "split": "train",
+    "level": 2,
+    "seed": 2696235631,
+    "operators": [
+      "flip-logical",
+      "flip-comparison"
+    ],
+    "functions": [
+      "index.js#normalizeComparableURI#0",
+      "index.js#normalizeComparableURI#0"
+    ],
+    "sourceHash": 1523925023,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-2713013250",
+    "split": "train",
+    "level": 2,
+    "seed": 2713013250,
+    "operators": [
+      "flip-logical",
+      "flip-logical"
+    ],
+    "functions": [
+      "lib/schemes.js#wsIsSecure#0",
+      "lib/schemes.js#wsIsSecure#0"
+    ],
+    "sourceHash": 2880183898,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-2729790869",
+    "split": "train",
+    "level": 2,
+    "seed": 2729790869,
+    "operators": [
+      "off-by-one",
+      "drop-branch"
+    ],
+    "functions": [
+      "lib/utils.js#encodeComponent#0",
+      "lib/utils.js#encodeComponent#0"
+    ],
+    "sourceHash": 1382121549,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-2612347536",
+    "split": "train",
+    "level": 2,
+    "seed": 2612347536,
+    "operators": [
+      "flip-logical",
+      "off-by-one"
+    ],
+    "functions": [
+      "lib/utils.js#escapePreservingEscapes#0",
+      "lib/utils.js#escapePreservingEscapes#0"
+    ],
+    "sourceHash": 1660091579,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-2645902774",
+    "split": "train",
+    "level": 2,
+    "seed": 2645902774,
+    "operators": [
+      "flip-logical",
+      "off-by-one"
+    ],
+    "functions": [
+      "index.js#hasMalformedComponentPercentEncoding#0",
+      "index.js#hasMalformedComponentPercentEncoding#0"
+    ],
+    "sourceHash": 3552474320,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-2662680393",
+    "split": "train",
+    "level": 2,
+    "seed": 2662680393,
+    "operators": [
+      "off-by-one",
+      "flip-comparison"
+    ],
+    "functions": [
+      "lib/schemes.js#wsIsSecure#0",
+      "lib/schemes.js#wsIsSecure#0"
+    ],
+    "sourceHash": 3752754019,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-431109971",
+    "split": "train",
+    "level": 2,
+    "seed": 431109971,
+    "operators": [
+      "flip-logical",
+      "flip-comparison"
+    ],
+    "functions": [
+      "lib/schemes.js#mailtoNormalizeDomain#0",
+      "lib/schemes.js#mailtoNormalizeDomain#0"
+    ],
+    "sourceHash": 2925556670,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-464665209",
+    "split": "train",
+    "level": 2,
+    "seed": 464665209,
+    "operators": [
+      "wrong-return",
+      "flip-logical"
+    ],
+    "functions": [
+      "lib/schemes.js#urnuuidSerialize#0",
+      "lib/schemes.js#urnuuidSerialize#0"
+    ],
+    "sourceHash": 2542231426,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-train-L2-498220447",
+    "split": "train",
+    "level": 2,
+    "seed": 498220447,
+    "operators": [
+      "flip-logical",
+      "off-by-one"
+    ],
+    "functions": [
+      "lib/utils.js#serializePathEncoding#0",
+      "lib/utils.js#serializePathEncoding#0"
+    ],
+    "sourceHash": 1258686958,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-481442828",
+    "split": "train",
+    "level": 2,
+    "seed": 481442828,
+    "operators": [
+      "off-by-one",
+      "flip-comparison"
+    ],
+    "functions": [
+      "lib/schemes.js#allowSet#0",
+      "lib/schemes.js#allowSet#0"
+    ],
+    "sourceHash": 926076832,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-531775685",
+    "split": "train",
+    "level": 2,
+    "seed": 531775685,
+    "operators": [
+      "off-by-one",
+      "flip-logical"
+    ],
+    "functions": [
+      "index.js#getParseError#0",
+      "index.js#getParseError#0"
+    ],
+    "sourceHash": 661906448,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-514998066",
+    "split": "train",
+    "level": 2,
+    "seed": 514998066,
+    "operators": [
+      "wrong-return",
+      "flip-comparison"
+    ],
+    "functions": [
+      "lib/utils.js#removeDotSegmentsRelative#0",
+      "lib/utils.js#removeDotSegmentsRelative#0"
+    ],
+    "sourceHash": 2834149539,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-565330923",
+    "split": "train",
+    "level": 2,
+    "seed": 565330923,
+    "operators": [
+      "flip-logical",
+      "swap-arguments"
+    ],
+    "functions": [
+      "index.js#normalizeStringWithStatus#0",
+      "index.js#normalizeStringWithStatus#0"
+    ],
+    "sourceHash": 2692537151,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-train-L2-548553304",
+    "split": "train",
+    "level": 2,
+    "seed": 548553304,
+    "operators": [
+      "wrong-return",
+      "flip-comparison"
+    ],
+    "functions": [
+      "index.js#normalizeComparableURI#0",
+      "index.js#normalizeComparableURI#0"
+    ],
+    "sourceHash": 3263727016,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-867180970",
+    "split": "train",
+    "level": 2,
+    "seed": 867180970,
+    "operators": [
+      "flip-comparison",
+      "drop-branch"
+    ],
+    "functions": [
+      "lib/schemes.js#urnSerialize#0",
+      "lib/schemes.js#urnSerialize#0"
+    ],
+    "sourceHash": 452207777,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-train-L2-883958589",
+    "split": "train",
+    "level": 2,
+    "seed": 883958589,
+    "operators": [
+      "flip-comparison",
+      "flip-comparison"
+    ],
+    "functions": [
+      "index.js#canonicalizeHost#0",
+      "index.js#canonicalizeHost#0"
+    ],
+    "sourceHash": 2072650043,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-833625732",
+    "split": "train",
+    "level": 2,
+    "seed": 833625732,
+    "operators": [
+      "drop-branch",
+      "flip-logical"
+    ],
+    "functions": [
+      "lib/schemes.js#mailtoEncodeDomain#0",
+      "lib/schemes.js#mailtoEncodeDomain#0"
+    ],
+    "sourceHash": 2560979890,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-850403351",
+    "split": "train",
+    "level": 2,
+    "seed": 850403351,
+    "operators": [
+      "flip-logical",
+      "drop-branch"
+    ],
+    "functions": [
+      "lib/utils.js#normalizePathEncoding#0",
+      "lib/utils.js#normalizePathEncoding#0"
+    ],
+    "sourceHash": 4099808196,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L2-800070494",
+    "split": "train",
+    "level": 2,
+    "seed": 800070494,
+    "operators": [
+      "off-by-one",
+      "swap-arguments"
+    ],
+    "functions": [
+      "lib/utils.js#normalizePercentEncoding#0",
+      "lib/utils.js#normalizePercentEncoding#0"
+    ],
+    "sourceHash": 1549441783,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L3-3365921494",
+    "split": "train",
+    "level": 3,
+    "seed": 3365921494,
+    "operators": [
+      "flip-logical",
+      "flip-comparison"
+    ],
+    "functions": [
+      "lib/schemes.js#httpParse#0",
+      "lib/utils.js#stringArrayToHexStripped#0"
+    ],
+    "sourceHash": 1616708120,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L3-3332366256",
+    "split": "train",
+    "level": 3,
+    "seed": 3332366256,
+    "operators": [
+      "swap-arguments",
+      "flip-comparison"
+    ],
+    "functions": [
+      "lib/utils.js#encodeQuery#0",
+      "index.js#hasForbiddenDomainHost#0"
+    ],
+    "sourceHash": 3972464102,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-train-L3-3349143875",
+    "split": "train",
+    "level": 3,
+    "seed": 3349143875,
+    "operators": [
+      "off-by-one",
+      "wrong-return"
+    ],
+    "functions": [
+      "index.js#isIPLiteral#0",
+      "lib/schemes.js#urnuuidParse#0"
+    ],
+    "sourceHash": 572654155,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L3-3433031970",
+    "split": "train",
+    "level": 3,
+    "seed": 3433031970,
+    "operators": [
+      "off-by-one",
+      "flip-logical"
+    ],
+    "functions": [
+      "lib/schemes.js#httpSerialize#0",
+      "index.js#hasMalformedComponentPercentEncoding#0"
+    ],
+    "sourceHash": 2833728041,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-train-L3-3449809589",
+    "split": "train",
+    "level": 3,
+    "seed": 3449809589,
+    "operators": [
+      "flip-logical",
+      "flip-comparison"
+    ],
+    "functions": [
+      "lib/utils.js#nonSimpleMailtoDomain#0",
+      "index.js#copyHost#0"
+    ],
+    "sourceHash": 1748469224,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L3-3399476732",
+    "split": "train",
+    "level": 3,
+    "seed": 3399476732,
+    "operators": [
+      "flip-comparison",
+      "wrong-return"
+    ],
+    "functions": [
+      "index.js#copyHost#0",
+      "index.js#isHostOnlyURL#0"
+    ],
+    "sourceHash": 1610261183,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L3-3416254351",
+    "split": "train",
+    "level": 3,
+    "seed": 3416254351,
+    "operators": [
+      "wrong-return",
+      "drop-branch"
+    ],
+    "functions": [
+      "lib/utils.js#serializePathEncoding#0",
+      "lib/schemes.js#mailtoEncodeDomain#0"
+    ],
+    "sourceHash": 574174930,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L3-3500142446",
+    "split": "train",
+    "level": 3,
+    "seed": 3500142446,
+    "operators": [
+      "off-by-one",
+      "off-by-one"
+    ],
+    "functions": [
+      "lib/utils.js#serializePathEncoding#0",
+      "lib/schemes.js#wsSerialize#0"
+    ],
+    "sourceHash": 3409591189,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L3-3516920065",
+    "split": "train",
+    "level": 3,
+    "seed": 3516920065,
+    "operators": [
+      "wrong-return",
+      "swap-arguments"
+    ],
+    "functions": [
+      "lib/schemes.js#encodeWithAllow#0",
+      "index.js#parse#0"
+    ],
+    "sourceHash": 3103432292,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-train-L3-3216275483",
+    "split": "train",
+    "level": 3,
+    "seed": 3216275483,
+    "operators": [
+      "swap-arguments",
+      "flip-logical"
+    ],
+    "functions": [
+      "index.js#parse#0",
+      "lib/schemes.js#mailtoEncodeDomain#0"
+    ],
+    "sourceHash": 3196449548,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-train-L3-3199497864",
+    "split": "train",
+    "level": 3,
+    "seed": 3199497864,
+    "operators": [
+      "flip-logical",
+      "wrong-return"
+    ],
+    "functions": [
+      "index.js#hasMalformedPercentEncoding#0",
+      "lib/utils.js#encodeFragment#0"
+    ],
+    "sourceHash": 3957470693,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L3-3249830721",
+    "split": "train",
+    "level": 3,
+    "seed": 3249830721,
+    "operators": [
+      "flip-comparison",
+      "flip-comparison"
+    ],
+    "functions": [
+      "lib/schemes.js#wsSerialize#0",
+      "lib/schemes.js#mailtoNormalizeDomain#0"
+    ],
+    "sourceHash": 667832498,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L3-3233053102",
+    "split": "train",
+    "level": 3,
+    "seed": 3233053102,
+    "operators": [
+      "wrong-return",
+      "drop-branch"
+    ],
+    "functions": [
+      "lib/schemes.js#mailtoEncodeHeaderName#0",
+      "lib/schemes.js#httpParse#0"
+    ],
+    "sourceHash": 1014880860,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L3-3283385959",
+    "split": "train",
+    "level": 3,
+    "seed": 3283385959,
+    "operators": [
+      "wrong-return",
+      "swap-arguments"
+    ],
+    "functions": [
+      "lib/utils.js#percentEncodeNonAscii#0",
+      "lib/utils.js#compressIPv6ZeroRun#0"
+    ],
+    "sourceHash": 2852275837,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L3-3266608340",
+    "split": "train",
+    "level": 3,
+    "seed": 3266608340,
+    "operators": [
+      "flip-comparison",
+      "flip-logical"
+    ],
+    "functions": [
+      "index.js#hasForbiddenDomainHost#0",
+      "lib/schemes.js#getSchemeHandler#0"
+    ],
+    "sourceHash": 684837680,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L3-3300163578",
+    "split": "train",
+    "level": 3,
+    "seed": 3300163578,
+    "operators": [
+      "drop-branch",
+      "swap-arguments"
+    ],
+    "functions": [
+      "lib/schemes.js#httpParse#0",
+      "lib/utils.js#encodeUserinfo#0"
+    ],
+    "sourceHash": 3975269861,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-train-L3-3082054531",
+    "split": "train",
+    "level": 3,
+    "seed": 3082054531,
+    "operators": [
+      "flip-comparison",
+      "swap-arguments"
+    ],
+    "functions": [
+      "index.js#isHostOnlyURL#0",
+      "lib/schemes.js#urnSerialize#0"
+    ],
+    "sourceHash": 2871855428,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L3-3065276912",
+    "split": "train",
+    "level": 3,
+    "seed": 3065276912,
+    "operators": [
+      "flip-comparison",
+      "drop-branch"
+    ],
+    "functions": [
+      "lib/schemes.js#isValidSchemeName#0",
+      "lib/schemes.js#httpParse#0"
+    ],
+    "sourceHash": 256619664,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L3-766301824",
+    "split": "train",
+    "level": 3,
+    "seed": 766301824,
+    "operators": [
+      "off-by-one",
+      "wrong-return"
+    ],
+    "functions": [
+      "lib/schemes.js#mailtoEncodeDomain#0",
+      "lib/utils.js#encodeQuery#0"
+    ],
+    "sourceHash": 3867244851,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L3-783079443",
+    "split": "train",
+    "level": 3,
+    "seed": 783079443,
+    "operators": [
+      "wrong-return",
+      "drop-branch"
+    ],
+    "functions": [
+      "index.js#hasMalformedPercentEncoding#0",
+      "lib/schemes.js#mailtoEncodeDomain#0"
+    ],
+    "sourceHash": 393580265,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L3-799857062",
+    "split": "train",
+    "level": 3,
+    "seed": 799857062,
+    "operators": [
+      "wrong-return",
+      "drop-branch"
+    ],
+    "functions": [
+      "lib/schemes.js#getSchemeHandler#0",
+      "index.js#hasMalformedPercentEncoding#0"
+    ],
+    "sourceHash": 731991339,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-train-L3-816634681",
+    "split": "train",
+    "level": 3,
+    "seed": 816634681,
+    "operators": [
+      "off-by-one",
+      "swap-arguments"
+    ],
+    "functions": [
+      "lib/schemes.js#wsIsSecure#0",
+      "lib/utils.js#compressIPv6ZeroRun#0"
+    ],
+    "sourceHash": 1109447764,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L3-833412300",
+    "split": "train",
+    "level": 3,
+    "seed": 833412300,
+    "operators": [
+      "flip-logical",
+      "flip-logical"
+    ],
+    "functions": [
+      "lib/utils.js#stringArrayToHexStripped#0",
+      "index.js#equal#0"
+    ],
+    "sourceHash": 2972034436,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L3-850189919",
+    "split": "train",
+    "level": 3,
+    "seed": 850189919,
+    "operators": [
+      "swap-arguments",
+      "flip-logical"
+    ],
+    "functions": [
+      "index.js#equal#0",
+      "lib/utils.js#stringArrayToHexStripped#0"
+    ],
+    "sourceHash": 789080614,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L3-866967538",
+    "split": "train",
+    "level": 3,
+    "seed": 866967538,
+    "operators": [
+      "swap-arguments",
+      "flip-logical"
+    ],
+    "functions": [
+      "lib/utils.js#encodeQuery#0",
+      "lib/schemes.js#httpSerialize#0"
+    ],
+    "sourceHash": 4146830793,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-train-L3-883745157",
+    "split": "train",
+    "level": 3,
+    "seed": 883745157,
+    "operators": [
+      "wrong-return",
+      "wrong-return"
+    ],
+    "functions": [
+      "index.js#normalizeStringWithStatus#0",
+      "lib/utils.js#encodeQuery#0"
+    ],
+    "sourceHash": 2580267397,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-train-L3-900522776",
+    "split": "train",
+    "level": 3,
+    "seed": 900522776,
+    "operators": [
+      "flip-logical",
+      "flip-comparison"
+    ],
+    "functions": [
+      "lib/schemes.js#getSchemeHandler#0",
+      "index.js#normalize#0"
+    ],
+    "sourceHash": 2083433976,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L3-917300395",
+    "split": "train",
+    "level": 3,
+    "seed": 917300395,
+    "operators": [
+      "swap-arguments",
+      "flip-comparison"
+    ],
+    "functions": [
+      "index.js#canonicalizeHost#0",
+      "lib/schemes.js#urnSerialize#0"
+    ],
+    "sourceHash": 25132610,
+    "killedAs": "error"
+  },
+  {
+    "id": "mut-train-L3-3014649865",
+    "split": "train",
+    "level": 3,
+    "seed": 3014649865,
+    "operators": [
+      "drop-branch",
+      "flip-comparison"
+    ],
+    "functions": [
+      "index.js#getParseError#0",
+      "lib/utils.js#normalizeQueryFragmentEncoding#0"
+    ],
+    "sourceHash": 912879613,
+    "killedAs": "fail"
+  },
+  {
+    "id": "mut-train-L3-2997872246",
+    "split": "train",
+    "level": 3,
+    "seed": 2997872246,
+    "operators": [
+      "flip-logical",
+      "flip-logical"
+    ],
+    "functions": [
+      "lib/utils.js#stringArrayToHexStripped#0",
+      "lib/schemes.js#urnuuidSerialize#0"
+    ],
+    "sourceHash": 1303891115,
+    "killedAs": "fail"
+  }
+]

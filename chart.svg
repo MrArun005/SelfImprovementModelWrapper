@@ -3,16 +3,42 @@
 <text x="52" y="20" fill="#111827" font-size="14" font-weight="600">MultiPL-E holdout pass rate by variant (95% CI)</text>
 <line x1="52" x2="736" y1="312" y2="312" stroke="#e5e7eb"/>
 <text x="46" y="315" text-anchor="end" fill="#6b7280">0%</text>
-<line x1="52" x2="736" y1="262.4" y2="262.4" stroke="#e5e7eb"/>
-<text x="46" y="265.4" text-anchor="end" fill="#6b7280">20%</text>
-<line x1="52" x2="736" y1="212.8" y2="212.8" stroke="#e5e7eb"/>
-<text x="46" y="215.8" text-anchor="end" fill="#6b7280">40%</text>
-<line x1="52" x2="736" y1="163.20000000000002" y2="163.20000000000002" stroke="#e5e7eb"/>
-<text x="46" y="166.20000000000002" text-anchor="end" fill="#6b7280">60%</text>
-<line x1="52" x2="736" y1="113.6" y2="113.6" stroke="#e5e7eb"/>
-<text x="46" y="116.6" text-anchor="end" fill="#6b7280">80%</text>
-<line x1="52" x2="736" y1="64" y2="64" stroke="#e5e7eb"/>
-<text x="46" y="67" text-anchor="end" fill="#6b7280">100%</text>
+<line x1="52" x2="736" y1="266" y2="266" stroke="#e5e7eb"/>
+<text x="46" y="269" text-anchor="end" fill="#6b7280">20%</text>
+<line x1="52" x2="736" y1="220" y2="220" stroke="#e5e7eb"/>
+<text x="46" y="223" text-anchor="end" fill="#6b7280">40%</text>
+<line x1="52" x2="736" y1="174" y2="174" stroke="#e5e7eb"/>
+<text x="46" y="177" text-anchor="end" fill="#6b7280">60%</text>
+<line x1="52" x2="736" y1="128" y2="128" stroke="#e5e7eb"/>
+<text x="46" y="131" text-anchor="end" fill="#6b7280">80%</text>
+<line x1="52" x2="736" y1="82" y2="82" stroke="#e5e7eb"/>
+<text x="46" y="85" text-anchor="end" fill="#6b7280">100%</text>
+<text x="394" y="330" text-anchor="middle" fill="#6b7280">11-19</text>
 <text x="394" y="354" text-anchor="middle" fill="#6b7280">run date (MM-DD) · bands = 95% bootstrap CI over holdout problems</text>
-<text x="380" y="180" text-anchor="middle" fill="#6b7280">no runs yet</text>
+<line x1="52" x2="736" y1="182.68633333333335" y2="182.68633333333335" stroke="#f59e0b" stroke-dasharray="6 4" stroke-width="1.5"/>
+<text x="58" y="197.68633333333335" fill="#f59e0b">starting baseline 56.2%</text>
+<line class="band" data-variant="baseline" x1="394" x2="394" y1="209.25900000000001" y2="151" stroke="#6b7280" stroke-opacity="0.44999999999999996" stroke-width="8"/>
+<polyline data-variant="baseline" fill="none" stroke="#6b7280" stroke-width="2" points="394,178.60000000000002"/>
+<circle cx="394" cy="178.60000000000002" r="4" fill="#6b7280" stroke="#ffffff"><title>No memory (control) 2026-11-19: 58.0% [44.7–70.0] n=50×3, gate baseline</title></circle>
+<line class="band" data-variant="lessons" x1="394" x2="394" y1="209.25900000000001" y2="151" stroke="#2563eb" stroke-opacity="0.44999999999999996" stroke-width="8"/>
+<polyline data-variant="lessons" fill="none" stroke="#2563eb" stroke-width="2" points="394,178.60000000000002"/>
+<circle cx="394" cy="178.60000000000002" r="4" fill="#2563eb" stroke="#ffffff"><title>Lessons 2026-11-19: 58.0% [44.7–70.0] n=50×3, gate baseline</title></circle>
+<line class="band" data-variant="skills" x1="394" x2="394" y1="220" y2="158.65900000000002" stroke="#d97706" stroke-opacity="0.44999999999999996" stroke-width="8"/>
+<polyline data-variant="skills" fill="none" stroke="#d97706" stroke-width="2" points="394,187.8"/>
+<circle cx="394" cy="187.8" r="4" fill="#d97706" stroke="#ffffff"><title>Skills 2026-11-19: 54.0% [40.0–66.7] n=50×3, gate baseline</title></circle>
+<line class="band" data-variant="lessons-skills" x1="394" x2="394" y1="209.25900000000001" y2="151" stroke="#16a34a" stroke-opacity="0.44999999999999996" stroke-width="8"/>
+<polyline data-variant="lessons-skills" fill="none" stroke="#16a34a" stroke-width="2" points="394,178.60000000000002"/>
+<circle cx="394" cy="178.60000000000002" r="4" fill="#16a34a" stroke="#ffffff"><title>Lessons + skills 2026-11-19: 58.0% [44.7–70.0] n=50×3, gate baseline</title></circle>
+<line class="band" data-variant="self-repair" x1="394" x2="394" y1="218.459" y2="158.63600000000002" stroke="#0891b2" stroke-opacity="0.44999999999999996" stroke-width="8"/>
+<polyline data-variant="self-repair" fill="none" stroke="#0891b2" stroke-width="2" points="394,186.25900000000001"/>
+<circle cx="394" cy="186.25900000000001" r="4" fill="#0891b2" stroke="#ffffff"><title>Self-repair 2026-11-19: 54.7% [40.7–66.7] n=50×3, gate baseline</title></circle>
+<line class="band" data-variant="full" x1="394" x2="394" y1="218.459" y2="158.63600000000002" stroke="#9333ea" stroke-opacity="0.44999999999999996" stroke-width="8"/>
+<polyline data-variant="full" fill="none" stroke="#9333ea" stroke-width="2" points="394,186.25900000000001"/>
+<circle cx="394" cy="186.25900000000001" r="4" fill="#9333ea" stroke="#ffffff"><title>Full (+ self-repair, prompt optimizer) 2026-11-19: 54.7% [40.7–66.7] n=50×3, gate baseline</title></circle>
+<rect x="52" y="32" width="12" height="12" rx="2" fill="#6b7280"/><text x="70" y="44" fill="#111827">No memory (control)</text>
+<rect x="202" y="32" width="12" height="12" rx="2" fill="#2563eb"/><text x="220" y="44" fill="#111827">Lessons</text>
+<rect x="352" y="32" width="12" height="12" rx="2" fill="#d97706"/><text x="370" y="44" fill="#111827">Skills</text>
+<rect x="502" y="32" width="12" height="12" rx="2" fill="#16a34a"/><text x="520" y="44" fill="#111827">Lessons + skills</text>
+<rect x="52" y="50" width="12" height="12" rx="2" fill="#0891b2"/><text x="70" y="62" fill="#111827">Self-repair</text>
+<rect x="202" y="50" width="12" height="12" rx="2" fill="#9333ea"/><text x="220" y="62" fill="#111827">Full (+ self-repair, prompt optimizer)</text>
 </svg>
