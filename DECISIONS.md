@@ -17,10 +17,15 @@ Ollama's version and download URL are pinned in config; the workflow reads them 
 The context window is set explicitly (`runtime.ollamaContextLength`, 8192) because Ollama silently truncates longer
 prompts, and mutation-track prompts (function + failing assertions + lessons) run to several hundred tokens or more.
 
-## 2. Model: `qwen2.5-coder:0.5b`
+## 2. Model: `qwen2.5-coder:1.5b` (changed from 0.5b after the first smoke run, before any baseline)
 
-Low tier on purpose (weaker start = room to improve) and fast on a 4-vCPU runner without a GPU; 1.5B is
-roughly 3x slower per call. Change with `SIC_CONFIG_OVERRIDES={"llm":{"model":"..."}}`, ideally before the baseline runs.
+The first smoke run on GitHub Actions (run 44602785479, 2026-11-19) measured **~4 s per request** for
+`qwen2.5-coder:0.5b` including test execution (24 requests in ~99 s), i.e. ~28 min for a full 420-request variant
+budget, far inside the job limit. Its lessons were problem-specific restatements, not reusable rules. Since the
+owner asked for the most capable model the free setup allows, the model moved up to 1.5B (about 3x the
+parameters) before any baseline was recorded, so no comparison straddles the change. Time limits were raised
+to fit (`budget.maxRunMinutes` 125, `reserveMinutesForHoldout` 70, job timeout 170); a second smoke run checks it.
+Still small on purpose: it leaves room to improve, and 7B on a CPU runner would not fit the daily budget.
 
 ## 3. Tracks
 

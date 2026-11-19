@@ -31,7 +31,10 @@ export async function reflect({ llm, problem, code, result, templates, cfg, rese
   const reply = await llm.chat(messages, { temperature: cfg.llm.temperature, reserve, meta: { kind: 'reflect', problemId: problem.id } });
   const usage = { ...(llm.lastUsage ?? { tokensIn: 0, tokensOut: 0 }) };
   const parsed = parseLesson(reply);
-  if (!parsed) return { lesson: null, usage };
+  if (!parsed) return { lesson: null, usage, rejected: 'unparsable' };
+  // A lesson that names this problem's own function is about this problem, not a reusable rule.
+  const names = problem.entryPoints ?? [problem.entryPoint];
+  if (cfg.agent.rejectProblemSpecificLessons && names.some((n) => n && parsed.text.includes(n))) return { lesson: null, usage, rejected: 'problem-specific' };
   const kw = [...problemKeywords(problem, cfg.retrieve)];
   const tags = [...new Set([...parsed.tags.map((t) => t.toLowerCase().trim()).filter(Boolean), ...kw])].slice(0, maxLessonTags);
   return { lesson: { text: clampWords(parsed.text, maxLessonWords), tags }, usage };

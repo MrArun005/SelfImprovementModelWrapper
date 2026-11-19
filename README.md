@@ -1,6 +1,6 @@
 # self-improving-coder
 
-A small open model (`qwen2.5-coder:0.5b`, running free on GitHub Actions via Ollama) tries to get better
+A small open model (`qwen2.5-coder:1.5b`, running free on GitHub Actions via Ollama) tries to get better
 at writing JavaScript, one day at a time. It keeps **lessons** from its failures, a library of **skills**
 from its successes, and can rewrite its own **system prompt**. Unit tests are the only judge. Every change
 has to beat the current version on held-out problems, with a confidence interval, before it is kept.
@@ -97,7 +97,7 @@ Optional repo **variables** (Settings → Secrets and variables → Actions → 
 
 | variable | meaning |
 |---|---|
-| `SIC_CONFIG_OVERRIDES` | JSON merged over `config/default.json`, e.g. `{"llm":{"model":"qwen2.5-coder:1.5b"},"eval":{"repeats":5}}` |
+| `SIC_CONFIG_OVERRIDES` | JSON merged over `config/default.json`, e.g. `{"llm":{"model":"qwen2.5-coder:3b"},"eval":{"repeats":5}}` |
 | `SIC_IMPROVE_TIMEOUT_MINUTES` | timeout of each variant's job (default 150) |
 | `SIC_MAX_PARALLEL` | how many variant jobs run at once (default 7) |
 | `SIC_PAGES` | `off` to skip the Pages deploy |

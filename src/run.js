@@ -79,6 +79,7 @@ async function trainPhase({ llm, cfg, mem, track, templates, runIndex, working, 
       let llmMs = res.usage.latencyMs ?? 0;
       let reflection = null;
       let lessonId = null;
+      let rejectedReason = null;
       if (passed) {
         if (lv.skills && !mem.skills.has(id)) {
           mem.skills.set(id, { id, entryPoint: task.entryPoint, keywords: [...problemKeywords(task, cfg.retrieve)], code: track.storeCode ? res.code : '', createdRun: runIndex });
@@ -93,6 +94,7 @@ async function trainPhase({ llm, cfg, mem, track, templates, runIndex, working, 
           tokensOut += r.usage.tokensOut;
           llmMs += r.usage.latencyMs ?? 0;
           reflection = r.lesson;
+          if (r.rejected) rejectedReason = r.rejected;
         } catch (e) {
           if (!(e instanceof BudgetExhausted)) throw e;
           stop = true;
@@ -111,7 +113,7 @@ async function trainPhase({ llm, cfg, mem, track, templates, runIndex, working, 
       rec.attempt({ phase: 'train', problemId: id, level: task.level ?? null, attempt, result: result.type, failureClass, requests, tokensIn, tokensOut, llmMs,
         lessonIds: res.usedLessons.map((l) => l.id), skillIds: res.usedSkills.map((s) => s.id), promptVersion: working.promptVersion, durationMs: result.durationMs, lessonCreated: lessonId });
       rec.trace({ problemId: id, attempt, result: result.type, failureClass, code: track.storeCode ? res.code : null, output: result.output,
-        lessonIds: res.usedLessons.map((l) => l.id), reflection, lessonCreated: lessonId, duplicateLesson: Boolean(reflection && !lessonId) });
+        lessonIds: res.usedLessons.map((l) => l.id), reflection, lessonCreated: lessonId, duplicateLesson: Boolean(reflection && !lessonId), lessonRejected: rejectedReason });
       if (stop) break;
     }
     if (!attempted) continue;

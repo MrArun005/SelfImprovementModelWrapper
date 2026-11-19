@@ -60,3 +60,17 @@ test('prompt contains lessons and skills sections only when present', () => {
   assert.match(some[1].content, /- L!/);
   assert.match(some[1].content, /function z/);
 });
+
+test('reflection rejects problem-specific lessons (that name the function) when configured', async () => {
+  const { reflect } = await import('../src/agent/reflect.js');
+  const cfg = testConfig();
+  const problem = { id: 'p', entryPoint: 'min_Swaps', prompt: '// count swaps\nfunction min_Swaps(a, b){\n' };
+  const templates = { reflectSystem: 'x {{maxWords}} {{maxTags}}', reflectUser: '{{prompt}} {{code}} {{resultType}} {{output}}' };
+  const llm = (lesson) => ({ lastUsage: { tokensIn: 1, tokensOut: 1 }, chat: async () => JSON.stringify({ lesson, tags: ['x'] }) });
+  const result = { type: 'fail', output: 'AssertionError' };
+  const bad = await reflect({ llm: llm('In min_Swaps compare characters recursively.'), problem, code: '', result, templates, cfg });
+  assert.equal(bad.lesson, null);
+  assert.equal(bad.rejected, 'problem-specific');
+  const good = await reflect({ llm: llm('Check loop bounds when comparing two strings.'), problem, code: '', result, templates, cfg });
+  assert.match(good.lesson.text, /loop bounds/);
+});

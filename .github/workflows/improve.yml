@@ -48,7 +48,7 @@ jobs:
     # Runs LLM-written code. Its token can only read this (public) repo; it cannot push.
     needs: plan
     runs-on: ubuntu-latest
-    timeout-minutes: ${{ fromJSON(vars.SIC_IMPROVE_TIMEOUT_MINUTES || '150') }}
+    timeout-minutes: ${{ fromJSON(vars.SIC_IMPROVE_TIMEOUT_MINUTES || '170') }}
     permissions:
       contents: read
     strategy:

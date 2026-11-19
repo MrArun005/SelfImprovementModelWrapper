@@ -3,7 +3,7 @@
     "provider": "openai-compatible",
     "endpoint": "http://127.0.0.1:11434/v1/chat/completions",
     "apiKeyEnv": "SIC_LLM_API_KEY",
-    "model": "qwen2.5-coder:0.5b",
+    "model": "qwen2.5-coder:1.5b",
     "temperature": 0.4,
     "evalTemperature": 0,
     "seed": 1234,
@@ -175,8 +175,8 @@
     "totalRequestsPerRun": 2940,
     "totalRequestsPerDay": 3360,
     "holdoutFraction": 0.72,
-    "maxRunMinutes": 100,
-    "reserveMinutesForHoldout": 40
+    "maxRunMinutes": 125,
+    "reserveMinutesForHoldout": 70
   },
   "dataset": {
     "revision": "28441b6024e71d4a1c1c0f6bf171c935cd5a43f2",
@@ -202,7 +202,8 @@
     "maxLessonWords": 40,
     "maxLessonTags": 6,
     "reflectOutputChars": 800,
-    "retryFailedAfterRuns": 1
+    "retryFailedAfterRuns": 1,
+    "rejectProblemSpecificLessons": true
   },
   "retrieve": {
     "minTokenLength": 3,
