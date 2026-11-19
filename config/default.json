@@ -161,7 +161,8 @@
       },
       "evolveAnswer": "Check edge cases (empty input, boundaries, negative numbers) before answering."
     },
-    "errorSnippetChars": 300
+    "errorSnippetChars": 300,
+    "trainSeedRange": 1000000
   },
   "runtime": {
     "ollamaVersion": "0.40.16",
@@ -174,8 +175,8 @@
     "ollamaContextLength": 8192
   },
   "budget": {
-    "totalRequestsPerRun": 3360,
-    "totalRequestsPerDay": 3840,
+    "totalRequestsPerRun": 4200,
+    "totalRequestsPerDay": 4800,
     "holdoutFraction": 0.72,
     "maxRunMinutes": 125,
     "reserveMinutesForHoldout": 70
@@ -210,7 +211,9 @@
     "feedbackLabels": {
       "train": "Test output",
       "eval": "Results on the examples from the problem statement"
-    }
+    },
+    "samples": 3,
+    "sampleSeedStride": 1000
   },
   "retrieve": {
     "minTokenLength": 3,
@@ -558,16 +561,27 @@
       "color": "#0891b2"
     },
     {
+      "name": "sample-filter",
+      "label": "Sample + filter",
+      "track": "multipl-e",
+      "levers": {
+        "sampleFilter": true
+      },
+      "budgetShare": 1.5,
+      "color": "#db2777"
+    },
+    {
       "name": "full",
-      "label": "Full (+ self-repair, prompt optimizer)",
+      "label": "Full (all levers)",
       "track": "multipl-e",
       "levers": {
         "lessons": true,
         "skills": true,
         "promptOptimizer": true,
-        "selfRepair": true
+        "selfRepair": true,
+        "sampleFilter": true
       },
-      "budgetShare": 1,
+      "budgetShare": 1.5,
       "color": "#9333ea"
     },
     {

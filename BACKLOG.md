@@ -25,6 +25,7 @@ DECISIONS.md updated for any non-obvious choice, README claims backed by generat
       (bounded by `agent.maxAttemptsPerProblem`). On holdout, only the examples already in the problem statement may be
       used as feedback (never the hidden tests), so the score stays honest. Ship as a new lever + variant so its effect
       is measured against the control, not assumed.
+   d. ~~**Sample-and-filter**~~ DONE (DECISIONS.md §4c), plus fixes: distinct train seeds, per-task eval costing.
    c. **Better lessons**: give the reflection prompt the exact expected/actual values; keep only lessons that helped
       on a retry (verified lessons) instead of every reflection.
 1. **Workflow robustness.** Retry the Ollama download/pull with backoff; a warm-up request that fails fast with a

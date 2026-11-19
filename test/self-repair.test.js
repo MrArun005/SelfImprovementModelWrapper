@@ -85,3 +85,47 @@ test('without the lever there is no repair, on train or holdout', async () => {
   await runCycle({ cfg, deps: { llm } });
   assert.ok(llm.calls.every((c) => !c.messages[1].content.includes('previous attempt failed')));
 });
+
+// ---- sample-and-filter ----
+import { planEval, trainSeed } from '../src/run.js';
+import { variantConfig } from '../src/variants.js';
+
+const SF = [{ name: 'sample-filter', label: 'Sample + filter', track: 'multipl-e', levers: { sampleFilter: true }, budgetShare: 1, color: '#000' }];
+
+test('sample-and-filter keeps the first candidate that passes the statement\'s examples (holdout), hidden tests unseen', async () => {
+  const cfg = cfgWith({ variants: SF, defaultVariant: 'sample-filter', gate: { baselineRuns: 1 }, agent: { samples: 3 } });
+  writeSplit(cfg, ['tr'], ['ho']);
+  const seenSeeds = [];
+  const llm = scriptedLLM((meta, messages) => {
+    const p = problems.find((x) => x.id === meta.problemId);
+    return '```javascript\n' + p.mock.buggy + '\n```';
+  });
+  // wrap to answer correctly on the 2nd distinct seed for 'ho'
+  const wrapped = { ...llm, async chat(m, o = {}) {
+    if (o.meta?.problemId === 'ho') { seenSeeds.push(o.seed); const k = seenSeeds.filter((s) => s === o.seed).length; const idx = [...new Set(seenSeeds)].indexOf(o.seed);
+      llm.calls.push({ messages: m, ...o }); const p = problems[1]; return '```javascript\n' + (idx % 3 === 1 ? p.mock.correct : p.mock.buggy) + '\n```'; }
+    return llm.chat(m, o);
+  } };
+  const s = await runCycle({ cfg, deps: { llm: wrapped } });
+  const ho = llm.calls.filter((c) => c.meta?.problemId === 'ho');
+  assert.ok(new Set(ho.map((c) => c.seed)).size >= 2, 'samples use different seeds');
+  for (const c of ho) assert.ok(!c.messages.map((m) => m.content).join('\n').includes(HIDDEN_MARKER));
+  assert.equal(s.champion.passRate, 1, 'the passing sample was kept and passed the hidden test');
+});
+
+test('train retries use different sampling seeds (no copies of the previous attempt)', () => {
+  const cfg = loadConfig({ env: {} });
+  assert.notEqual(trainSeed(cfg, 1, 'p', 1), trainSeed(cfg, 1, 'p', 2));
+  assert.notEqual(trainSeed(cfg, 1, 'p', 1), trainSeed(cfg, 2, 'p', 1));
+  assert.equal(trainSeed(cfg, 3, 'q', 2), trainSeed(cfg, 3, 'q', 2));
+});
+
+test('eval planning charges extra only where public examples exist', () => {
+  const cfg = variantConfig(loadConfig({ env: {} }), 'sample-filter');
+  const holdout = Array.from({ length: 10 }, (_, i) => `p${i}`);
+  const withExamples = new Set(['p0', 'p1']);
+  const cost = (id) => (withExamples.has(id) ? cfg.agent.samples : 1);
+  const full = 8 * 1 + 2 * cfg.agent.samples; // total worst-case cost of one pass over all 10
+  assert.equal(planEval(holdout, full * cfg.eval.repeats, 1, cfg, cost).ids.length, 10);
+  assert.ok(planEval(holdout, (full - 1) * cfg.eval.repeats, 1, cfg, cost).ids.length < 10);
+});

@@ -96,6 +96,22 @@ The most reliable inference-time gain for code models is letting them debug from
   beyond the failing tests already in the prompt, so its holdout gets no repair either.
 - Measured like every other lever: against the same-day control, with CIs.
 
+## 4c. Sample-and-filter lever, and two fixes it exposed
+
+Lever `sampleFilter` (variant `sample-filter`, also in `full`): draw up to `agent.samples` (3) candidates with
+different seeds and keep the first that passes the problem statement's worked examples (same public tests as
+self-repair; hidden tests never used). Where a problem has no examples it is a single attempt. These two variants
+get `budgetShare` 1.5 because their evaluation costs more; at the measured ~7 s per request that is ~75 min,
+within the cycle limit.
+
+Fixes found while building it:
+- **Train retries were copies.** Every train call used the same sampling seed, so a variant without lessons or
+  self-repair sent an identical prompt with an identical seed on attempt 2 and got the same answer. Train seeds now
+  depend on run, problem and attempt (`trainSeed`).
+- **Eval planning was too pessimistic.** Charging every holdout problem the worst-case repair cost would have cut
+  the self-repair variant's holdout to about 25 problems once learning runs (champion + candidate) start. Planning
+  now charges extra only for problems that have examples (`attemptCost`).
+
 ## 5. Evaluation and statistics
 
 - **Repeats:** every holdout evaluation runs `eval.repeats` = 3 times at `eval.temperature` 0.2. Repeat `r` of

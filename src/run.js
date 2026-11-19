@@ -11,8 +11,9 @@ import { createLLM } from './llm/index.js';
 import { createBudget, budgeted, BudgetExhausted } from './budget.js';
 import { solve } from './agent/solve.js';
 import { reflect } from './agent/reflect.js';
+import { attemptWithChecks, attemptCost } from './agent/attempt.js';
 import { problemKeywords } from './agent/retrieve.js';
-import { RESULT, runTests } from './judge/run-tests.js';
+import { RESULT } from './judge/run-tests.js';
 import { decide, applyDecision, DECISION } from './gate.js';
 import { loadMemory, saveMemory, newLessonId, readPrompt, ensureSeedPrompt, pruneLessons } from './memory.js';
 import { appendScores } from './metrics.js';
@@ -22,7 +23,7 @@ import { createTrack } from './tracks/index.js';
 import { classify } from './taxonomy.js';
 import { summarizeEval, pairedGroupCI } from './stats.js';
 import { variantConfig, listVariants } from './variants.js';
-import { seededShuffle, writeJson, log, argValue } from './util.js';
+import { seededShuffle, writeJson, log, argValue, hash32 } from './util.js';
 
 export function loadSharedTemplates(cfg) {
   const dir = rootPath(cfg, cfg.paths.templatesDir);
@@ -67,8 +68,12 @@ async function trainPhase({ llm, cfg, mem, track, templates, runIndex, working, 
       let res;
       try {
         const feedback = lv.selfRepair && previous ? { code: previous.code, output: previous.output, label: cfg.agent.feedbackLabels.train } : null;
-        res = await solve({ llm, problem: task, memory, templates, cfg, temperature: cfg.llm.temperature, reserve, extract: track.extractCode, feedback });
+        const publicTests = lv.sampleFilter ? track.publicTests?.(task) : null;
+        const a = await attemptWithChecks({ llm, problem: task, memory, templates, cfg, temperature: cfg.llm.temperature, seed: trainSeed(cfg, runIndex, id, attempt), reserve,
+          extract: track.extractCode, publicTests, samples: cfg.agent.samples, repairs: 0, feedback, feedbackLabel: cfg.agent.feedbackLabels.eval });
+        res = a.res;
         res.repair = Boolean(feedback);
+        res.cost = a;
       } catch (e) {
         if (e instanceof BudgetExhausted) { stop = true; break; }
         throw e;
@@ -80,10 +85,10 @@ async function trainPhase({ llm, cfg, mem, track, templates, runIndex, working, 
       const failureClass = classOf(cfg, result, task, res.code);
       for (const l of res.usedLessons) { l.uses = (l.uses ?? 0) + 1; if (passed) l.helped = (l.helped ?? 0) + 1; }
       log(`[${cfg.variant.name}] train ${id} attempt ${attempt}: ${result.type} (${failureClass})${res.usedLessons.length ? ` lessons ${res.usedLessons.map((l) => l.id).join(',')}` : ''}`);
-      let requests = 1;
-      let tokensIn = res.usage.tokensIn;
-      let tokensOut = res.usage.tokensOut;
-      let llmMs = res.usage.latencyMs ?? 0;
+      let requests = res.cost.requests;
+      let tokensIn = res.cost.tokensIn;
+      let tokensOut = res.cost.tokensOut;
+      let llmMs = res.cost.llmMs;
       let reflection = null;
       let lessonId = null;
       let rejectedReason = null;
@@ -117,7 +122,7 @@ async function trainPhase({ llm, cfg, mem, track, templates, runIndex, working, 
           log(`  lesson ${l.id}: ${l.text}`);
         }
       }
-      rec.attempt({ phase: 'train', problemId: id, level: task.level ?? null, attempt, repair: res.repair, result: result.type, failureClass, requests, tokensIn, tokensOut, llmMs,
+      rec.attempt({ phase: 'train', problemId: id, level: task.level ?? null, attempt, repair: res.repair, samples: res.cost.samplesDrawn, result: result.type, failureClass, requests, tokensIn, tokensOut, llmMs,
         lessonIds: res.usedLessons.map((l) => l.id), skillIds: res.usedSkills.map((s) => s.id), promptVersion: working.promptVersion, durationMs: result.durationMs, lessonCreated: lessonId });
       rec.trace({ problemId: id, attempt, result: result.type, failureClass, code: track.storeCode ? res.code : null, output: result.output,
         lessonIds: res.usedLessons.map((l) => l.id), reflection, lessonCreated: lessonId, duplicateLesson: Boolean(reflection && !lessonId), lessonRejected: rejectedReason });
@@ -145,26 +150,18 @@ export async function evaluate({ llm, cfg, mem, track, ids, state, templates, re
     const seed = evalSeed(cfg, runIndex, r);
     for (let i = 0; i < ids.length; i++) {
       const task = track.tasks.get(ids[i]);
-      let res = await solve({ llm, problem: task, memory, templates, cfg, temperature: cfg.eval.temperature, seed, reserve: 0, extract: track.extractCode });
-      let requests = 1;
-      let tokensIn = res.usage.tokensIn;
-      let tokensOut = res.usage.tokensOut;
-      let llmMs = res.usage.latencyMs ?? 0;
-      let repairs = 0;
-      // Self-repair on holdout uses ONLY the examples in the problem statement, never the hidden tests.
-      const publicTests = cfg.variant.levers.selfRepair ? track.publicTests?.(task) : null;
-      for (let k = 0; publicTests && k < cfg.eval.selfRepairAttempts; k++) {
-        const check = await runTests(res.code, publicTests, cfg.judge);
-        if (check.type === RESULT.PASS) break;
-        res = await solve({ llm, problem: task, memory, templates, cfg, temperature: cfg.eval.temperature, seed, reserve: 0, extract: track.extractCode,
-          feedback: { code: res.code, output: check.output, label: cfg.agent.feedbackLabels.eval } });
-        requests++; repairs++;
-        tokensIn += res.usage.tokensIn; tokensOut += res.usage.tokensOut; llmMs += res.usage.latencyMs ?? 0;
-      }
+      // Inference-time checks on holdout use ONLY the examples in the problem statement, never the hidden tests.
+      const lv = cfg.variant.levers;
+      const publicTests = lv.selfRepair || lv.sampleFilter ? track.publicTests?.(task) : null;
+      const a = await attemptWithChecks({ llm, problem: task, memory, templates, cfg, temperature: cfg.eval.temperature, seed, reserve: 0, extract: track.extractCode,
+        publicTests, samples: lv.sampleFilter ? cfg.agent.samples : 1, repairs: lv.selfRepair ? cfg.eval.selfRepairAttempts : 0, feedbackLabel: cfg.agent.feedbackLabels.eval });
+      const res = a.res;
+      const { requests, tokensIn, tokensOut, llmMs } = a;
+      const repairs = a.repairsDone;
       const result = await track.judge(res.code, task);
       const pass = result.type === RESULT.PASS ? 1 : 0;
       perProblem[i].push(pass);
-      rec.attempt({ phase: 'eval', state: label, repeat: r, problemId: ids[i], level: task.level ?? null, attempt: 1, repairs, result: result.type,
+      rec.attempt({ phase: 'eval', state: label, repeat: r, problemId: ids[i], level: task.level ?? null, attempt: 1, repairs, samples: a.samplesDrawn, result: result.type,
         failureClass: classOf(cfg, result, task, res.code), requests, tokensIn, tokensOut, llmMs,
         lessonIds: res.usedLessons.map((l) => l.id), skillIds: res.usedSkills.map((s) => s.id), promptVersion: state.promptVersion, durationMs: result.durationMs });
     }
@@ -189,13 +186,25 @@ function sameState(a, b) {
 
 /** Holdout ids and repeats that fit the remaining budget. The subset is seeded by the split seed only, so
  * every variant and every day uses the same tasks for the same size. */
-export function planEval(holdout, budgetLeft, evalCount, cfg) {
+export function planEval(holdout, budgetLeft, evalCount, cfg, costOf = () => 1) {
   const repeats = cfg.eval.repeats;
-  // worst case per problem: one solve + every allowed self-repair
-  const perProblem = 1 + (cfg.variant?.levers?.selfRepair ? cfg.eval.selfRepairAttempts : 0);
-  const n = Math.min(holdout.length, Math.floor(budgetLeft / (repeats * evalCount * perProblem)));
-  const ids = n >= holdout.length ? holdout : seededShuffle(holdout, cfg.split.seed).slice(0, Math.max(0, n)).sort();
-  return { ids, repeats };
+  // worst-case requests per problem (sampling / repair only cost extra where public examples exist)
+  const order = seededShuffle(holdout, cfg.split.seed);
+  const perRound = budgetLeft / (repeats * evalCount);
+  const ids = [];
+  let spent = 0;
+  for (const id of order) {
+    const c = costOf(id);
+    if (spent + c > perRound) break;
+    spent += c;
+    ids.push(id);
+  }
+  return { ids: ids.length === holdout.length ? holdout : ids.sort(), repeats };
+}
+
+/** Sampling seed for a train attempt: differs per run, problem and attempt so retries are not copies. */
+export function trainSeed(cfg, runIndex, id, attempt) {
+  return cfg.llm.seed + (hash32(`${runIndex}|${id}|${attempt}`) % cfg.llm.trainSeedRange);
 }
 
 const statOpts = (cfg, salt) => ({ resamples: cfg.stats.bootstrapResamples, confidence: cfg.stats.confidence, seed: cfg.stats.seed + salt });
@@ -254,7 +263,7 @@ export async function runCycle({ cfg: baseCfg, variant, deps = {} }) {
   const candidateState = working;
   const changed = !sameState(championState, candidateState);
   const evalCount = baselineMode || !changed ? 1 : 2;
-  const plan = planEval(track.holdout, budget.remainingRun(), evalCount, cfg);
+  const plan = planEval(track.holdout, budget.remainingRun(), evalCount, cfg, (id) => attemptCost(cfg, Boolean(track.publicTests?.(track.tasks.get(id))), 'eval'));
   let decision;
   let champ = null;
   let cand = null;
