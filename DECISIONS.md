@@ -160,6 +160,14 @@ only the verified ones are kept, so expect a few lessons per run instead of doze
   assumes independent repeats with per-problem pass probabilities between 0.1 and 0.8. At low temperature a
   real model's repeats are more correlated, which lowers the value of extra repeats.
 
+## 5b. Multiple comparisons (Holm)
+
+Several variants are compared with the same control every day, so with 95% CIs some "significant" differences
+are expected by chance. REPORT.md now adds, per track, a two-sided percentile-bootstrap p-value for each variant's
+paired difference from the control and the Holm-Bonferroni step-down adjustment (family-wise error 1 - confidence),
+and says in words which differences survive. The dashboard marks a difference that is significant on its own but
+not after Holm. (The gate itself is per variant and unchanged: it compares a candidate with its own champion.)
+
 ## 6. Gate
 
 `gate.method: ci`. Accept if the candidate is ≥ `minImprovement` (2.5 pts) better **and** the paired bootstrap CI

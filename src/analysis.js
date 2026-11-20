@@ -6,7 +6,7 @@ import { variantStateDir } from './variants.js';
 import { readJsonl } from './recorder.js';
 import { readScores } from './metrics.js';
 import { readJson } from './util.js';
-import { mean, pairedGroupCI, groupCI, didCI } from './stats.js';
+import { mean, pairedGroupCI, groupCI, didCI, pairedBootstrapP, holm } from './stats.js';
 
 const byStr = (f) => (a, b) => String(f(a)).localeCompare(String(f(b)));
 
@@ -278,7 +278,8 @@ export function analyze(cfg) {
       const p = pairedCI(cfg, salt, problemGroups(control._runs.at(-1).batch), problemGroups(v._runs.at(-1).batch));
       if (!p.ids.length) continue;
       const d = p.d;
-      const cmp = { variant: v.name, control: control.name, controlRate: mean(p.a.map(mean)), variantRate: mean(p.b.map(mean)), estimate: d.estimate, low: d.low, high: d.high, n: p.ids.length, significant: d.low > 0 || d.high < 0 };
+      const pValue = pairedBootstrapP(p.a.map(mean), p.b.map(mean), statOpts(cfg, salt));
+      const cmp = { variant: v.name, control: control.name, controlRate: mean(p.a.map(mean)), variantRate: mean(p.b.map(mean)), estimate: d.estimate, low: d.low, high: d.high, n: p.ids.length, significant: d.low > 0 || d.high < 0, pValue };
       // change since its own start minus the control's change over the same period (difference-in-differences)
       if (v._base && control._base) {
         const { ids, groups } = align(v._base, problemGroups(v._runs.at(-1).batch), control._base, problemGroups(control._runs.at(-1).batch));
@@ -300,6 +301,9 @@ export function analyze(cfg) {
       const verdict = !learners.length ? 'no-data' : fixedBy.length ? 'reduced' : 'not-reduced';
       return { class: c, controlDelta, learners, fixedBy, verdict };
     });
+    // Holm-Bonferroni across this track's variant-vs-control comparisons (family-wise error at 1 - confidence)
+    const adjusted = holm(comparisons.map((c) => c.pValue));
+    comparisons.forEach((c, i) => { c.pHolm = adjusted[i]; c.significantHolm = adjusted[i] < 1 - cfg.stats.confidence; });
     result.tracks[track] = { control: control?.name ?? null, variants: vs.map((v) => v.name), comparisons, taxonomyChange, difficulty: difficultyCheck(vs, track, cfg) };
   }
   for (const v of Object.values(result.variants)) { delete v._runs; delete v._base; }

@@ -80,7 +80,7 @@ export function buildSite(cfg) {
       return `<div class="card" style="--accent:${esc(v.color)}"><div class="card-label">${esc(v.label)}${v.control ? ' <span class="badge muted">control</span>' : ''}</div>
 <div class="big">${pct(v.latest?.passRate)}</div>
 <div class="muted small">95% CI ${pct(v.latest?.ciLow)}–${pct(v.latest?.ciHigh)} · n=${v.latest?.n ?? 0}×${v.latest?.repeats ?? 0}</div>
-${v.control ? '' : `<div class="small">vs control: <strong>${c ? `${pts(c.estimate)} pts` : 'n/a'}</strong> ${c ? `<span class="muted">[${pts(c.low)}, ${pts(c.high)}]</span>` : ''} ${badge(c)}</div>
+${v.control ? '' : `<div class="small">vs control: <strong>${c ? `${pts(c.estimate)} pts` : 'n/a'}</strong> ${c ? `<span class="muted">[${pts(c.low)}, ${pts(c.high)}]</span>` : ''} ${badge(c)}${c && c.significant && !c.significantHolm ? ' <span class="badge muted" title="not significant after the Holm correction for comparing several variants">not after Holm</span>' : ''}</div>
 <div class="small" title="change since its own start minus the control's change over the same period">vs own start, net of control drift: <strong>${v.vsBaselineAdjusted ? `${pts(v.vsBaselineAdjusted.estimate)} pts` : 'n/a'}</strong> ${badge(v.vsBaselineAdjusted)}</div>`}${v.control && v.vsBaseline ? `<div class="small muted">drift since start (no learning): ${pts(v.vsBaseline.estimate)} pts [${pts(v.vsBaseline.low)}, ${pts(v.vsBaseline.high)}]</div>` : ''}</div>`;
     }).join('');
     const title = cfg.charts.find((c) => c.track === track)?.title ?? track;

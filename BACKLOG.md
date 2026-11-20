@@ -33,6 +33,9 @@ DECISIONS.md updated for any non-obvious choice, README claims backed by generat
   (problem-specific, unparsable), duplicates, in REPORT.md and the dashboard. Day 1 under the old rules: only
   2-11% of lessons would have been verified.
 
+- [x] **Multiple comparisons.** Bootstrap p-values + Holm adjustment per track in REPORT.md, "not after Holm"
+  badge on the dashboard. On day 1 none of the six MultiPL-E variant-vs-control differences survives Holm.
+
 ## Next, in order
 
 0. **Capability levers (user asked to make the model as capable as possible).** In order of expected gain:
@@ -45,7 +48,7 @@ DECISIONS.md updated for any non-obvious choice, README claims backed by generat
    d. ~~**Sample-and-filter**~~ DONE (DECISIONS.md §4c), plus fixes: distinct train seeds, per-task eval costing.
    c. **Better lessons**: give the reflection prompt the exact expected/actual values; keep only lessons that helped
       on a retry (verified lessons) instead of every reflection.
-3. **Multiple comparisons.** Holm-adjusted significance across the learning variants' control comparisons, reported
+3. ~~**Multiple comparisons.**~~ DONE. Holm-adjusted significance across the learning variants' control comparisons, reported
    next to the unadjusted CIs in plain words.
 4. ~~**Reflection quality metrics.**~~ DONE (see Done). Rate of reflections that produced no usable lesson, duplicate-lesson rate,
    near-duplicate merging (token Jaccard above a configured threshold), and the expected/actual values given to the

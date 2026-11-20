@@ -137,3 +137,38 @@ export function didCI(vStart, vLatest, cStart, cLatest, { resamples, confidence,
   const alpha = (1 - confidence) / 2;
   return { low: quantile(stats, alpha), high: quantile(stats, 1 - alpha), estimate: mean(vStart.map((_, i) => point(i))) };
 }
+
+/**
+ * Two-sided percentile-bootstrap p-value for H0: mean(b - a) = 0, resampling paired per-problem differences.
+ * p = min(1, 2 * min(share of resampled means <= 0, share >= 0)), with the +1 correction so it is never 0.
+ */
+export function pairedBootstrapP(a, b, { resamples, seed }) {
+  if (a.length !== b.length) throw new Error('pairedBootstrapP: arrays must have equal length');
+  const d = b.map((v, i) => v - a[i]);
+  const n = d.length;
+  if (!n) return NaN;
+  const r = rng(seed);
+  let le = 0;
+  let ge = 0;
+  for (let k = 0; k < resamples; k++) {
+    let s = 0;
+    for (let i = 0; i < n; i++) s += d[Math.floor(r() * n)];
+    const m = s / n;
+    if (m <= 0) le++;
+    if (m >= 0) ge++;
+  }
+  return Math.min(1, (2 * (Math.min(le, ge) + 1)) / (resamples + 1));
+}
+
+/** Holm-Bonferroni step-down adjusted p-values, in the input order. */
+export function holm(ps) {
+  const m = ps.length;
+  const order = ps.map((p, i) => [p, i]).sort((x, y) => x[0] - y[0]);
+  const adj = new Array(m);
+  let running = 0;
+  order.forEach(([p, i], k) => {
+    running = Math.max(running, Math.min(1, (m - k) * p));
+    adj[i] = running;
+  });
+  return adj;
+}

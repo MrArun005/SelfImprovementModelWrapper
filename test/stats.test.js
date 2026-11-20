@@ -114,3 +114,23 @@ test('difference-in-differences: a change shared with the control cancels; a cha
   const flat = didCI(zeros, ones, zeros, zeros, o, 'problems');
   assert.equal(flat.estimate, 1);
 });
+
+import { pairedBootstrapP, holm } from '../src/stats.js';
+
+test('Holm step-down adjustment matches hand-computed values', () => {
+  // sorted: .005*4=.02, .01*3=.03, .03*2=.06, .04*1=.04 -> monotone max -> .06
+  const adj = holm([0.01, 0.04, 0.03, 0.005]);
+  [0.03, 0.06, 0.06, 0.02].forEach((v, i) => close(adj[i], v, 1e-12));
+  assert.deepEqual(holm([0.9, 0.8]), [1, 1]); // .8*2 = 1.6 -> capped at 1; .9*1 = .9 -> monotone max 1
+  assert.deepEqual(holm([]), []);
+});
+
+test('bootstrap p-value: ~0 for a consistent effect, ~1 for none, never exactly 0', () => {
+  const a = Array(40).fill(0);
+  const p1 = pairedBootstrapP(a, Array(40).fill(1), { resamples: 999, seed: 3 });
+  close(p1, 2 / 1000, 1e-12); // (0 + 1) * 2 / (999 + 1)
+  const p0 = pairedBootstrapP(a, a, { resamples: 999, seed: 3 });
+  assert.equal(p0, 1);
+  const noisy = Array.from({ length: 40 }, (_, i) => (i % 2 ? 1 : -1));
+  assert.ok(pairedBootstrapP(a, noisy, { resamples: 999, seed: 3 }) > 0.5);
+});

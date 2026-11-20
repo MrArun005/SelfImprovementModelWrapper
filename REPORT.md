@@ -49,6 +49,17 @@ The control (no memory, no learning) moved -2.3 pts (95% CI -6.3 pts to +1.7 pts
 - **Sample + filter:** vs the control on the same day: not statistically meaningful (the 95% CI includes zero) (+1.3 pts (95% CI -2.7 pts to +5.3 pts)); change since its start minus the control's change: not statistically meaningful (the 95% CI includes zero) (+0.7 pts (95% CI -3.0 pts to +4.0 pts)).
 - **Full (all levers):** vs the control on the same day: not statistically meaningful (the 95% CI includes zero) (+3.2 pts (95% CI -0.0 pts to +7.1 pts)); change since its start minus the control's change: statistically meaningful improvement (+4.8 pts (95% CI +0.4 pts to +9.5 pts)).
 
+**Multiple comparisons.** 6 variants are compared with the control here, so a "significant" result can happen by chance. After the Holm correction (family-wise error 5.0%): none of the differences above remains significant.
+
+| variant | difference vs control | p (bootstrap) | p (Holm-adjusted) | significant after Holm |
+|---|---|---|---|---|
+| Lessons | +1.3 pts | 0.490 | 1.000 | no |
+| Skills | +4.0 pts | 0.053 | 0.318 | no |
+| Lessons + skills | +2.0 pts | 0.488 | 1.000 | no |
+| Self-repair | +4.0 pts | 0.063 | 0.318 | no |
+| Sample + filter | +1.3 pts | 0.548 | 1.000 | no |
+| Full (all levers) | +3.2 pts | 0.127 | 0.508 | no |
+
 ### mutation
 
 | variant | latest pass rate | 95% CI | n x repeats | change since its start | minus the control's change | vs control (same day) |
@@ -59,6 +70,12 @@ The control (no memory, no learning) moved -2.3 pts (95% CI -6.3 pts to +1.7 pts
 The control (no memory, no learning) moved +0.0 pts (95% CI +0.0 pts to +0.0 pts) between its starting runs and its latest run: that is the size of day-to-day noise. That is why the comparisons below subtract the control.
 
 - **Mutation: lessons:** vs the control on the same day: not statistically meaningful (the 95% CI includes zero) (+0.0 pts (95% CI +0.0 pts to +0.0 pts)); change since its start minus the control's change: not statistically meaningful (the 95% CI includes zero) (+0.0 pts (95% CI +0.0 pts to +0.0 pts)).
+
+**Multiple comparisons.** 1 variant is compared with the control here, so a "significant" result can happen by chance. After the Holm correction (family-wise error 5.0%): none of the differences above remains significant.
+
+| variant | difference vs control | p (bootstrap) | p (Holm-adjusted) | significant after Holm |
+|---|---|---|---|---|
+| Mutation: lessons | +0.0 pts | 1.000 | 1.000 | no |
 
 ## Difficulty check
 

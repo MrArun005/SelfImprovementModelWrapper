@@ -11,6 +11,7 @@ import { variantBudget } from './variants.js';
 import { writeText, isoDay, MS_PER_SECOND } from './util.js';
 
 const PCT_DIGITS = 1;
+const PVAL_DIGITS = 3; // allow-number: display precision of p-values
 
 const pct = (v) => (v === null || v === undefined || Number.isNaN(v) ? 'n/a' : `${(v * 100).toFixed(PCT_DIGITS)}%`);
 const pts = (v) => (v === null || v === undefined || Number.isNaN(v) ? 'n/a' : `${v >= 0 ? '+' : ''}${(v * 100).toFixed(PCT_DIGITS)} pts`);
@@ -93,6 +94,15 @@ export function buildReport(cfg, a) {
       L.push(`- **${v.label}:** vs the control on the same day: ${meaning(c)}${c ? ` (${ptsCI(c)})` : ''}; change since its start minus the control's change: ${meaning(v.vsBaselineAdjusted)}${v.vsBaselineAdjusted ? ` (${ptsCI(v.vsBaselineAdjusted)})` : ''}.`);
     }
     L.push('');
+    if (t.comparisons.length) {
+      const m = t.comparisons.length;
+      const holds = t.comparisons.filter((c) => c.significantHolm).map((c) => a.variants[c.variant].label);
+      L.push(`**Multiple comparisons.** ${m === 1 ? '1 variant is' : `${m} variants are`} compared with the control here, so a "significant" result can happen by chance. After the Holm correction (family-wise error ${pct(1 - cfg.stats.confidence)}): ${holds.length ? `still significant: ${holds.join(', ')}` : 'none of the differences above remains significant'}.`);
+      L.push('');
+      L.push(table(['variant', 'difference vs control', 'p (bootstrap)', 'p (Holm-adjusted)', 'significant after Holm'],
+        t.comparisons.map((c) => [a.variants[c.variant].label, pts(c.estimate), fmtNum(c.pValue, PVAL_DIGITS), fmtNum(c.pHolm, PVAL_DIGITS), c.significantHolm ? 'yes' : 'no'])));
+      L.push('');
+    }
   }
 
   // Difficulty
