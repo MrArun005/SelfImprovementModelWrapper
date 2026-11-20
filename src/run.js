@@ -48,7 +48,7 @@ const classOf = (cfg, result, task, code) => classify(result, task, code, cfg.ta
 async function trainPhase({ llm, cfg, mem, track, templates, runIndex, working, budget, rec }) {
   const reserve = cfg.budget.reserveForHoldout;
   const lv = cfg.variant.levers;
-  const stats = { problems: 0, passed: 0, newLessons: [], newSkills: [], levelEvents: [] };
+  const stats = { problems: 0, passed: 0, newLessons: [], newSkills: [], levelEvents: [], discardedLessons: [] };
   const doneThisRun = new Set();
   const solved = new Set(lv.skills
     ? [...mem.champion.skillIds, ...mem.champion.pending.skillIds]
@@ -62,9 +62,10 @@ async function trainPhase({ llm, cfg, mem, track, templates, runIndex, working, 
     let passed = false;
     let attempted = false;
     let previous = null; // last failing attempt, for self-repair
+    let provisional = []; // lessons from this problem's failures, kept only if a later attempt with them passes
     for (let attempt = 1; attempt <= cfg.agent.maxAttemptsPerProblem && !passed; attempt++) {
       if (budget.remainingForTrain(reserve) <= 0) { stop = true; break; }
-      const memory = view(mem, cfg, working);
+      const memory = { ...view(mem, cfg, working), pinnedLessons: provisional.map((pid) => mem.lessons.get(pid)) };
       let res;
       try {
         const feedback = lv.selfRepair && previous ? { code: previous.code, output: previous.output, label: cfg.agent.feedbackLabels.train } : null;
@@ -84,6 +85,15 @@ async function trainPhase({ llm, cfg, mem, track, templates, runIndex, working, 
       passed = result.type === RESULT.PASS;
       const failureClass = classOf(cfg, result, task, res.code);
       for (const l of res.usedLessons) { l.uses = (l.uses ?? 0) + 1; if (passed) l.helped = (l.helped ?? 0) + 1; }
+      if (passed && provisional.length) {
+        // verified: the attempt that had these lessons pinned passed
+        for (const pid of provisional) {
+          mem.lessons.get(pid).verified = true;
+          working.lessonIds.push(pid);
+          stats.newLessons.push(pid);
+        }
+        provisional = [];
+      }
       log(`[${cfg.variant.name}] train ${id} attempt ${attempt}: ${result.type} (${failureClass})${res.usedLessons.length ? ` lessons ${res.usedLessons.map((l) => l.id).join(',')}` : ''}`);
       let requests = res.cost.requests;
       let tokensIn = res.cost.tokensIn;
@@ -116,8 +126,13 @@ async function trainPhase({ llm, cfg, mem, track, templates, runIndex, working, 
         if (reflection && !dupe) {
           const l = { id: newLessonId(mem), text: reflection.text, tags: reflection.tags, sourceProblem: id, sourceResult: result.type, sourceClass: failureClass, sourceAttempt: attempt, createdRun: runIndex, uses: 0, helped: 0 };
           mem.lessons.set(l.id, l);
-          working.lessonIds.push(l.id);
-          stats.newLessons.push(l.id);
+          if (cfg.agent.verifyLessons) {
+            l.verified = false;
+            provisional.push(l.id);
+          } else {
+            working.lessonIds.push(l.id);
+            stats.newLessons.push(l.id);
+          }
           lessonId = l.id;
           log(`  lesson ${l.id}: ${l.text}`);
         }
@@ -128,6 +143,8 @@ async function trainPhase({ llm, cfg, mem, track, templates, runIndex, working, 
         lessonIds: res.usedLessons.map((l) => l.id), reflection, lessonCreated: lessonId, duplicateLesson: Boolean(reflection && !lessonId), lessonRejected: rejectedReason });
       if (stop) break;
     }
+    // provisional lessons that never led to a pass are discarded
+    for (const pid of provisional) { mem.lessons.delete(pid); stats.discardedLessons.push(pid); }
     if (!attempted) continue;
     stats.problems++;
     if (passed) { stats.passed++; solved.add(id); }
@@ -238,11 +255,11 @@ export async function runCycle({ cfg: baseCfg, variant, deps = {} }) {
     lessonIds: [...ch.lessonIds, ...ch.pending.lessonIds],
     skillIds: [...ch.skillIds, ...ch.pending.skillIds],
   };
-  let train = { problems: 0, passed: 0, newLessons: [], newSkills: [], levelEvents: [] };
+  let train = { problems: 0, passed: 0, newLessons: [], newSkills: [], levelEvents: [], discardedLessons: [] };
   let optimizer = null;
   if (!baselineMode) {
     train = await trainPhase({ llm, cfg, mem, track, templates, runIndex, working, budget, rec });
-    log(`[${v.name}] train: ${train.passed}/${train.problems} passed, +${train.newLessons.length} lessons, +${train.newSkills.length} skills`);
+    log(`[${v.name}] train: ${train.passed}/${train.problems} passed, +${train.newLessons.length} verified lessons (${train.discardedLessons.length} unverified discarded), +${train.newSkills.length} skills`);
 
     // Phase 5 (flag + lever gated): propose a new system prompt from train failures.
     if (cfg.features.promptOptimizer && runIndex % cfg.promptOptimizer.everyNRuns === 0) {

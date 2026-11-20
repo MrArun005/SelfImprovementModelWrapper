@@ -26,6 +26,9 @@ DECISIONS.md updated for any non-obvious choice, README claims backed by generat
   Two backup cron times (10:17, 16:17 UTC) plus `src/ci/due.js` in the plan job: the first trigger of a UTC day trains,
   later ones skip every job; `force` input overrides. The missed day was started manually at 07:54 UTC.
 
+- [x] **Verified lessons + stricter retrieval** (prompted by day 1: every learned change scored worse; see
+  DECISIONS.md §4d). Lessons kept only if the next attempt with them pinned passes; retrieval minScore 0.2.
+
 ## Next, in order
 
 0. **Capability levers (user asked to make the model as capable as possible).** In order of expected gain:

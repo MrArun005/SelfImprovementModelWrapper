@@ -35,7 +35,7 @@ test('running out of budget mid-training stops gracefully and still writes state
   writeSplit(cfg, ['fx_sum_to_n', 'fx_count_even_in_range', 'fx_max_of_list', 'fx_first_char'], ['fx_reverse_words', 'fx_double_all']);
   const llm = createLLM(cfg);
   const s = await runCycle({ cfg, deps: { llm } });
-  assert.equal(llm.calls.length, 6);
+  assert.ok(llm.calls.length <= 6); // never more than the per-run budget
   assert.ok(s.train.problems >= 1);
   assert.equal(s.champion.n, 2); // 4 reserved requests -> 2 holdout problems x (champion + candidate)
   assert.ok(fs.existsSync(path.join(vdir(cfg), cfg.paths.scores)));

@@ -36,7 +36,9 @@ export function extractCode(text, problem) {
  * @returns {Promise<{code, reply, messages, usedLessons, usedSkills, usage}>}
  */
 export async function solve({ llm, problem, memory, templates, cfg, temperature, seed, reserve, extract = extractCode, feedback = null }) {
-  const usedLessons = retrieveLessons(problem, memory.lessons, cfg);
+  // pinned lessons (a provisional lesson being verified on its own problem) always come first
+  const pinned = memory.pinnedLessons ?? [];
+  const usedLessons = [...pinned, ...retrieveLessons(problem, memory.lessons, cfg).filter((l) => !pinned.includes(l))].slice(0, Math.max(cfg.agent.lessonsTopK, pinned.length));
   const usedSkills = retrieveSkills(problem, memory.skills, cfg);
   const messages = buildMessages({ systemPrompt: memory.systemPrompt, userTemplate: templates.solveUser, problem, lessons: usedLessons, skills: usedSkills, cfg });
   // self-repair: show the previous failing attempt and the feedback it got

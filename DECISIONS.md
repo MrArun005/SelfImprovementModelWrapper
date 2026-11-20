@@ -112,6 +112,26 @@ Fixes found while building it:
   the self-repair variant's holdout to about 25 problems once learning runs (champion + candidate) start. Planning
   now charges extra only for problems that have examples (`attemptCost`).
 
+## 4d. Day-1 learning run: every learned change made things worse, so lessons must now be verified
+
+The first learning run (2026-11-20, run 44698384400) is the first real evidence, and it was negative. The gate
+rejected every learning variant's candidate: lessons -8.7 pts (95% CI -16.7 to -1.3), full -11.1 (-19.0 to -4.0),
+lessons+skills -6.0 (-15.3 to +1.3), skills -5.3 (-11.3 to 0.0), mutation-lessons -4.4 (-13.3 to +2.2). The gate
+did its job: nothing harmful was accepted. Looking at the logs:
+- 41 lessons in one run, none checked; many still about one problem ("when checking if a number is undulating...",
+  "make sure CryptoJS is imported"), and one was the reflection prompt's own example copied word for word.
+- Retrieval was far too loose: 126 of 150 candidate eval attempts had lessons injected, mostly unrelated. A 1.5B
+  model is easily distracted by irrelevant context.
+
+Changes (before day 2; champions are still empty, so no earlier result is invalidated; day 1 stays in the logs
+under the old rules):
+- **Verified lessons** (`agent.verifyLessons`): a lesson from a failed attempt is provisional and pinned into the
+  next attempt on the same problem; it is kept only if that attempt passes, otherwise discarded (counted in
+  `discardedLessons`).
+- **Stricter retrieval:** `retrieve.minScore` 0.05 -> 0.2 (measured on day 1's lessons and the holdout: average
+  lessons per problem 2.5 -> 0.8; 31 of 50 problems get none), `lessonsTopK` 3 -> 2, `skillsTopK` 2 -> 1.
+- **No copyable example** in the reflection prompt; it now gives the form ("When <situation>, <what to do>.").
+
 ## 5. Evaluation and statistics
 
 - **Repeats:** every holdout evaluation runs `eval.repeats` = 3 times at `eval.temperature` 0.2. Repeat `r` of

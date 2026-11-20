@@ -66,3 +66,29 @@ test('pruning drops never-helped, then least-used lessons first', () => {
   assert.deepEqual(mem.champion.lessonIds, ['L1']);
   assert.deepEqual(mem.champion.pending.lessonIds, ['L4']);
 });
+
+test('verified lessons: kept only when the next attempt with the lesson pinned passes; otherwise discarded', async () => {
+  // fx_sum_to_n: attempt 1 fails, the lesson contains the fixing phrase, attempt 2 (lesson pinned) passes -> verified.
+  const cfg = testConfig({ agent: { maxAttemptsPerProblem: 2, verifyLessons: true } });
+  writeSplit(cfg, ['fx_sum_to_n'], ['fx_product_range', 'fx_reverse_words']);
+  const s = await runCycle({ cfg });
+  assert.equal(s.train.newLessons.length, 1);
+  const kept = readJson(path.join(vdir(cfg), cfg.paths.lessons)).items;
+  assert.equal(kept.length, 1);
+  assert.equal(kept[0].verified, true);
+});
+
+test('verified lessons: a lesson that does not help is never stored or used elsewhere', async () => {
+  const cfg = testConfig({ agent: { maxAttemptsPerProblem: 2, verifyLessons: true } });
+  writeSplit(cfg, ['fx_reverse_words'], ['fx_double_all', 'fx_join_dash']);
+  const fx = new Map(JSON.parse(fs.readFileSync(new URL('./fixtures/problems.json', import.meta.url), 'utf8')).map((p) => [p.id, p]));
+  const { scriptedLLM } = await import('./helpers.js');
+  const llm = scriptedLLM((meta) => (meta.kind === 'reflect' ? '{"lesson":"When reversing words, think hard.","tags":["words"]}'
+    : '```javascript\nfunction ' + fx.get(meta.problemId).entryPoint + '(){ return null; }\n```'));
+  const s = await runCycle({ cfg, deps: { llm } });
+  assert.equal(s.train.newLessons.length, 0);
+  assert.equal(s.train.discardedLessons.length, 2); // one per failed attempt, neither verified
+  assert.deepEqual(readJson(path.join(vdir(cfg), cfg.paths.lessons)).items, []);
+  const evalPrompts = llm.calls.filter((c) => c.meta.kind === 'solve' && ['fx_double_all', 'fx_join_dash'].includes(c.meta.problemId));
+  assert.ok(evalPrompts.every((c) => !c.messages[1].content.includes('think hard')));
+});

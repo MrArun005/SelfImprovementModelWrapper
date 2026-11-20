@@ -202,8 +202,8 @@
   },
   "agent": {
     "maxAttemptsPerProblem": 2,
-    "lessonsTopK": 3,
-    "skillsTopK": 2,
+    "lessonsTopK": 2,
+    "skillsTopK": 1,
     "maxLessons": 60,
     "maxSkillChars": 1200,
     "maxLessonWords": 40,
@@ -217,11 +217,12 @@
       "eval": "Results on the examples from the problem statement"
     },
     "samples": 3,
-    "sampleSeedStride": 1000
+    "sampleSeedStride": 1000,
+    "verifyLessons": true
   },
   "retrieve": {
     "minTokenLength": 3,
-    "minScore": 0.05,
+    "minScore": 0.2,
     "stopwords": [
       "the",
       "and",

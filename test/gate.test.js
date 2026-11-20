@@ -43,7 +43,7 @@ test('applyDecision reject: additions dropped', () => {
 });
 
 test('a rejected candidate leaves champion.json byte-for-byte unchanged and drops its lessons', async () => {
-  const cfg = testConfig({ gate: { baselineRuns: 0, minImprovement: 0.05, tolerance: 0 } });
+  const cfg = testConfig({ gate: { baselineRuns: 0, minImprovement: 0.05, tolerance: 0 }, agent: { verifyLessons: false } }); // this model never passes train, so lessons could not be verified
   const train = ['fx_sum_to_n', 'fx_count_even_in_range'];
   const holdout = ['fx_reverse_words', 'fx_double_all', 'fx_join_dash', 'fx_vowel_count'];
   writeSplit(cfg, train, holdout);
