@@ -152,6 +152,17 @@ Share of champion holdout attempts in each class, first evaluated run vs latest.
 
 Without the gate, each of these candidates would have replaced its champion. Summing the measured differences, that would have lowered holdout pass rate by 35.6 pts in total. Only 2 of 5 drops had a CI entirely below zero; the others were rejected because the drop exceeded the tolerance, so some of them may be noise.
 
+## Reflection quality
+
+Every failed train attempt in a lesson-learning variant is reflected on. A lesson is **verified** when a later attempt on the same problem, with the lesson in its prompt, passed.
+
+| variant | run date | reflections | lessons | verified | unverified | rejected: problem-specific | rejected: unparsable | duplicates |
+|---|---|---|---|---|---|---|---|---|
+| Lessons | 2026-11-20 | 41 | 41 | 2 (4.9%) | 39 | 0 | 0 | 0 |
+| Lessons + skills | 2026-11-20 | 38 | 35 | 4 (11.4%) | 31 | 3 | 0 | 0 |
+| Full (all levers) | 2026-11-20 | 53 | 46 | 1 (2.2%) | 45 | 2 | 0 | 5 |
+| Mutation: lessons | 2026-11-20 | 57 | 46 | 1 (2.2%) | 45 | 8 | 0 | 3 |
+
 ## Lessons
 
 ### Lessons

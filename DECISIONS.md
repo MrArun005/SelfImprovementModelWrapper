@@ -132,6 +132,11 @@ under the old rules):
   lessons per problem 2.5 -> 0.8; 31 of 50 problems get none), `lessonsTopK` 3 -> 2, `skillsTopK` 2 -> 1.
 - **No copyable example** in the reflection prompt; it now gives the form ("When <situation>, <what to do>.").
 
+Measured afterwards with the new reflection-quality table (REPORT.md): under day 1's rules only 2.2-11.4% of
+lessons would have been verified (lessons 2 of 41, lessons+skills 4 of 35, full 1 of 46, mutation-lessons 1 of 46).
+So about 9 in 10 lessons never helped even on the problem they came from, which fits the score drop. From day 2
+only the verified ones are kept, so expect a few lessons per run instead of dozens.
+
 ## 5. Evaluation and statistics
 
 - **Repeats:** every holdout evaluation runs `eval.repeats` = 3 times at `eval.temperature` 0.2. Repeat `r` of

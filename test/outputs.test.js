@@ -147,3 +147,25 @@ test('report includes the difficulty check section', async () => {
   const { cfg } = await state();
   assert.match(buildReport(cfg, analyze(cfg)), /## Difficulty check/);
 });
+
+import { reflectionQuality } from '../src/analysis.js';
+
+test('reflection quality: verified = a later attempt on the same problem and run, with the lesson, passed', () => {
+  const traces = [
+    { runId: 'r1', ts: '2026-11-20T08:00:00Z', problemId: 'a', attempt: 1, result: 'fail', reflection: { text: 'x' }, lessonCreated: 'L1', lessonIds: [] },
+    { runId: 'r1', ts: '2026-11-20T08:00:00Z', problemId: 'a', attempt: 2, result: 'pass', lessonIds: ['L1'] },
+    { runId: 'r1', ts: '2026-11-20T08:00:00Z', problemId: 'b', attempt: 1, result: 'fail', reflection: { text: 'y' }, lessonCreated: 'L2', lessonIds: [] },
+    { runId: 'r1', ts: '2026-11-20T08:00:00Z', problemId: 'b', attempt: 2, result: 'fail', lessonIds: ['L2'], lessonRejected: 'problem-specific' },
+    { runId: 'r1', ts: '2026-11-20T08:00:00Z', problemId: 'c', attempt: 1, result: 'pass', lessonIds: ['L2'] }, // other problem: not verification
+    { runId: 'r2', ts: '2026-11-21T04:00:00Z', problemId: 'd', attempt: 1, result: 'fail', reflection: { text: 'x' }, duplicateLesson: true, lessonIds: [] },
+  ];
+  const q = reflectionQuality(traces);
+  assert.deepEqual([q.total.reflections, q.total.lessons, q.total.verified, q.total.unverified, q.total.rejectedProblemSpecific, q.total.duplicates], [4, 2, 1, 1, 1, 1]);
+  assert.equal(q.total.verifiedRate, 0.5);
+  assert.deepEqual(q.byRun.map((r) => [r.runId, r.lessons, r.verified]), [['r1', 2, 1], ['r2', 0, 0]]);
+});
+
+test('report has a reflection quality section', async () => {
+  const { cfg } = await state();
+  assert.match(buildReport(cfg, analyze(cfg)), /## Reflection quality/);
+});

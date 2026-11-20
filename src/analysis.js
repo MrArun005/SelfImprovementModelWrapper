@@ -128,6 +128,39 @@ function genealogy(vs) {
   }).sort(byStr((l) => l.id));
 }
 
+/**
+ * What happened to every reflection: rejected (problem-specific / unparsable), a duplicate, or a lesson; and of the
+ * lessons, how many were verified (a later attempt on the same problem in the same run, with the lesson in its
+ * prompt, passed). Per run, so a change in the lesson rules shows up as a change between runs.
+ */
+export function reflectionQuality(traces) {
+  const runs = [...new Set(traces.map((t) => t.runId))].sort();
+  const verifiedIds = new Set();
+  for (const t of traces) {
+    if (t.result !== 'pass') continue;
+    for (const id of t.lessonIds ?? []) {
+      const born = traces.find((b) => b.lessonCreated === id);
+      if (born && born.runId === t.runId && born.problemId === t.problemId && t.attempt > born.attempt) verifiedIds.add(id);
+    }
+  }
+  const summarize = (rows) => {
+    const reflected = rows.filter((t) => t.reflection || t.lessonRejected);
+    const created = rows.filter((t) => t.lessonCreated);
+    const verified = created.filter((t) => verifiedIds.has(t.lessonCreated)).length;
+    return {
+      reflections: reflected.length,
+      lessons: created.length,
+      verified,
+      unverified: created.length - verified,
+      rejectedProblemSpecific: rows.filter((t) => t.lessonRejected === 'problem-specific').length,
+      rejectedUnparsable: rows.filter((t) => t.lessonRejected === 'unparsable').length,
+      duplicates: rows.filter((t) => t.duplicateLesson).length,
+      verifiedRate: created.length ? verified / created.length : null,
+    };
+  };
+  return { total: summarize(traces), byRun: runs.map((runId) => ({ runId, ts: traces.find((t) => t.runId === runId)?.ts, ...summarize(traces.filter((t) => t.runId === runId)) })) };
+}
+
 /** Pairs of lessons retrieved together on failed train attempts more often than `minCount`. */
 function conflicts(vs, minCount) {
   const pairs = new Map();
@@ -220,6 +253,7 @@ export function analyze(cfg) {
       cost: costOf(vs),
       taxonomy: taxonomyByRun(vs, classes),
       lessons: genealogy(vs),
+      reflection: reflectionQuality(vs.traces),
       conflicts: conflicts(vs, cfg.analysis.minConflictCount),
       replays: replays(vs, cfg.analysis.maxReplaysPerVariant),
       plateau: plateau(runs, cfg, salt),

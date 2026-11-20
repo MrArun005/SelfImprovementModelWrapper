@@ -29,6 +29,10 @@ DECISIONS.md updated for any non-obvious choice, README claims backed by generat
 - [x] **Verified lessons + stricter retrieval** (prompted by day 1: every learned change scored worse; see
   DECISIONS.md §4d). Lessons kept only if the next attempt with them pinned passes; retrieval minScore 0.2.
 
+- [x] **Reflection quality metrics.** Per variant and run: reflections, lessons, verified/unverified, rejected
+  (problem-specific, unparsable), duplicates, in REPORT.md and the dashboard. Day 1 under the old rules: only
+  2-11% of lessons would have been verified.
+
 ## Next, in order
 
 0. **Capability levers (user asked to make the model as capable as possible).** In order of expected gain:
@@ -43,7 +47,7 @@ DECISIONS.md updated for any non-obvious choice, README claims backed by generat
       on a retry (verified lessons) instead of every reflection.
 3. **Multiple comparisons.** Holm-adjusted significance across the learning variants' control comparisons, reported
    next to the unadjusted CIs in plain words.
-4. **Reflection quality metrics.** Rate of reflections that produced no usable lesson, duplicate-lesson rate,
+4. ~~**Reflection quality metrics.**~~ DONE (see Done). Rate of reflections that produced no usable lesson, duplicate-lesson rate,
    near-duplicate merging (token Jaccard above a configured threshold), and the expected/actual values given to the
    reflection prompt explicitly.
 5. **Lesson effect estimate (observational, labelled as such).** Per lesson: pass rate of train attempts where it

@@ -97,7 +97,9 @@ ${v.control ? '' : `<div class="small">vs control: <strong>${c ? `${pts(c.estima
       `<span class="badge st-${esc(l.status)}">${esc(l.status)}</span>`, replayIds.has(l.id) ? `<a href="#replay-${slug(v.replays.find((r) => r.lessonId === l.id).id)}" class="replay-link">replay</a>` : '']);
     const never = v.lessons.filter((l) => l.trainRetrievals > 0 && l.trainPasses === 0);
     const conflicts = v.conflicts.length ? `<p><strong>Conflicting pairs:</strong> ${v.conflicts.slice(0, sc.maxConflicts).map((c) => `<code>${esc(c.a)}</code>+<code>${esc(c.b)}</code> failed together ${c.failedTogether}/${c.together}`).join('; ')}</p>` : '';
-    return `<details class="variant-block"${v === variants.find((x) => x.lessons.length) ? ' open' : ''}><summary>${esc(v.label)}: ${v.lessons.length} lessons, ${never.length} never helped</summary>
+    const rqt = v.reflection.total;
+    const rqLine = rqt.reflections ? `<p class="small muted">${rqt.reflections} reflections → ${rqt.lessons} lessons, ${rqt.verified} verified (a later attempt with the lesson passed); rejected ${rqt.rejectedProblemSpecific} problem-specific, ${rqt.rejectedUnparsable} unparsable; ${rqt.duplicates} duplicates.</p>` : '';
+    return `<details class="variant-block"${v === variants.find((x) => x.lessons.length) ? ' open' : ''}><summary>${esc(v.label)}: ${v.lessons.length} lessons, ${never.length} never helped</summary>${rqLine}
 ${tableHtml(['id', 'lesson', 'born from failure', 'retrieved', 'passing when retrieved', 'status', ''], rows, 'genealogy')}
 ${never.length ? `<p><strong>Never helped:</strong> ${never.map((l) => `<code title="${esc(l.text)}">${esc(l.id)}</code>`).join(' ')}</p>` : ''}${conflicts}</details>`;
   }).join('');

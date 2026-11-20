@@ -178,6 +178,19 @@ export function buildReport(cfg, a) {
   }
   L.push('');
 
+  // Reflection quality
+  L.push('## Reflection quality');
+  L.push('');
+  L.push('Every failed train attempt in a lesson-learning variant is reflected on. A lesson is **verified** when a later attempt on the same problem, with the lesson in its prompt, passed.');
+  L.push('');
+  const rq = Object.values(a.variants).filter((v) => v.reflection.total.reflections);
+  if (!rq.length) L.push('No reflections yet.');
+  else {
+    L.push(table(['variant', 'run date', 'reflections', 'lessons', 'verified', 'unverified', 'rejected: problem-specific', 'rejected: unparsable', 'duplicates'],
+      rq.flatMap((v) => v.reflection.byRun.filter((r) => r.reflections).map((r) => [v.label, day(r.ts), r.reflections, r.lessons, r.lessons ? `${r.verified} (${pct(r.verifiedRate)})` : '0', r.unverified, r.rejectedProblemSpecific, r.rejectedUnparsable, r.duplicates]))));
+  }
+  L.push('');
+
   // Lessons
   L.push('## Lessons');
   L.push('');
