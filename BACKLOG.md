@@ -16,6 +16,12 @@ DECISIONS.md updated for any non-obvious choice, README claims backed by generat
   the report ("Difficulty check") and dashboard (banner) warn below `analysis.floorRate` / above `analysis.ceilingRate`
   and name the config knob that changes difficulty (`analysis.difficultyKnobs`).
 
+- [x] **Workflow robustness.** Ollama download and model pull retry with backoff (`runtime.setupRetries`,
+  `setupRetryDelaySec`); setup fails fast with a clear `::error::` and the Ollama log if the server never starts or the
+  model doesn't answer a warm-up request (`warmupTimeoutSec`); the optional Pages deploy no longer marks a successful
+  training run as failed (warning instead); `test/workflow.test.js` guards permissions and that smoke runs never commit.
+  Prompted by real runs: runs 3 and 4 trained and committed fine but showed "failure" only because Pages is off.
+
 ## Next, in order
 
 0. **Capability levers (user asked to make the model as capable as possible).** In order of expected gain:
@@ -28,9 +34,6 @@ DECISIONS.md updated for any non-obvious choice, README claims backed by generat
    d. ~~**Sample-and-filter**~~ DONE (DECISIONS.md §4c), plus fixes: distinct train seeds, per-task eval costing.
    c. **Better lessons**: give the reflection prompt the exact expected/actual values; keep only lessons that helped
       on a retry (verified lessons) instead of every reflection.
-1. **Workflow robustness.** Retry the Ollama download/pull with backoff; a warm-up request that fails fast with a
-   clear message if the model doesn't answer; a test that the workflow's step order and `if:` conditions keep smoke
-   runs from committing.
 3. **Multiple comparisons.** Holm-adjusted significance across the learning variants' control comparisons, reported
    next to the unadjusted CIs in plain words.
 4. **Reflection quality metrics.** Rate of reflections that produced no usable lesson, duplicate-lesson rate,

@@ -189,6 +189,13 @@ is nothing left to gain. The report and dashboard say so and name the knob to tu
 The mutation track is the more likely to hit the floor with a 0.5B model; `curriculum.maxFunctionChars` and the
 operator weights are its main difficulty controls.
 
+## 9c. Workflow robustness (after the first real runs)
+
+The first two real baseline runs trained and committed correctly but were shown as failed, only because the optional
+Pages deploy fails until Pages is enabled. The deploy step is now `continue-on-error` with a warning saying how to
+enable it. Model setup retries the download and pull (3 tries, growing delay) and makes one tiny warm-up request, so
+a broken model fails in the first minutes with a clear error instead of after spending the budget.
+
 ## 10. Reproduction and the synthetic mock
 
 `npm run reproduce -- --variant=<name> --seed=<n>` runs simulated days with a fake clock, entirely offline.

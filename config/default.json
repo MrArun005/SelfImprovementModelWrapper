@@ -172,7 +172,11 @@
     "artifactName": "sic-state",
     "artifactRetentionDays": 7,
     "publishArtifactName": "sic-publish",
-    "ollamaContextLength": 8192
+    "ollamaContextLength": 8192,
+    "setupRetries": 3,
+    "setupRetryDelaySec": 15,
+    "warmupTimeoutSec": 300,
+    "warmupTokens": 4
   },
   "budget": {
     "totalRequestsPerRun": 4200,
