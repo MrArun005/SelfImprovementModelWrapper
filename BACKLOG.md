@@ -22,6 +22,10 @@ DECISIONS.md updated for any non-obvious choice, README claims backed by generat
   training run as failed (warning instead); `test/workflow.test.js` guards permissions and that smoke runs never commit.
   Prompted by real runs: runs 3 and 4 trained and committed fine but showed "failure" only because Pages is off.
 
+- [x] **Missed schedules.** GitHub dropped the first scheduled run (2026-11-20 04:17; no run was created at all).
+  Two backup cron times (10:17, 16:17 UTC) plus `src/ci/due.js` in the plan job: the first trigger of a UTC day trains,
+  later ones skip every job; `force` input overrides. The missed day was started manually at 07:54 UTC.
+
 ## Next, in order
 
 0. **Capability levers (user asked to make the model as capable as possible).** In order of expected gain:

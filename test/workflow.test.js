@@ -37,7 +37,7 @@ test('only the commit job can write to the repo; jobs that run model-written cod
 });
 
 test('smoke runs never reach aggregate, commit or pages', () => {
-  assert.match(J.aggregate, /if: \$\{\{ !cancelled\(\) && !inputs\.smoke \}\}/);
+  assert.match(J.aggregate, /if: \$\{\{ !cancelled\(\) && !inputs\.smoke && needs\.plan\.outputs\.due == 'true' \}\}/);
   assert.match(J.commit, /needs: aggregate/);
   assert.match(J.commit, /needs\.aggregate\.result == 'success'/);
   assert.match(J.pages, /needs: \[aggregate, commit\]/);
@@ -54,4 +54,11 @@ test('model setup retries, fails fast with a clear error, and proves the model a
   assert.match(J.improve, /retry "\$HOME\/\.sic-ollama\/bin\/ollama" pull "\$MODEL" \|\| fail/);
   assert.match(J.improve, /\[ "\$ready" = 1 \] \|\| fail/);
   assert.match(J.improve, /api\/generate[\s\S]*fail "model \$MODEL did not answer a warm-up request"/);
+});
+
+test('backup cron times exist and a once-per-day guard gates training and publishing', () => {
+  assert.ok((yml.match(/^ {4}- cron: '/gm) ?? []).length >= 2, 'at least one backup schedule');
+  assert.match(J.plan, /node src\/ci\/due\.js >> "\$GITHUB_OUTPUT"/);
+  assert.match(J.improve, /if: \$\{\{ needs\.plan\.outputs\.due == 'true' \}\}/);
+  assert.match(J.aggregate, /needs\.plan\.outputs\.due == 'true'/);
 });

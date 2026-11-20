@@ -2,13 +2,21 @@ name: improve
 
 on:
   schedule:
-    # GitHub cannot read the cron string from a variable; edit it here. Daily at 04:17 UTC
-    # (off the top of the hour, when scheduled runs are most often delayed).
+    # GitHub cannot read the cron string from a variable; edit it here. Daily at 04:17 UTC (off the top of
+    # the hour, when scheduled runs are most often delayed). GitHub sometimes drops scheduled runs (it skipped
+    # the first one, 2026-11-20 04:17), so two backup times follow; src/ci/due.js makes them no-ops once the
+    # day's cycle has run.
     - cron: '17 4 * * *'
+    - cron: '17 10 * * *'
+    - cron: '17 16 * * *'
   workflow_dispatch:
     inputs:
       smoke:
         description: 'Smoke test: tiny budget on the real model to measure speed and exercise every path. Commits nothing.'
+        type: boolean
+        default: false
+      force:
+        description: 'Run a cycle even if every variant already ran today (normally one cycle per UTC day).'
         type: boolean
         default: false
 
@@ -33,6 +41,7 @@ jobs:
       SIC_CONFIG_OVERRIDES: ${{ vars.SIC_CONFIG_OVERRIDES }}
     outputs:
       matrix: ${{ steps.cfg.outputs.matrix }}
+      due: ${{ steps.due.outputs.due }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -43,10 +52,16 @@ jobs:
       - name: Variant list from config/default.json
         id: cfg
         run: node src/ci/config-out.js >> "$GITHUB_OUTPUT"
+      - name: One cycle per UTC day (backup cron times skip once the day's cycle ran)
+        id: due
+        env:
+          SIC_FORCE: ${{ inputs.force && '1' || '' }}
+        run: node src/ci/due.js >> "$GITHUB_OUTPUT"
 
   improve:
     # Runs LLM-written code. Its token can only read this (public) repo; it cannot push.
     needs: plan
+    if: ${{ needs.plan.outputs.due == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: ${{ fromJSON(vars.SIC_IMPROVE_TIMEOUT_MINUTES || '170') }}
     permissions:
@@ -167,8 +182,8 @@ jobs:
   aggregate:
     # Read-only: merges the variants' state, builds charts, REPORT.md, README block and the dashboard.
     # It runs this repo's own scripts on the artifacts as data; nothing from the artifacts is executed.
-    needs: improve
-    if: ${{ !cancelled() && !inputs.smoke }}
+    needs: [plan, improve]
+    if: ${{ !cancelled() && !inputs.smoke && needs.plan.outputs.due == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: ${{ fromJSON(vars.SIC_AGGREGATE_TIMEOUT_MINUTES || '15') }}
     permissions:

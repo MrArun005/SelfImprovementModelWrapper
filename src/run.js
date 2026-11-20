@@ -23,7 +23,7 @@ import { createTrack } from './tracks/index.js';
 import { classify } from './taxonomy.js';
 import { summarizeEval, pairedGroupCI } from './stats.js';
 import { variantConfig, listVariants } from './variants.js';
-import { seededShuffle, writeJson, log, argValue, hash32 } from './util.js';
+import { seededShuffle, writeJson, log, argValue, hash32, ISO_DATE_LEN } from './util.js';
 
 export function loadSharedTemplates(cfg) {
   const dir = rootPath(cfg, cfg.paths.templatesDir);
@@ -318,6 +318,7 @@ export async function runCycle({ cfg: baseCfg, variant, deps = {} }) {
     thresholds: { minImprovement: cfg.gate.minImprovement, tolerance: cfg.gate.tolerance }, optimizer, levelEvents: train.levelEvents });
   const pruned = pruneLessons(mem, cfg.agent.maxLessons);
   mem.runState.runCount = runIndex;
+  mem.runState.lastRunDay = timestamp.slice(0, ISO_DATE_LEN); // used by src/ci/due.js: one cycle per UTC day
 
   // 4. Persist state, raw logs, scores.
   saveMemory(cfg, mem);

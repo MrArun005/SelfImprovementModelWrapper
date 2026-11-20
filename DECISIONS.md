@@ -196,6 +196,12 @@ Pages deploy fails until Pages is enabled. The deploy step is now `continue-on-e
 enable it. Model setup retries the download and pull (3 tries, growing delay) and makes one tiny warm-up request, so
 a broken model fails in the first minutes with a clear error instead of after spending the budget.
 
+## 9d. One cycle per day despite dropped schedules
+
+GitHub created no run at all for the first scheduled time (2026-11-20 04:17 UTC). The workflow now has two backup
+cron times and the plan job runs `src/ci/due.js`: if every variant already has a cycle dated today (UTC), all
+later jobs are skipped, so backups never train twice or spend the daily budget twice. A `force` input overrides.
+
 ## 10. Reproduction and the synthetic mock
 
 `npm run reproduce -- --variant=<name> --seed=<n>` runs simulated days with a fake clock, entirely offline.
