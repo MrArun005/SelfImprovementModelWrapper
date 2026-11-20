@@ -1,1 +1,162 @@
-{}
+{
+  "mut-train-L1-1718695881": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": true
+  },
+  "mut-train-L1-1969668618": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": false
+  },
+  "mut-train-L1-1818522952": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": false
+  },
+  "mut-train-L1-1903249690": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": false
+  },
+  "mut-train-L1-1852225285": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": false
+  },
+  "mut-train-L1-2334939536": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": true
+  },
+  "mut-train-L1-3815500898": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": false
+  },
+  "mut-train-L1-1599133977": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": true
+  },
+  "mut-train-L1-3000641380": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": false
+  },
+  "mut-train-L1-1920174404": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": false
+  },
+  "mut-train-L1-2950308523": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": false
+  },
+  "mut-train-L1-1920027309": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": false
+  },
+  "mut-train-L1-3849203231": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": false
+  },
+  "mut-train-L1-1886619166": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": false
+  },
+  "mut-train-L1-3017418999": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": false
+  },
+  "mut-train-L1-2967086142": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": false
+  },
+  "mut-train-L1-3697910470": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": false
+  },
+  "mut-train-L1-1717857238": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": false
+  },
+  "mut-train-L1-3681132851": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": false
+  },
+  "mut-train-L1-2799309952": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": false
+  },
+  "mut-train-L1-1902411047": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": false
+  },
+  "mut-train-L1-3798576184": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": false
+  },
+  "mut-train-L1-1902558142": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": false
+  },
+  "mut-train-L1-4016979421": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": false
+  },
+  "mut-train-L1-3748243327": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": false
+  },
+  "mut-train-L1-2452382869": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": true
+  },
+  "mut-train-L1-2351717155": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": false
+  },
+  "mut-train-L1-2983863761": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": false
+  },
+  "mut-train-L1-3714688089": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": false
+  },
+  "mut-train-L1-1835447666": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": false
+  },
+  "mut-train-L1-1802583976": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": false
+  },
+  "mut-train-L1-1835300571": {
+    "tries": 1,
+    "lastRun": 3,
+    "passed": false
+  }
+}

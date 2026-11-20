@@ -1,3 +1,5 @@
 timestamp,runId,split,passRate,n,promptVersion,lessonsCount,skillsCount,requestsUsed,gateDecision,variant,track,repeats,sd,ciLow,ciHigh,tokensIn,tokensOut
 2026-11-19T20:06:01.487Z,gh44604991368-20261119T200601,holdout-champion,0.1667,30,v001,0,0,90,baseline,mutation-baseline,mutation,3,0.0000,0.0333,0.3000,64890,16462
 2026-11-19T20:53:08.099Z,gh44612176813-20261119T205308,holdout-champion,0.1667,30,v001,0,0,90,baseline,mutation-baseline,mutation,3,0.0000,0.0667,0.3000,64890,16117
+2026-11-20T08:10:18.264Z,gh44698384400-20261120T081018,train,0.2000,60,v001,0,0,201,no-change,mutation-baseline,mutation,1,,,,148315,33749
+2026-11-20T08:10:18.264Z,gh44698384400-20261120T081018,holdout-champion,0.1667,30,v001,0,0,201,no-change,mutation-baseline,mutation,3,0.0000,0.0333,0.3000,148315,33749
