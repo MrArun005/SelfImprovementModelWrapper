@@ -5,14 +5,19 @@
 // Everything that comes from state (lessons, code, test output) is model- or test-written: always escaped.
 import path from 'node:path';
 import { loadConfig, rootPath } from '../src/config.js';
-import { analyze } from '../src/analysis.js';
+import { analyze, leaderboard } from '../src/analysis.js';
 import { renderChart, loadTrackSeries } from '../src/chart.js';
 import { writeText, isoDay, MS_PER_SECOND } from '../src/util.js';
 
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const pct = (v) => (v === null || v === undefined || Number.isNaN(v) ? 'n/a' : `${(v * 100).toFixed(1)}%`);
-const pts = (v) => (v === null || v === undefined || Number.isNaN(v) ? 'n/a' : `${v >= 0 ? '+' : '−'}${Math.abs(v * 100).toFixed(1)}`);
+const pts = (v) => {
+  if (v === null || v === undefined || Number.isNaN(v)) return 'n/a';
+  const s = Math.abs(v * 100).toFixed(1);
+  return `${v < 0 && Number(s) !== 0 ? '−' : '+'}${s}`; // no "−0.0"
+};
 const day = isoDay;
+const PVAL_DIGITS = 3; // allow-number: display precision of p-values
 const slug = (s) => String(s).replace(/[^\w-]/g, '-');
 
 function badge(d) {
@@ -77,15 +82,20 @@ export function buildSite(cfg) {
     const cards = t.variants.map((name) => {
       const v = a.variants[name];
       const c = comp.get(name);
-      return `<div class="card" style="--accent:${esc(v.color)}"><div class="card-label">${esc(v.label)}${v.control ? ' <span class="badge muted">control</span>' : ''}</div>
+      return `<div class="card" id="variant-${slug(name)}" style="--accent:${esc(v.color)}"><div class="card-label">${esc(v.label)}${v.control ? ' <span class="badge muted">control</span>' : ''}</div>
 <div class="big">${pct(v.latest?.passRate)}</div>
 <div class="muted small">95% CI ${pct(v.latest?.ciLow)}–${pct(v.latest?.ciHigh)} · n=${v.latest?.n ?? 0}×${v.latest?.repeats ?? 0}</div>
 ${v.control ? '' : `<div class="small">vs control: <strong>${c ? `${pts(c.estimate)} pts` : 'n/a'}</strong> ${c ? `<span class="muted">[${pts(c.low)}, ${pts(c.high)}]</span>` : ''} ${badge(c)}${c && c.significant && !c.significantHolm ? ' <span class="badge muted" title="not significant after the Holm correction for comparing several variants">not after Holm</span>' : ''}</div>
 <div class="small" title="change since its own start minus the control's change over the same period">vs own start, net of control drift: <strong>${v.vsBaselineAdjusted ? `${pts(v.vsBaselineAdjusted.estimate)} pts` : 'n/a'}</strong> ${badge(v.vsBaselineAdjusted)}</div>`}${v.control && v.vsBaseline ? `<div class="small muted">drift since start (no learning): ${pts(v.vsBaseline.estimate)} pts [${pts(v.vsBaseline.low)}, ${pts(v.vsBaseline.high)}]</div>` : ''}</div>`;
     }).join('');
+    const lb = leaderboard(a, track);
+    const board = lb.length ? `<div class="leaderboard">${tableHtml(['#', 'Variant', 'vs control (pts)', '95% CI', 'p after Holm', 'vs own start, net of control (pts)'],
+      lb.map((r, i) => [String(i + 1), `<a href="#variant-${slug(r.variant)}">${esc(r.label)}</a>`, `<strong>${r.vsControl ? pts(r.vsControl.estimate) : 'n/a'}</strong> ${badge(r.vsControl)}`,
+        r.vsControl ? `[${pts(r.vsControl.low)}, ${pts(r.vsControl.high)}]` : 'n/a', r.pHolm === null ? 'n/a' : `${r.pHolm.toFixed(PVAL_DIGITS)}${r.significantHolm ? ' ✓' : ''}`,
+        r.vsStart ? pts(r.vsStart.estimate) : 'n/a']), 'board')}</div>` : '';
     const title = cfg.charts.find((c) => c.track === track)?.title ?? track;
     return `<section class="track"><h3>${esc(track === 'multipl-e' ? 'MultiPL-E (HumanEval + MBPP, JavaScript)' : `Mutation repair (${cfg.curriculum.name}, contamination-free)`)}</h3>
-<div class="cards">${cards}</div><figure class="chart">${renderChart(loadTrackSeries(cfg, track), chartCfg, title)}</figure></section>`;
+${board}<div class="cards">${cards}</div><figure class="chart">${renderChart(loadTrackSeries(cfg, track), chartCfg, title)}</figure></section>`;
   }).join('');
   parts.push(`<section id="headline"><h2>Holdout pass rate</h2><p class="lede">Each variant toggles one lever and keeps its own memory. Bands are 95% bootstrap confidence intervals (problems and repeats resampled); "significant" means the CI of the difference excludes zero. The control learns nothing, so its movement is the noise floor.</p>${headline}</section>`);
 

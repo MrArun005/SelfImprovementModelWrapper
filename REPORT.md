@@ -33,19 +33,19 @@ _Data: 35 evaluated runs across 9 variants, last run 2026-11-21._
 | variant | latest pass rate | 95% CI | n x repeats | change since its start | minus the control's change | vs control (same day) |
 |---|---|---|---|---|---|---|
 | No memory (control) | 52.7% | [39.3%, 64.7%] | 50 x 3 | -3.7 pts (95% CI -9.0 pts to +0.7 pts) | n/a | n/a |
-| Lessons | 52.7% | [40.0%, 65.3%] | 50 x 3 | -4.3 pts (95% CI -8.3 pts to -1.0 pts) | -0.7 pts (95% CI -5.7 pts to +4.0 pts) | -0.0 pts (95% CI -4.7 pts to +4.7 pts) |
+| Lessons | 52.7% | [40.0%, 65.3%] | 50 x 3 | -4.3 pts (95% CI -8.3 pts to -1.0 pts) | -0.7 pts (95% CI -5.7 pts to +4.0 pts) | +0.0 pts (95% CI -4.7 pts to +4.7 pts) |
 | Skills | 54.7% | [42.0%, 68.0%] | 50 x 3 | +0.3 pts (95% CI -4.7 pts to +6.0 pts) | +4.0 pts (95% CI -1.7 pts to +10.3 pts) | +2.0 pts (95% CI -3.3 pts to +7.3 pts) |
 | Lessons + skills | 54.7% | [41.3%, 67.3%] | 50 x 3 | -2.3 pts (95% CI -6.7 pts to +2.0 pts) | +1.3 pts (95% CI -4.0 pts to +7.0 pts) | +2.0 pts (95% CI -2.7 pts to +7.3 pts) |
-| Self-repair | 52.7% | [40.0%, 65.3%] | 50 x 3 | -2.7 pts (95% CI -8.7 pts to +2.7 pts) | +1.0 pts (95% CI -3.3 pts to +5.3 pts) | -0.0 pts (95% CI -4.0 pts to +4.0 pts) |
+| Self-repair | 52.7% | [40.0%, 65.3%] | 50 x 3 | -2.7 pts (95% CI -8.7 pts to +2.7 pts) | +1.0 pts (95% CI -3.3 pts to +5.3 pts) | +0.0 pts (95% CI -4.0 pts to +4.0 pts) |
 | Sample + filter | 57.3% | [45.3%, 69.3%] | 50 x 3 | +0.3 pts (95% CI -3.3 pts to +4.3 pts) | +4.0 pts (95% CI -1.3 pts to +10.7 pts) | +4.7 pts (95% CI -0.7 pts to +10.7 pts) |
 | Full (lessons, self-repair, sample+filter, optimizer) | 57.1% | [42.9%, 69.8%] | 42 x 3 | -1.2 pts (95% CI -6.8 pts to +4.0 pts) | +3.2 pts (95% CI -4.4 pts to +10.7 pts) | +1.6 pts (95% CI -5.6 pts to +9.5 pts) |
 
 The control (no memory, no learning) moved -3.7 pts (95% CI -9.0 pts to +0.7 pts) between its starting runs and its latest run: that is the size of day-to-day noise. That is why the comparisons below subtract the control.
 
-- **Lessons:** vs the control on the same day: not statistically meaningful (the 95% CI includes zero) (-0.0 pts (95% CI -4.7 pts to +4.7 pts)); change since its start minus the control's change: not statistically meaningful (the 95% CI includes zero) (-0.7 pts (95% CI -5.7 pts to +4.0 pts)).
+- **Lessons:** vs the control on the same day: not statistically meaningful (the 95% CI includes zero) (+0.0 pts (95% CI -4.7 pts to +4.7 pts)); change since its start minus the control's change: not statistically meaningful (the 95% CI includes zero) (-0.7 pts (95% CI -5.7 pts to +4.0 pts)).
 - **Skills:** vs the control on the same day: not statistically meaningful (the 95% CI includes zero) (+2.0 pts (95% CI -3.3 pts to +7.3 pts)); change since its start minus the control's change: not statistically meaningful (the 95% CI includes zero) (+4.0 pts (95% CI -1.7 pts to +10.3 pts)).
 - **Lessons + skills:** vs the control on the same day: not statistically meaningful (the 95% CI includes zero) (+2.0 pts (95% CI -2.7 pts to +7.3 pts)); change since its start minus the control's change: not statistically meaningful (the 95% CI includes zero) (+1.3 pts (95% CI -4.0 pts to +7.0 pts)).
-- **Self-repair:** vs the control on the same day: not statistically meaningful (the 95% CI includes zero) (-0.0 pts (95% CI -4.0 pts to +4.0 pts)); change since its start minus the control's change: not statistically meaningful (the 95% CI includes zero) (+1.0 pts (95% CI -3.3 pts to +5.3 pts)).
+- **Self-repair:** vs the control on the same day: not statistically meaningful (the 95% CI includes zero) (+0.0 pts (95% CI -4.0 pts to +4.0 pts)); change since its start minus the control's change: not statistically meaningful (the 95% CI includes zero) (+1.0 pts (95% CI -3.3 pts to +5.3 pts)).
 - **Sample + filter:** vs the control on the same day: not statistically meaningful (the 95% CI includes zero) (+4.7 pts (95% CI -0.7 pts to +10.7 pts)); change since its start minus the control's change: not statistically meaningful (the 95% CI includes zero) (+4.0 pts (95% CI -1.3 pts to +10.7 pts)).
 - **Full (lessons, self-repair, sample+filter, optimizer):** vs the control on the same day: not statistically meaningful (the 95% CI includes zero) (+1.6 pts (95% CI -5.6 pts to +9.5 pts)); change since its start minus the control's change: not statistically meaningful (the 95% CI includes zero) (+3.2 pts (95% CI -4.4 pts to +10.7 pts)).
 
@@ -53,10 +53,10 @@ The control (no memory, no learning) moved -3.7 pts (95% CI -9.0 pts to +0.7 pts
 
 | variant | difference vs control | p (bootstrap) | p (Holm-adjusted) | significant after Holm |
 |---|---|---|---|---|
-| Lessons | -0.0 pts | 0.956 | 1.000 | no |
+| Lessons | +0.0 pts | 0.956 | 1.000 | no |
 | Skills | +2.0 pts | 0.523 | 1.000 | no |
 | Lessons + skills | +2.0 pts | 0.495 | 1.000 | no |
-| Self-repair | -0.0 pts | 0.898 | 1.000 | no |
+| Self-repair | +0.0 pts | 0.898 | 1.000 | no |
 | Sample + filter | +4.7 pts | 0.088 | 0.528 | no |
 | Full (lessons, self-repair, sample+filter, optimizer) | +1.6 pts | 0.687 | 1.000 | no |
 

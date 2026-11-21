@@ -316,3 +316,19 @@ export function analyze(cfg) {
   for (const v of Object.values(result.variants)) { delete v._runs; delete v._base; }
   return result;
 }
+
+/**
+ * Learning variants of one track ranked by points vs the control on the same day (best first; variants
+ * without a comparison last). One row per variant: the numbers a reader asks for first.
+ */
+export function leaderboard(a, track) {
+  const t = a.tracks[track];
+  if (!t) return [];
+  const comp = new Map(t.comparisons.filter((c) => !c.missing).map((c) => [c.variant, c]));
+  return t.variants.filter((n) => !a.variants[n].control).map((n) => {
+    const v = a.variants[n];
+    const c = comp.get(n) ?? null;
+    return { variant: n, label: v.label, passRate: v.latest?.passRate ?? null, vsControl: c, vsStart: v.vsBaselineAdjusted ?? null,
+      pValue: c?.pValue ?? null, pHolm: c?.pHolm ?? null, significant: !!c?.significant, significantHolm: !!c?.significantHolm };
+  }).sort((x, y) => (y.vsControl?.estimate ?? -Infinity) - (x.vsControl?.estimate ?? -Infinity) || x.variant.localeCompare(y.variant));
+}

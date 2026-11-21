@@ -51,6 +51,9 @@ DECISIONS.md updated for any non-obvious choice, README claims backed by generat
 - [x] **Docs consistency pass.** Fixed stale variant list and budget numbers in DECISIONS.md; `test/docs.test.js`
   now fails if a configured variant is undocumented, the README names another model, or the README tells people to
   run an npm script that doesn't exist.
+- [x] **Points-per-variant leaderboard.** `analysis.leaderboard()` ranks learning variants by points vs the control
+  (CI, Holm-adjusted p, change since own start net of control drift); shown as a table at the top of each track on the
+  dashboard (rows link to the variant's card) and in the generated README block. No more "-0.0 pts".
 
 ## Next, in order
 
@@ -73,7 +76,7 @@ DECISIONS.md updated for any non-obvious choice, README claims backed by generat
    was retrieved vs comparable attempts without it.
 6. ~~**Gate re-test inflation.**~~ DONE. Make the pending re-test rule explicit in numbers: simulate the false-accept rate
    of "keep up to N runs" with the power simulator and report it in docs/power.md.
-7. **Dashboard:** curriculum level timeline, gate-log rows linked to their replays, per-variant anchors.
+7. **Dashboard:** curriculum level timeline, gate-log rows linked to their replays. (Per-variant anchors DONE with the leaderboard.)
 8. ~~**Independent review**~~ DONE. (a fresh reviewer, not anchored on my reading) of the sandbox, workflow permissions and the
    statistics; fix what it finds.
 9. ~~**Docs:**~~ DONE (consistency pass + test). "how to read the dashboard" section; final pass on README/DECISIONS consistency.

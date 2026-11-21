@@ -169,3 +169,19 @@ test('report has a reflection quality section', async () => {
   const { cfg } = await state();
   assert.match(buildReport(cfg, analyze(cfg)), /## Reflection quality/);
 });
+
+test('leaderboard: learning variants ranked by points vs control, shown in README block and dashboard', async () => {
+  const { cfg } = await state();
+  const a = analyze(cfg);
+  const { leaderboard } = await import('../src/analysis.js');
+  for (const track of Object.keys(a.tracks)) {
+    const rows = leaderboard(a, track);
+    assert.ok(rows.every((r) => !a.variants[r.variant].control), 'control is not ranked');
+    const est = rows.map((r) => r.vsControl?.estimate ?? -Infinity);
+    assert.deepEqual(est, [...est].sort((x, y) => y - x), 'sorted best first');
+  }
+  const block = readmeBlock(cfg, a);
+  assert.match(block, /\| Variant \| Pass rate \| vs control \|/);
+  const { html } = buildSite(cfg);
+  assert.match(stripScripts(html), /<table class="board">/);
+});
