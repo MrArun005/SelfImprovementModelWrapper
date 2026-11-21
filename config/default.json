@@ -219,7 +219,8 @@
     "samples": 3,
     "sampleSeedStride": 1000,
     "verifyLessons": true,
-    "skillStatementChars": 400
+    "skillStatementChars": 400,
+    "sampleTemperature": 0.8
   },
   "retrieve": {
     "minTokenLength": 3,
@@ -907,5 +908,9 @@
       "minibatchSize": 2,
       "earlyStoppingTrials": 1
     }
+  },
+  "product": {
+    "variant": "full",
+    "maxAttemptsWithoutExamples": 1
   }
 }

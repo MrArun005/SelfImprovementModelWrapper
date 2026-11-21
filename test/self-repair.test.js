@@ -129,3 +129,17 @@ test('eval planning charges extra only where public examples exist', () => {
   assert.equal(planEval(holdout, full * cfg.eval.repeats, 1, cfg, cost).ids.length, 10);
   assert.ok(planEval(holdout, (full - 1) * cfg.eval.repeats, 1, cfg, cost).ids.length < 10);
 });
+
+test('extra samples are drawn hotter than the first (diverse candidates for the filter)', async () => {
+  const { attemptWithChecks } = await import('../src/agent/attempt.js');
+  const cfg = loadConfig({ env: {} });
+  const temps = [];
+  const llm = { lastUsage: { tokensIn: 1, tokensOut: 1 }, async chat(m, o) { temps.push(o.temperature); return '```javascript\nfunction ho(x){ return x * 3; }\n```'; } };
+  const problem = problems[1];
+  const publicTests = (await import('../src/agent/public-tests.js')).publicTestSource(problem.prompt, problem.entryPoint, 2022);
+  await attemptWithChecks({ llm, problem, memory: { systemPrompt: 'S', lessons: [], skills: [] }, templates: { solveUser: '{{prompt}}', repair: '' },
+    cfg, temperature: 0.2, seed: 1, reserve: 0, publicTests, samples: 3, repairs: 0 });
+  assert.equal(temps.length, 3);
+  assert.equal(temps[0], 0.2);
+  assert.ok(temps.slice(1).every((t) => t === cfg.agent.sampleTemperature));
+});

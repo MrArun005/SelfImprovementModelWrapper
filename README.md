@@ -77,6 +77,19 @@ runtime-error, timeout, wrong-output, spec-misread, other), requests and tokens.
 and repeat are in `evals.jsonl`, every gate decision with its numbers in `gate-log.jsonl`, and train attempts in
 detail in `traces.jsonl`. Charts, report and dashboard are computed from these files alone.
 
+## Use it: complete a function
+
+```bash
+ollama pull qwen2.5-coder:1.5b          # once; or use --mock to try the plumbing without a model
+npm run solve -- examples/below_zero.js # prints the completed function; verdict on stderr
+```
+
+A stub is a comment describing the function, optionally `// >>> call` / `// expected` example lines, and the
+signature ending in `{`. `npm run solve` uses the chosen variant's accepted memory (lessons, skills, system prompt;
+default `product.variant` = `full`) and its levers: several candidates checked against your examples (sample +
+filter) and a repair round on failure. With examples it tells you whether the answer passes them; without, the
+answer is unchecked.
+
 ## Reproduce in one command (offline, no model)
 
 ```bash

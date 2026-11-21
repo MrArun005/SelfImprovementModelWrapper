@@ -45,6 +45,9 @@ DECISIONS.md updated for any non-obvious choice, README claims backed by generat
   double training after a failed variant, stale checkouts / Pages after failed commit, cross-day control
   comparisons. Open and documented: network isolation, Buffer memory (DECISIONS.md §9e).
 
+- [x] **Product + stronger sample-filter.** `npm run solve` completes a function stub using the champion memory and
+  levers; extra samples drawn at `agent.sampleTemperature` 0.8 for real diversity (DECISIONS.md §4f).
+
 ## Next, in order
 
 0. **Capability levers (user asked to make the model as capable as possible).** In order of expected gain:

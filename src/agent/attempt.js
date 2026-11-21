@@ -18,7 +18,10 @@ export async function attemptWithChecks({ llm, problem, memory, templates, cfg, 
   let chosen = null;
   let samplesDrawn = 0;
   for (let s = 0; s < (publicTests ? samples : 1); s++) {
-    const res = await solve({ llm, problem, memory, templates, cfg, temperature, seed: seed === undefined ? undefined : seed + s * cfg.agent.sampleSeedStride, reserve, extract, feedback });
+    // first candidate at the caller's temperature; extra candidates hotter, so the filter has real alternatives
+    // to choose from instead of near-copies (day-2 data: sample+filter was the most promising lever)
+    const t = s === 0 ? temperature : Math.max(temperature, cfg.agent.sampleTemperature);
+    const res = await solve({ llm, problem, memory, templates, cfg, temperature: t, seed: seed === undefined ? undefined : seed + s * cfg.agent.sampleSeedStride, reserve, extract, feedback });
     add(res);
     samplesDrawn++;
     first ??= res;

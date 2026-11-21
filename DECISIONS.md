@@ -153,6 +153,17 @@ Changes (before day 3):
 - The `skills` lever now shows each solution with the earlier problem's statement and a warning that it is a
   different problem (`formatSkills`), as a test of whether comparing specs stops the copying. Measured as usual.
 
+## 4f. Product: `npm run solve`, and hotter extra samples
+
+- After day 2 the most promising lever was sample-and-filter (+4.7 pts vs control, p = 0.09, not significant after
+  Holm). Its extra candidates were drawn at the same low temperature (0.2) as the first, so they were often near
+  copies and the filter had little to choose from. From day 3 extra candidates use `agent.sampleTemperature` (0.8);
+  the first stays at the eval temperature. This changes an inference-time lever of `sample-filter` and `full` (no
+  stored state depends on it); days 1-2 of those variants ran with the old setting, which the report's per-day
+  rows make visible.
+- `npm run solve -- stub.js` turns the system into something usable: it completes a function stub with the chosen
+  variant's accepted memory and levers, checking candidates against the stub's own examples in the same sandbox.
+
 ## 5. Evaluation and statistics
 
 - **Repeats:** every holdout evaluation runs `eval.repeats` = 3 times at `eval.temperature` 0.2. Repeat `r` of
