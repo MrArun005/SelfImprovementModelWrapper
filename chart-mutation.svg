@@ -14,18 +14,21 @@
 <line x1="52" x2="736" y1="64" y2="64" stroke="#e5e7eb"/>
 <text x="46" y="67" text-anchor="end" fill="#6b7280">100%</text>
 <text x="52" y="330" text-anchor="middle" fill="#6b7280">11-19</text>
-<text x="736" y="330" text-anchor="middle" fill="#6b7280">11-20</text>
+<text x="394" y="330" text-anchor="middle" fill="#6b7280">11-20</text>
+<text x="736" y="330" text-anchor="middle" fill="#6b7280">11-21</text>
 <text x="394" y="354" text-anchor="middle" fill="#6b7280">run date (MM-DD) · bands = 95% bootstrap CI over holdout problems</text>
 <line x1="52" x2="736" y1="270.65840000000003" y2="270.65840000000003" stroke="#f59e0b" stroke-dasharray="6 4" stroke-width="1.5"/>
 <text x="58" y="285.65840000000003" fill="#f59e0b">starting baseline 16.7%</text>
-<polygon class="band" data-variant="mutation-baseline" points="52,237.60000000000002 736,237.60000000000002 736,303.7416 52,295.4584" fill="#6b7280" fill-opacity="0.15" stroke="none"/>
-<polyline data-variant="mutation-baseline" fill="none" stroke="#6b7280" stroke-width="2" points="52,270.65840000000003 736,270.65840000000003"/>
+<polygon class="band" data-variant="mutation-baseline" points="52,237.60000000000002 394,237.60000000000002 736,237.60000000000002 736,303.7416 394,303.7416 52,295.4584" fill="#6b7280" fill-opacity="0.15" stroke="none"/>
+<polyline data-variant="mutation-baseline" fill="none" stroke="#6b7280" stroke-width="2" points="52,270.65840000000003 394,270.65840000000003 736,270.65840000000003"/>
 <circle cx="52" cy="270.65840000000003" r="4" fill="#6b7280" stroke="#ffffff"><title>Mutation: no memory 2026-11-19: 16.7% [6.7–30.0] n=30×3, gate baseline</title></circle>
-<circle cx="736" cy="270.65840000000003" r="4" fill="#6b7280" stroke="#ffffff"><title>Mutation: no memory 2026-11-20: 16.7% [3.3–30.0] n=30×3, gate no-change</title></circle>
-<polygon class="band" data-variant="mutation-lessons" points="52,237.60000000000002 736,237.60000000000002 736,303.7416 52,295.4584" fill="#2563eb" fill-opacity="0.15" stroke="none"/>
-<polyline data-variant="mutation-lessons" fill="none" stroke="#2563eb" stroke-width="2" points="52,270.65840000000003 736,270.65840000000003"/>
+<circle cx="394" cy="270.65840000000003" r="4" fill="#6b7280" stroke="#ffffff"><title>Mutation: no memory 2026-11-20: 16.7% [3.3–30.0] n=30×3, gate no-change</title></circle>
+<circle cx="736" cy="270.65840000000003" r="4" fill="#6b7280" stroke="#ffffff"><title>Mutation: no memory 2026-11-21: 16.7% [3.3–30.0] n=30×3, gate no-change</title></circle>
+<polygon class="band" data-variant="mutation-lessons" points="52,237.60000000000002 394,237.60000000000002 736,237.60000000000002 736,303.7416 394,303.7416 52,295.4584" fill="#2563eb" fill-opacity="0.15" stroke="none"/>
+<polyline data-variant="mutation-lessons" fill="none" stroke="#2563eb" stroke-width="2" points="52,270.65840000000003 394,270.65840000000003 736,270.65840000000003"/>
 <circle cx="52" cy="270.65840000000003" r="4" fill="#2563eb" stroke="#ffffff"><title>Mutation: lessons 2026-11-19: 16.7% [6.7–30.0] n=30×3, gate baseline</title></circle>
-<circle cx="736" cy="270.65840000000003" r="4" fill="#dc2626" stroke="#ffffff"><title>Mutation: lessons 2026-11-20: 16.7% [3.3–30.0] n=30×3, gate reject</title></circle>
+<circle cx="394" cy="270.65840000000003" r="4" fill="#dc2626" stroke="#ffffff"><title>Mutation: lessons 2026-11-20: 16.7% [3.3–30.0] n=30×3, gate reject</title></circle>
+<circle cx="736" cy="270.65840000000003" r="4" fill="#2563eb" stroke="#ffffff"><title>Mutation: lessons 2026-11-21: 16.7% [3.3–30.0] n=30×3, gate no-change</title></circle>
 <rect x="52" y="32" width="12" height="12" rx="2" fill="#6b7280"/><text x="70" y="44" fill="#111827">Mutation: no memory</text>
 <rect x="202" y="32" width="12" height="12" rx="2" fill="#2563eb"/><text x="220" y="44" fill="#111827">Mutation: lessons</text>
 </svg>
