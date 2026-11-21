@@ -30,10 +30,33 @@ const out = {
   dataset_cache: cfg.dataset.cacheDir,
   matrix: JSON.stringify(cfg.variants.map((v) => v.name)),
 };
+// fine-tuning (expert iteration): the first variant with the finetune lever, and everything its job needs
+const ftVariant = cfg.variants.find((v) => v.levers?.finetune)?.name ?? '';
+const ft = cfg.finetune;
+Object.assign(out, {
+  finetune_variant: ftVariant,
+  ft_base_model: ft.baseModel,
+  ft_base_revision: ft.baseRevision,
+  ft_ollama_model: ft.ollamaModel,
+  ft_torch_index: ft.pythonIndexUrl,
+  ft_torch_package: ft.torchPackage,
+  ft_python_packages: ft.pythonPackages.join(' '),
+  ft_llama_repo: ft.llamaCppRepo,
+  ft_llama_commit: ft.llamaCppCommit,
+  ft_out_type: ft.adapterOutType,
+  ft_artifact: ft.artifactName,
+  ft_settings_file: ft.settingsFile,
+  ft_adapter_dir: ft.adapterDir,
+  ft_adapter_gguf: ft.adapterGguf,
+  ft_manifest_file: ft.manifestFile,
+  ft_metrics_file: ft.metricsFile,
+});
 if (variant) {
   const vc = variantConfig(cfg, variant);
   out.track = vc.track;
   out.variant_state_dir = vc.paths.stateDir;
+  out.finetune = String(Boolean(vc.variant.levers.finetune));
+  out.variant_model = vc.llm.model;
 }
 for (const [k, v] of Object.entries(out)) {
   if (/[\r\n]/.test(String(v))) throw new Error(`config value for ${k} contains a newline`);

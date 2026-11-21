@@ -33,13 +33,15 @@ export function variantBudget(cfg, name) {
 
 export function variantConfig(cfg, name) {
   const v = getVariant(cfg, name);
-  const levers = { lessons: false, skills: false, promptOptimizer: false, selfRepair: false, sampleFilter: false, ...v.levers };
+  const levers = { lessons: false, skills: false, promptOptimizer: false, selfRepair: false, sampleFilter: false, finetune: false, ...v.levers };
   return {
     ...cfg,
     variant: { ...v, levers },
     track: v.track,
     paths: { ...cfg.paths, stateDir: variantStateDir(cfg, name) },
     budget: variantBudget(cfg, name),
+    // finetune: the same base model plus a LoRA adapter trained on verified solutions, served under its own name
+    llm: levers.finetune ? { ...cfg.llm, model: cfg.finetune.ollamaModel } : cfg.llm,
     features: { ...cfg.features, promptOptimizer: Boolean(cfg.features.promptOptimizer && levers.promptOptimizer) },
   };
 }

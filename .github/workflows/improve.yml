@@ -42,6 +42,7 @@ jobs:
     outputs:
       matrix: ${{ steps.cfg.outputs.matrix }}
       due: ${{ steps.due.outputs.due }}
+      finetune_variant: ${{ steps.cfg.outputs.finetune_variant }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -61,10 +62,106 @@ jobs:
           SIC_FORCE: ${{ inputs.force && '1' || '' }}
         run: node src/ci/due.js >> "$GITHUB_OUTPUT"
 
+  finetune:
+    # Expert iteration: LoRA-trains the base model on the system's own verified train solutions (from committed
+    # state). The dataset is model-written code used as text only; nothing from it is executed. No model server,
+    # no push. Settings come from config/default.json via config-out.js.
+    needs: plan
+    if: ${{ needs.plan.outputs.due == 'true' && needs.plan.outputs.finetune_variant != '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: ${{ fromJSON(vars.SIC_FINETUNE_TIMEOUT_MINUTES || '180') }}
+    permissions:
+      contents: read
+    env:
+      SIC_CONFIG_OVERRIDES: ${{ vars.SIC_CONFIG_OVERRIDES }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          ref: ${{ github.ref }}
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install dependencies (no install scripts)
+        run: npm ci --ignore-scripts
+      - name: Read fine-tuning settings
+        id: cfg
+        run: node src/ci/config-out.js >> "$GITHUB_OUTPUT"
+      - name: Cache Python packages and the base model snapshot
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.sic-hf
+          key: finetune-${{ steps.cfg.outputs.ft_base_revision }}-${{ steps.cfg.outputs.ft_torch_package }}-${{ hashFiles('config/default.json') }}
+          restore-keys: finetune-${{ steps.cfg.outputs.ft_base_revision }}-
+      - name: Python environment (pinned versions)
+        env:
+          TORCH_INDEX: ${{ steps.cfg.outputs.ft_torch_index }}
+          TORCH_PACKAGE: ${{ steps.cfg.outputs.ft_torch_package }}
+          PACKAGES: ${{ steps.cfg.outputs.ft_python_packages }}
+        run: |
+          set -euo pipefail
+          python3 -m venv "$HOME/.sic-venv"
+          "$HOME/.sic-venv/bin/pip" install -q --index-url "$TORCH_INDEX" "$TORCH_PACKAGE"
+          read -ra pkgs <<< "$PACKAGES"
+          "$HOME/.sic-venv/bin/pip" install -q "${pkgs[@]}"
+      - name: Base model snapshot (pinned revision)
+        env:
+          BASE_MODEL: ${{ steps.cfg.outputs.ft_base_model }}
+          BASE_REVISION: ${{ steps.cfg.outputs.ft_base_revision }}
+        run: |
+          "$HOME/.sic-venv/bin/python" -c 'import os; from huggingface_hub import snapshot_download as d; d(os.environ["BASE_MODEL"], revision=os.environ["BASE_REVISION"], local_dir=os.path.expanduser("~/.sic-hf/" + os.environ["BASE_REVISION"]))'
+      - name: Adapter converter (pinned commit of the upstream conversion scripts)
+        env:
+          LLAMA_REPO: ${{ steps.cfg.outputs.ft_llama_repo }}
+          LLAMA_COMMIT: ${{ steps.cfg.outputs.ft_llama_commit }}
+        run: |
+          set -euo pipefail
+          git init -q "$RUNNER_TEMP/lora-converter"
+          cd "$RUNNER_TEMP/lora-converter"
+          git remote add origin "$LLAMA_REPO"
+          git sparse-checkout set --no-cone /convert_lora_to_gguf.py /convert_hf_to_gguf.py /gguf-py/
+          git fetch -q --depth=1 --filter=blob:none origin "$LLAMA_COMMIT"
+          git checkout -q FETCH_HEAD
+      - name: Build the training set from verified solutions (holdout excluded)
+        env:
+          VARIANT: ${{ steps.cfg.outputs.finetune_variant }}
+          BASE_REVISION: ${{ steps.cfg.outputs.ft_base_revision }}
+        run: node src/finetune/prepare.js "--variant=$VARIANT" "--out=$RUNNER_TEMP/ft" "--base-dir=$HOME/.sic-hf/$BASE_REVISION"
+      - name: LoRA training (CPU, time-limited)
+        env:
+          SETTINGS: ${{ steps.cfg.outputs.ft_settings_file }}
+        run: |
+          set -o pipefail
+          "$HOME/.sic-venv/bin/python" tools/finetune/train.py --settings "$RUNNER_TEMP/ft/$SETTINGS" 2>&1 | grep -v -i 'warn'
+      - name: Convert the adapter to GGUF for Ollama
+        env:
+          BASE_REVISION: ${{ steps.cfg.outputs.ft_base_revision }}
+          OUT_TYPE: ${{ steps.cfg.outputs.ft_out_type }}
+          ADAPTER_DIR: ${{ steps.cfg.outputs.ft_adapter_dir }}
+          ADAPTER_GGUF: ${{ steps.cfg.outputs.ft_adapter_gguf }}
+        run: |
+          PYTHONPATH="$RUNNER_TEMP/lora-converter/gguf-py" "$HOME/.sic-venv/bin/python" "$RUNNER_TEMP/lora-converter/convert_lora_to_gguf.py" \
+            --base "$HOME/.sic-hf/$BASE_REVISION" --outtype "$OUT_TYPE" --outfile "$RUNNER_TEMP/ft/$ADAPTER_GGUF" "$RUNNER_TEMP/ft/$ADAPTER_DIR"
+      - name: Upload the adapter for the variant's evaluation job
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ${{ steps.cfg.outputs.ft_artifact }}
+          path: |
+            ${{ runner.temp }}/ft/${{ steps.cfg.outputs.ft_adapter_gguf }}
+            ${{ runner.temp }}/ft/${{ steps.cfg.outputs.ft_manifest_file }}
+            ${{ runner.temp }}/ft/${{ steps.cfg.outputs.ft_metrics_file }}
+          retention-days: ${{ steps.cfg.outputs.artifact_retention_days }}
+          if-no-files-found: error
+
   improve:
     # Runs LLM-written code. Its token can only read this (public) repo; it cannot push.
-    needs: plan
-    if: ${{ needs.plan.outputs.due == 'true' }}
+    # Waits for the fine-tuning job (the fine-tuned variant needs its adapter); the other variants run even if
+    # fine-tuning fails or is skipped.
+    needs: [plan, finetune]
+    if: ${{ !cancelled() && needs.plan.outputs.due == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: ${{ fromJSON(vars.SIC_IMPROVE_TIMEOUT_MINUTES || '170') }}
     permissions:
@@ -165,6 +262,37 @@ jobs:
           retry curl -fsS --max-time "$WARMUP_TIMEOUT" "http://$OLLAMA_HOST/api/generate" -d "$body" -o /dev/null ||
             fail "model $MODEL did not answer a warm-up request"
           echo "Ollama ready, $MODEL answers"
+
+      - name: Download the fine-tuned adapter
+        if: steps.cfg.outputs.finetune == 'true'
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: ${{ steps.cfg.outputs.ft_artifact }}
+          path: ${{ runner.temp }}/ft
+
+      - name: Serve the fine-tuned model (same base weights + LoRA adapter)
+        if: steps.cfg.outputs.finetune == 'true' && steps.cfg.outputs.provider == 'openai-compatible'
+        env:
+          OLLAMA_HOST: ${{ steps.cfg.outputs.ollama_host }}
+          BASE: ${{ steps.cfg.outputs.model }}
+          FT_MODEL: ${{ steps.cfg.outputs.variant_model }}
+          ADAPTER_GGUF: ${{ steps.cfg.outputs.ft_adapter_gguf }}
+          WARMUP_TIMEOUT: ${{ steps.cfg.outputs.warmup_timeout }}
+          WARMUP_TOKENS: ${{ steps.cfg.outputs.warmup_tokens }}
+        run: |
+          set -euo pipefail
+          printf 'FROM %s\nADAPTER %s\n' "$BASE" "$RUNNER_TEMP/ft/$ADAPTER_GGUF" > "$RUNNER_TEMP/Modelfile"
+          "$HOME/.sic-ollama/bin/ollama" create "$FT_MODEL" -f "$RUNNER_TEMP/Modelfile"
+          body=$(printf '{"model":"%s","prompt":"Reply OK","stream":false,"options":{"num_predict":%s}}' "$FT_MODEL" "$WARMUP_TOKENS")
+          curl -fsS --max-time "$WARMUP_TIMEOUT" "http://$OLLAMA_HOST/api/generate" -d "$body" -o /dev/null ||
+            { echo "::error::fine-tuned model $FT_MODEL did not answer"; tail -n 50 "$RUNNER_TEMP/ollama.log" || true; exit 1; }
+          echo "$FT_MODEL ready"
+
+      - name: Record what the fine-tuning job did
+        if: steps.cfg.outputs.finetune == 'true'
+        env:
+          VARIANT: ${{ matrix.variant }}
+        run: node src/finetune/record.js "--variant=$VARIANT" "--dir=$RUNNER_TEMP/ft"
 
       - name: Run one improvement cycle
         env:

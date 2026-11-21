@@ -12,6 +12,7 @@ import { writeText, isoDay, MS_PER_SECOND } from './util.js';
 
 const PCT_DIGITS = 1;
 const PVAL_DIGITS = 3; // allow-number: display precision of p-values
+const SECONDS_PER_MINUTE = 60; // allow-number: unit conversion
 
 const pct = (v) => (v === null || v === undefined || Number.isNaN(v) ? 'n/a' : `${(v * 100).toFixed(PCT_DIGITS)}%`);
 const pts = (v) => {
@@ -146,6 +147,23 @@ export function buildReport(cfg, a) {
     L.push(`**Which failure types does self-improvement fix here?** ${reduced.length ? reduced.join(', ') : 'none so far'}. **Which does it not fix?** ${not.length ? not.join(', ') : 'n/a'}.`);
     L.push('');
   }
+
+  // Fine-tuning (expert iteration)
+  L.push('## Fine-tuning on its own verified solutions');
+  L.push('');
+  const ftRows = cfg.variants.filter((v) => v.levers?.finetune).flatMap((v) => {
+    const f = path.join(rootPath(cfg, cfg.paths.stateDir), cfg.paths.variantsDir, v.name, cfg.finetune.logFile);
+    return fs.existsSync(f) ? fs.readFileSync(f, 'utf8').split('\n').filter(Boolean).map((l) => ({ variant: v.name, ...JSON.parse(l) })) : [];
+  });
+  if (!ftRows.length) L.push('No fine-tuning cycles yet.');
+  else {
+    L.push('Each cycle retrains a LoRA adapter from scratch on every verified train solution so far (holdout problems excluded) and serves it on the same base weights as the control. Its effect is the variant\'s comparison with the control above.');
+    L.push('');
+    L.push(table(['day', 'variant', 'solutions', 'problems', 'holdout rows excluded', 'examples trained (epochs)', 'loss first -> last', 'minutes', 'stopped'],
+      ftRows.map((r) => [day(r.ts), r.variant, r.examples, r.problems, r.excludedHoldout, `${r.train?.examplesSeen ?? 'n/a'} (${r.train?.epochsPlanned ?? 'n/a'})`,
+        `${fmtNum(r.train?.lossFirst, PVAL_DIGITS)} -> ${fmtNum(r.train?.lossLast, PVAL_DIGITS)}`, fmtNum((r.train?.secondsTotal ?? 0) / SECONDS_PER_MINUTE), r.train?.stopped ?? 'n/a'])));
+  }
+  L.push('');
 
   // Curriculum
   L.push('## Curriculum levels (mutation track)');

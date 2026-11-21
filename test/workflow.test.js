@@ -21,7 +21,7 @@ function jobs(text) {
 const J = jobs(yml);
 
 test('jobs exist', () => {
-  assert.deepEqual(Object.keys(J), ['plan', 'improve', 'aggregate', 'commit', 'pages']);
+  assert.deepEqual(Object.keys(J), ['plan', 'finetune', 'improve', 'aggregate', 'commit', 'pages']);
 });
 
 test('only the commit job can write to the repo; jobs that run model-written code are read-only', () => {
@@ -59,6 +59,7 @@ test('model setup retries, fails fast with a clear error, and proves the model a
 test('backup cron times exist and a once-per-day guard gates training and publishing', () => {
   assert.ok((yml.match(/^ {4}- cron: '/gm) ?? []).length >= 2, 'at least one backup schedule');
   assert.match(J.plan, /node src\/ci\/due\.js >> "\$GITHUB_OUTPUT"/);
-  assert.match(J.improve, /if: \$\{\{ needs\.plan\.outputs\.due == 'true' \}\}/);
+  assert.match(J.improve, /if: \$\{\{ !cancelled\(\) && needs\.plan\.outputs\.due == 'true' \}\}/);
+  assert.match(J.finetune, /needs\.plan\.outputs\.due == 'true'/);
   assert.match(J.aggregate, /needs\.plan\.outputs\.due == 'true'/);
 });

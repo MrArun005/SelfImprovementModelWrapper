@@ -179,8 +179,8 @@
     "warmupTokens": 4
   },
   "budget": {
-    "totalRequestsPerRun": 4200,
-    "totalRequestsPerDay": 4800,
+    "totalRequestsPerRun": 4620,
+    "totalRequestsPerDay": 5280,
     "holdoutFraction": 0.72,
     "maxRunMinutes": 125,
     "reserveMinutesForHoldout": 70
@@ -593,6 +593,16 @@
       "color": "#9333ea"
     },
     {
+      "name": "finetune",
+      "label": "Fine-tuned on its own verified solutions",
+      "track": "multipl-e",
+      "levers": {
+        "finetune": true
+      },
+      "budgetShare": 1,
+      "color": "#ea580c"
+    },
+    {
       "name": "mutation-baseline",
       "label": "Mutation: no memory",
       "track": "mutation",
@@ -907,10 +917,77 @@
       "validationExamples": 2,
       "minibatchSize": 2,
       "earlyStoppingTrials": 1
+    },
+    "finetune": {
+      "train": {
+        "maxTrainSeconds": 300,
+        "epochs": 1
+      },
+      "maxExamples": 40
     }
   },
   "product": {
     "variant": "full",
     "maxAttemptsWithoutExamples": 1
+  },
+  "finetune": {
+    "about": "Expert iteration: LoRA fine-tune of the base model on every verified train solution (all MultiPL-E variants), retrained from scratch each cycle, served by Ollama as base model + adapter.",
+    "baseModel": "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+    "baseRevision": "2e1fd397ee46e1388853d2af2c993145b0f1098a",
+    "ollamaModel": "sic-finetuned",
+    "pythonIndexUrl": "https://download.pytorch.org/whl/cpu",
+    "torchPackage": "torch==2.8.0",
+    "pythonPackages": [
+      "transformers==4.56.2",
+      "peft==0.17.1",
+      "safetensors==0.6.2",
+      "accelerate==1.10.1",
+      "sentencepiece==0.2.1",
+      "numpy==2.3.3",
+      "huggingface_hub==0.35.3",
+      "protobuf==6.32.1"
+    ],
+    "llamaCppRepo": "https://github.com/ggml-org/llama.cpp",
+    "llamaCppCommit": "afe77e18fadc2e673c6a6299495a443e17378ce4",
+    "adapterOutType": "f16",
+    "seed": 1234,
+    "sourceStateDir": "state",
+    "maxSolutionsPerProblem": 2,
+    "maxExamples": 1500,
+    "completionFence": "```javascript",
+    "datasetFile": "sft.jsonl",
+    "settingsFile": "settings.json",
+    "manifestFile": "manifest.json",
+    "metricsFile": "train-metrics.json",
+    "adapterDir": "adapter",
+    "adapterGguf": "adapter.gguf",
+    "logFile": "finetune-log.jsonl",
+    "artifactName": "sic-finetune",
+    "train": {
+      "loraRank": 16,
+      "loraAlpha": 32,
+      "loraDropout": 0.05,
+      "targetModules": [
+        "q_proj",
+        "k_proj",
+        "v_proj",
+        "o_proj",
+        "gate_proj",
+        "up_proj",
+        "down_proj"
+      ],
+      "learningRate": 0.0001,
+      "weightDecay": 0.0,
+      "warmupFraction": 0.05,
+      "maxGradNorm": 1.0,
+      "epochs": 2,
+      "gradAccumSteps": 8,
+      "maxSeqTokens": 1024,
+      "dtype": "float32",
+      "gradientCheckpointing": false,
+      "threads": 0,
+      "maxTrainSeconds": 7200,
+      "logEverySteps": 5
+    }
   }
 }
