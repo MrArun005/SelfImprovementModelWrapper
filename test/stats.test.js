@@ -134,3 +134,14 @@ test('bootstrap p-value: ~0 for a consistent effect, ~1 for none, never exactly 
   const noisy = Array.from({ length: 40 }, (_, i) => (i % 2 ? 1 : -1));
   assert.ok(pairedBootstrapP(a, noisy, { resamples: 999, seed: 3 }) > 0.5);
 });
+
+test('gate false-accept rate under no effect is small, and re-tests can only raise it', async () => {
+  const { simulateFalseAccept } = await import('../src/power.js');
+  const { loadConfig } = await import('../src/config.js');
+  const cfg = loadConfig({ env: {} });
+  const o = { n: 50, repeats: 3, sims: 200, resamples: 300, seed: 1, pLow: 0.1, pHigh: 0.8 };
+  const once = simulateFalseAccept(cfg, { ...o, retests: 1 });
+  const thrice = simulateFalseAccept(cfg, { ...o, retests: 3 });
+  assert.ok(once <= 0.05, `single test false accepts ${once}`);
+  assert.ok(thrice >= once, 're-testing never lowers the chance of a lucky accept');
+});

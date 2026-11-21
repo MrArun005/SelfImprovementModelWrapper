@@ -176,8 +176,10 @@ Otherwise **keep**: the champion is unchanged and the candidate's new items stay
 they're re-tested along with that run's additions. They're dropped after `maxPendingRuns` (3). Rejected items are
 deleted. `champion.json` holds only accepted state (run counters live in `run-state.json`), so a rejected
 candidate leaves it byte-for-byte unchanged (tested). The first `baselineRuns` (2) runs of every variant only
-measure the starting point. Known cost: re-testing pending changes up to 3 times raises their chance of a lucky
-accept; the report lists every accept with its CI so it can be checked.
+measure the starting point. Known cost, now measured ([docs/power.md](docs/power.md), simulation with the gate's own `decide()`): for a change
+with no real effect, the false-accept rate is 1.0% with one evaluation and 4.5% when the pending rule allows up to 3.
+Re-testing more than quadruples it but keeps it under 5%; lowering `gate.maxPendingRuns` trades that against missing
+small real gains.
 
 ## 7. Budget
 

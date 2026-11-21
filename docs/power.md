@@ -19,4 +19,15 @@ Each cell is the share of simulated runs in which the paired CI of (candidate - 
 | 80 | 3 | 23% | 61% | 95% | 100% | 100% | 100% | 15 pts |
 | 80 | 5 | 34% | 91% | 99% | 100% | 100% | 100% | 10 pts |
 
+## False accepts from re-testing pending changes
+
+A change with no real effect that the gate keeps pending is re-tested on later days, up to `gate.maxPendingRuns` (3) times; each re-test is another chance of a lucky accept. Simulated with the gate's own decision rule (method `ci`, 2.5 pts minimum improvement), n = 50 x 3 repeats:
+
+| evaluations allowed | false-accept rate |
+|---|---|
+| 1 | 1.0% |
+| 2 | 3.5% |
+| 3 | 4.5% |
+
+
 **Current setting (n = 50, 3 repeats):** the smallest true improvement the gate detects at least 80% of the time is about 20 pts. Smaller real gains will mostly be kept pending or missed; that is the price of not accepting noise.

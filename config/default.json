@@ -872,7 +872,8 @@
       0.1,
       0.8
     ],
-    "outFile": "docs/power.md"
+    "outFile": "docs/power.md",
+    "falseAcceptSims": 400
   },
   "smoke": {
     "paths": {

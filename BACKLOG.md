@@ -36,6 +36,8 @@ DECISIONS.md updated for any non-obvious choice, README claims backed by generat
 - [x] **Multiple comparisons.** Bootstrap p-values + Holm adjustment per track in REPORT.md, "not after Holm"
   badge on the dashboard. On day 1 none of the six MultiPL-E variant-vs-control differences survives Holm.
 
+- [x] **Gate re-test inflation.** Simulated in docs/power.md: false accepts 1.0% (one evaluation) -> 4.5% (three).
+
 ## Next, in order
 
 0. **Capability levers (user asked to make the model as capable as possible).** In order of expected gain:
@@ -55,7 +57,7 @@ DECISIONS.md updated for any non-obvious choice, README claims backed by generat
    reflection prompt explicitly.
 5. **Lesson effect estimate (observational, labelled as such).** Per lesson: pass rate of train attempts where it
    was retrieved vs comparable attempts without it.
-6. **Gate re-test inflation.** Make the pending re-test rule explicit in numbers: simulate the false-accept rate
+6. ~~**Gate re-test inflation.**~~ DONE. Make the pending re-test rule explicit in numbers: simulate the false-accept rate
    of "keep up to N runs" with the power simulator and report it in docs/power.md.
 7. **Dashboard:** curriculum level timeline, gate-log rows linked to their replays, per-variant anchors.
 8. **Independent review** (a fresh reviewer, not anchored on my reading) of the sandbox, workflow permissions and the

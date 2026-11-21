@@ -7,6 +7,7 @@
 import path from 'node:path';
 import { loadConfig, rootPath } from './config.js';
 import { pairedGroupCI } from './stats.js';
+import { decide, DECISION } from './gate.js';
 import { rng, hash32, writeText } from './util.js';
 
 export function simulatePower({ n, repeats, effect, sims, resamples, confidence, method, seed, pLow, pHigh }) {
@@ -25,6 +26,30 @@ export function simulatePower({ n, repeats, effect, sims, resamples, confidence,
     if (ci.low > 0) detected++;
   }
   return detected / sims;
+}
+
+/**
+ * False-accept rate of the full gate for a candidate with NO real effect, including re-tests: a "keep" decision
+ * leaves the change pending and it is evaluated again on later days with fresh samples, up to `retests` times in
+ * total. Uses the gate's own decide() with the configured thresholds and CI method.
+ */
+export function simulateFalseAccept(cfg, { n, repeats, retests, sims, resamples, seed, pLow, pHigh }) {
+  let accepted = 0;
+  for (let s = 0; s < sims; s++) {
+    const r = rng(hash32(`fa|${seed}|${n}|${repeats}|${retests}|${s}`));
+    const probs = Array.from({ length: n }, () => pLow + r() * (pHigh - pLow));
+    for (let t = 0; t < retests; t++) {
+      const draw = () => probs.map((p) => Array.from({ length: repeats }, () => (r() < p ? 1 : 0)));
+      const champ = draw();
+      const cand = draw();
+      const mean = (g) => g.reduce((a, x) => a + x.reduce((u, v) => u + v, 0) / x.length, 0) / g.length;
+      const ci = pairedGroupCI(champ, cand, { resamples, confidence: cfg.stats.confidence, seed: hash32(`faci|${s}|${t}`) }, cfg.stats.method);
+      const d = decide(mean(champ), mean(cand), cfg.gate, { estimate: ci.estimate, low: ci.low, high: ci.high });
+      if (d === DECISION.ACCEPT) { accepted++; break; }
+      if (d !== DECISION.KEEP) break; // rejected: no further re-tests
+    }
+  }
+  return accepted / sims;
 }
 
 /** Smallest effect on the grid with power >= target, per (n, repeats). */
@@ -50,6 +75,17 @@ export function powerMarkdown(cfg, rows) {
     `| holdout n | repeats | ${pc.effects.map(pts).join(' | ')} | smallest effect with power >= ${Math.round(pc.targetPower * 100)}% |`,
     `|---|---|${pc.effects.map(() => '---').join('|')}|---|`];
   for (const r of rows) L.push(`| ${r.n} | ${r.repeats} | ${r.powers.map((p) => `${Math.round(p * 100)}%`).join(' | ')} | ${r.minDetectable === null ? `> ${pts(pc.effects.at(-1))}` : pts(r.minDetectable)} |`);
+  if (rows.falseAccept) {
+    L.push('');
+    L.push('## False accepts from re-testing pending changes');
+    L.push('');
+    L.push(`A change with no real effect that the gate keeps pending is re-tested on later days, up to \`gate.maxPendingRuns\` (${cfg.gate.maxPendingRuns}) times; each re-test is another chance of a lucky accept. Simulated with the gate's own decision rule (method \`${cfg.gate.method}\`, ${(cfg.gate.minImprovement * 100).toFixed(1)} pts minimum improvement), n = ${cfg.split.holdoutSize} x ${cfg.eval.repeats} repeats:`);
+    L.push('');
+    L.push(`| evaluations allowed | false-accept rate |`);
+    L.push(`|---|---|`);
+    for (const f of rows.falseAccept) L.push(`| ${f.retests} | ${(f.rate * 100).toFixed(1)}% |`);
+    L.push('');
+  }
   const cur = rows.find((r) => r.n === cfg.split.holdoutSize && r.repeats === cfg.eval.repeats);
   L.push('');
   if (cur) L.push(`**Current setting (n = ${cur.n}, ${cur.repeats} repeats):** the smallest true improvement the gate detects at least ${Math.round(pc.targetPower * 100)}% of the time is ${cur.minDetectable === null ? `more than ${pts(pc.effects.at(-1))}` : `about ${pts(cur.minDetectable)}`}. Smaller real gains will mostly be kept pending or missed; that is the price of not accepting noise.`);
@@ -59,7 +95,11 @@ export function powerMarkdown(cfg, rows) {
 
 if (import.meta.url === `file://${process.argv[1]}`) {
   const cfg = loadConfig();
-  const md = powerMarkdown(cfg, powerTable(cfg));
+  const rows = powerTable(cfg);
+  const pc = cfg.power;
+  rows.falseAccept = Array.from({ length: cfg.gate.maxPendingRuns }, (_, i) => i + 1).map((retests) => ({ retests,
+    rate: simulateFalseAccept(cfg, { n: cfg.split.holdoutSize, repeats: cfg.eval.repeats, retests, sims: pc.falseAcceptSims, resamples: pc.resamples, seed: pc.seed, pLow: pc.passProbabilityRange[0], pHigh: pc.passProbabilityRange[1] }) }));
+  const md = powerMarkdown(cfg, rows);
   const file = rootPath(cfg, cfg.power.outFile);
   writeText(file, md);
   console.log(md);
