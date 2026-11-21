@@ -38,6 +38,9 @@ DECISIONS.md updated for any non-obvious choice, README claims backed by generat
 
 - [x] **Gate re-test inflation.** Simulated in docs/power.md: false accepts 1.0% (one evaluation) -> 4.5% (three).
 
+- [x] **Skills hurt (day 2).** Shown solutions lowered pass rates, most at high similarity (copying). `full` drops
+  skills; skills now shown with the earlier statement + "different problem" warning (DECISIONS.md §4e).
+
 ## Next, in order
 
 0. **Capability levers (user asked to make the model as capable as possible).** In order of expected gain:

@@ -22,7 +22,7 @@ _Data: 35 evaluated runs across 9 variants, last run 2026-11-21._
 | Lessons + skills | multipl-e | lessons + skills | 4 | 0 | 0 | v001 |
 | Self-repair | multipl-e | selfRepair | 4 | 0 | 0 | v001 |
 | Sample + filter | multipl-e | sampleFilter | 3 | 0 | 0 | v001 |
-| Full (all levers) | multipl-e | lessons + skills + promptOptimizer + selfRepair + sampleFilter | 4 | 0 | 0 | v001 |
+| Full (lessons, self-repair, sample+filter, optimizer) | multipl-e | lessons + promptOptimizer + selfRepair + sampleFilter | 4 | 0 | 0 | v001 |
 | Mutation: no memory (control) | mutation | none | 4 | 0 | 0 | v001 |
 | Mutation: lessons | mutation | lessons | 4 | 0 | 0 | v001 |
 
@@ -38,7 +38,7 @@ _Data: 35 evaluated runs across 9 variants, last run 2026-11-21._
 | Lessons + skills | 54.7% | [41.3%, 67.3%] | 50 x 3 | -2.3 pts (95% CI -6.7 pts to +2.0 pts) | +1.3 pts (95% CI -4.0 pts to +7.0 pts) | +2.0 pts (95% CI -2.7 pts to +7.3 pts) |
 | Self-repair | 52.7% | [40.0%, 65.3%] | 50 x 3 | -2.7 pts (95% CI -8.7 pts to +2.7 pts) | +1.0 pts (95% CI -3.3 pts to +5.3 pts) | -0.0 pts (95% CI -4.0 pts to +4.0 pts) |
 | Sample + filter | 57.3% | [45.3%, 69.3%] | 50 x 3 | +0.3 pts (95% CI -3.3 pts to +4.3 pts) | +4.0 pts (95% CI -1.3 pts to +10.7 pts) | +4.7 pts (95% CI -0.7 pts to +10.7 pts) |
-| Full (all levers) | 57.1% | [42.9%, 69.8%] | 42 x 3 | -1.2 pts (95% CI -6.8 pts to +4.0 pts) | +3.2 pts (95% CI -4.4 pts to +10.7 pts) | +1.6 pts (95% CI -5.6 pts to +9.5 pts) |
+| Full (lessons, self-repair, sample+filter, optimizer) | 57.1% | [42.9%, 69.8%] | 42 x 3 | -1.2 pts (95% CI -6.8 pts to +4.0 pts) | +3.2 pts (95% CI -4.4 pts to +10.7 pts) | +1.6 pts (95% CI -5.6 pts to +9.5 pts) |
 
 The control (no memory, no learning) moved -3.7 pts (95% CI -9.0 pts to +0.7 pts) between its starting runs and its latest run: that is the size of day-to-day noise. That is why the comparisons below subtract the control.
 
@@ -47,7 +47,7 @@ The control (no memory, no learning) moved -3.7 pts (95% CI -9.0 pts to +0.7 pts
 - **Lessons + skills:** vs the control on the same day: not statistically meaningful (the 95% CI includes zero) (+2.0 pts (95% CI -2.7 pts to +7.3 pts)); change since its start minus the control's change: not statistically meaningful (the 95% CI includes zero) (+1.3 pts (95% CI -4.0 pts to +7.0 pts)).
 - **Self-repair:** vs the control on the same day: not statistically meaningful (the 95% CI includes zero) (-0.0 pts (95% CI -4.0 pts to +4.0 pts)); change since its start minus the control's change: not statistically meaningful (the 95% CI includes zero) (+1.0 pts (95% CI -3.3 pts to +5.3 pts)).
 - **Sample + filter:** vs the control on the same day: not statistically meaningful (the 95% CI includes zero) (+4.7 pts (95% CI -0.7 pts to +10.7 pts)); change since its start minus the control's change: not statistically meaningful (the 95% CI includes zero) (+4.0 pts (95% CI -1.3 pts to +10.7 pts)).
-- **Full (all levers):** vs the control on the same day: not statistically meaningful (the 95% CI includes zero) (+1.6 pts (95% CI -5.6 pts to +9.5 pts)); change since its start minus the control's change: not statistically meaningful (the 95% CI includes zero) (+3.2 pts (95% CI -4.4 pts to +10.7 pts)).
+- **Full (lessons, self-repair, sample+filter, optimizer):** vs the control on the same day: not statistically meaningful (the 95% CI includes zero) (+1.6 pts (95% CI -5.6 pts to +9.5 pts)); change since its start minus the control's change: not statistically meaningful (the 95% CI includes zero) (+3.2 pts (95% CI -4.4 pts to +10.7 pts)).
 
 **Multiple comparisons.** 6 variants are compared with the control here, so a "significant" result can happen by chance. After the Holm correction (family-wise error 5.0%): none of the differences above remains significant.
 
@@ -58,7 +58,7 @@ The control (no memory, no learning) moved -3.7 pts (95% CI -9.0 pts to +0.7 pts
 | Lessons + skills | +2.0 pts | 0.495 | 1.000 | no |
 | Self-repair | -0.0 pts | 0.898 | 1.000 | no |
 | Sample + filter | +4.7 pts | 0.088 | 0.528 | no |
-| Full (all levers) | +1.6 pts | 0.687 | 1.000 | no |
+| Full (lessons, self-repair, sample+filter, optimizer) | +1.6 pts | 0.687 | 1.000 | no |
 
 ### mutation
 
@@ -94,7 +94,7 @@ _"Solved" = distinct train problems passed at least once. Requests include refle
 | Lessons + skills | 236 | 900 | 248278 / 78345 | 76 of 112 | 32.2 | 3.1 | 1228 | 4.05 |
 | Self-repair | 236 | 669 | 177476 / 64031 | 98 of 166 | 41.5 | 2.4 | 702 | 3.53 |
 | Sample + filter | 177 | 545 | 121051 / 55380 | 79 of 110 | 44.6 | 2.2 | 580 | 4.24 |
-| Full (all levers) | 354 | 1015 | 372568 / 108044 | 95 of 149 | 26.8 | 3.7 | 1744 | 5.02 |
+| Full (lessons, self-repair, sample+filter, optimizer) | 354 | 1015 | 372568 / 108044 | 95 of 149 | 26.8 | 3.7 | 1744 | 5.02 |
 | Mutation: no memory | 206 | 360 | 416134 / 98111 | 14 of 60 | 6.8 | 14.7 | 13571 | 9.28 |
 | Mutation: lessons | 236 | 450 | 550973 / 115419 | 11 of 60 | 4.7 | 21.5 | 22609 | 12.30 |
 
@@ -106,12 +106,12 @@ Share of champion holdout attempts in each class, first evaluated run vs latest.
 
 | class | meaning | control change | learning variants (change) | verdict |
 |---|---|---|---|---|
-| syntax | the code does not parse | +0.0 pts | Lessons +0.0 pts; Skills +0.0 pts; Lessons + skills +0.0 pts; Self-repair +0.0 pts; Sample + filter +0.0 pts; Full (all levers) +0.0 pts | not-reduced |
-| runtime-error | the code throws (TypeError, RangeError, stack overflow, ...) | +0.0 pts | Lessons +0.0 pts; Skills +0.0 pts; Lessons + skills +0.0 pts; Self-repair +0.0 pts; Sample + filter +0.0 pts; Full (all levers) +0.0 pts | not-reduced |
-| timeout | the tests did not finish in time (usually an infinite loop) | +0.0 pts | Lessons -0.7 pts; Skills +0.0 pts; Lessons + skills +0.0 pts; Self-repair +0.0 pts; Sample + filter +0.0 pts; Full (all levers) -0.7 pts | not-reduced |
-| wrong-output | the code runs but a test assertion fails | +5.3 pts | Lessons +6.0 pts; Skills -0.7 pts; Lessons + skills +3.3 pts; Self-repair +2.0 pts; Sample + filter +1.3 pts; Full (all levers) -1.8 pts | not-reduced |
-| spec-misread | wrong function name or signature, or the function is missing | +0.0 pts | Lessons +0.0 pts; Skills +0.0 pts; Lessons + skills +0.0 pts; Self-repair +0.0 pts; Sample + filter +0.0 pts; Full (all levers) +0.0 pts | not-reduced |
-| other | non-zero exit with no recognisable error (e.g. process.exit, out of memory) | +0.0 pts | Lessons +0.0 pts; Skills +0.0 pts; Lessons + skills +0.0 pts; Self-repair +0.0 pts; Sample + filter +0.0 pts; Full (all levers) +0.0 pts | not-reduced |
+| syntax | the code does not parse | +0.0 pts | Lessons +0.0 pts; Skills +0.0 pts; Lessons + skills +0.0 pts; Self-repair +0.0 pts; Sample + filter +0.0 pts; Full (lessons, self-repair, sample+filter, optimizer) +0.0 pts | not-reduced |
+| runtime-error | the code throws (TypeError, RangeError, stack overflow, ...) | +0.0 pts | Lessons +0.0 pts; Skills +0.0 pts; Lessons + skills +0.0 pts; Self-repair +0.0 pts; Sample + filter +0.0 pts; Full (lessons, self-repair, sample+filter, optimizer) +0.0 pts | not-reduced |
+| timeout | the tests did not finish in time (usually an infinite loop) | +0.0 pts | Lessons -0.7 pts; Skills +0.0 pts; Lessons + skills +0.0 pts; Self-repair +0.0 pts; Sample + filter +0.0 pts; Full (lessons, self-repair, sample+filter, optimizer) -0.7 pts | not-reduced |
+| wrong-output | the code runs but a test assertion fails | +5.3 pts | Lessons +6.0 pts; Skills -0.7 pts; Lessons + skills +3.3 pts; Self-repair +2.0 pts; Sample + filter +1.3 pts; Full (lessons, self-repair, sample+filter, optimizer) -1.8 pts | not-reduced |
+| spec-misread | wrong function name or signature, or the function is missing | +0.0 pts | Lessons +0.0 pts; Skills +0.0 pts; Lessons + skills +0.0 pts; Self-repair +0.0 pts; Sample + filter +0.0 pts; Full (lessons, self-repair, sample+filter, optimizer) +0.0 pts | not-reduced |
+| other | non-zero exit with no recognisable error (e.g. process.exit, out of memory) | +0.0 pts | Lessons +0.0 pts; Skills +0.0 pts; Lessons + skills +0.0 pts; Self-repair +0.0 pts; Sample + filter +0.0 pts; Full (lessons, self-repair, sample+filter, optimizer) +0.0 pts | not-reduced |
 
 **Which failure types does self-improvement fix here?** none so far. **Which does it not fix?** syntax, runtime-error, timeout, wrong-output, spec-misread, other.
 
@@ -143,7 +143,7 @@ Share of champion holdout attempts in each class, first evaluated run vs latest.
 | Lessons + skills | 2 | 0 | 0 | 2 | 0 | 0 |
 | Self-repair | 2 | 0 | 0 | 0 | 2 | 0 |
 | Sample + filter | 2 | 0 | 0 | 0 | 1 | 0 |
-| Full (all levers) | 2 | 0 | 0 | 2 | 0 | 0 |
+| Full (lessons, self-repair, sample+filter, optimizer) | 2 | 0 | 0 | 2 | 0 | 0 |
 | Mutation: no memory | 2 | 0 | 0 | 0 | 2 | 0 |
 | Mutation: lessons | 2 | 0 | 0 | 1 | 1 | 0 |
 
@@ -154,7 +154,7 @@ Share of champion holdout attempts in each class, first evaluated run vs latest.
 - **Lessons + skills:** too early to tell (2 learning runs, need 4).
 - **Self-repair:** too early to tell (2 learning runs, need 4).
 - **Sample + filter:** too early to tell (1 learning runs, need 4).
-- **Full (all levers):** too early to tell (2 learning runs, need 4).
+- **Full (lessons, self-repair, sample+filter, optimizer):** too early to tell (2 learning runs, need 4).
 - **Mutation: lessons:** too early to tell (2 learning runs, need 4).
 
 ## Changes the gate blocked
@@ -166,8 +166,8 @@ Share of champion holdout attempts in each class, first evaluated run vs latest.
 | 2026-11-21 | Skills | 54.7% | 51.3% | -3.3 pts (95% CI -10.7 pts to +4.0 pts) | 0 lessons, 63 skills |
 | 2026-11-20 | Lessons + skills | 56.0% | 50.0% | -6.0 pts (95% CI -15.3 pts to +1.3 pts) | 35 lessons, 42 skills |
 | 2026-11-21 | Lessons + skills | 54.7% | 49.3% | -5.3 pts (95% CI -12.0 pts to +0.7 pts) | 3 lessons, 34 skills |
-| 2026-11-20 | Full (all levers) | 60.3% | 49.2% | -11.1 pts (95% CI -19.0 pts to -4.0 pts) | 46 lessons, 51 skills |
-| 2026-11-21 | Full (all levers) | 57.1% | 50.0% | -7.1 pts (95% CI -15.9 pts to +1.6 pts) | 1 lessons, 44 skills |
+| 2026-11-20 | Full (lessons, self-repair, sample+filter, optimizer) | 60.3% | 49.2% | -11.1 pts (95% CI -19.0 pts to -4.0 pts) | 46 lessons, 51 skills |
+| 2026-11-21 | Full (lessons, self-repair, sample+filter, optimizer) | 57.1% | 50.0% | -7.1 pts (95% CI -15.9 pts to +1.6 pts) | 1 lessons, 44 skills |
 | 2026-11-20 | Mutation: lessons | 16.7% | 12.2% | -4.4 pts (95% CI -13.3 pts to +2.2 pts) | 46 lessons, 0 skills |
 
 Without the gate, each of these candidates would have replaced its champion. Summing the measured differences, that would have lowered holdout pass rate by 51.4 pts in total. Only 2 of 8 drops had a CI entirely below zero; the others were rejected because the drop exceeded the tolerance, so some of them may be noise.
@@ -182,8 +182,8 @@ Every failed train attempt in a lesson-learning variant is reflected on. A lesso
 | Lessons | 2026-11-21 | 49 | 41 | 3 (7.3%) | 38 | 8 | 0 | 0 |
 | Lessons + skills | 2026-11-20 | 38 | 35 | 4 (11.4%) | 31 | 3 | 0 | 0 |
 | Lessons + skills | 2026-11-21 | 42 | 37 | 3 (8.1%) | 34 | 5 | 0 | 0 |
-| Full (all levers) | 2026-11-20 | 53 | 46 | 1 (2.2%) | 45 | 2 | 0 | 5 |
-| Full (all levers) | 2026-11-21 | 58 | 49 | 1 (2.0%) | 48 | 9 | 0 | 0 |
+| Full (lessons, self-repair, sample+filter, optimizer) | 2026-11-20 | 53 | 46 | 1 (2.2%) | 45 | 2 | 0 | 5 |
+| Full (lessons, self-repair, sample+filter, optimizer) | 2026-11-21 | 58 | 49 | 1 (2.0%) | 48 | 9 | 0 | 0 |
 | Mutation: lessons | 2026-11-20 | 57 | 46 | 1 (2.2%) | 45 | 8 | 0 | 3 |
 | Mutation: lessons | 2026-11-21 | 55 | 30 | 0 (0.0%) | 30 | 25 | 0 | 0 |
 
@@ -235,7 +235,7 @@ Every failed train attempt in a lesson-learning variant is reflected on. A lesso
 - L0010 + L0019: failed together 2 of 2 times (pass rate together 0.0%, alone 16.7% / 40.0%)
 - L0019 + L0021: failed together 2 of 2 times (pass rate together 0.0%, alone 40.0% / 25.0%)
 
-### Full (all levers)
+### Full (lessons, self-repair, sample+filter, optimizer)
 
 95 lessons created; 0 accepted, 0 pending, 95 dropped. 38 were retrieved but never on a passing attempt.
 

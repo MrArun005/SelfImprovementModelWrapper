@@ -31,7 +31,7 @@ export function loadMemory(cfg) {
 }
 
 export function serializeSkill(s) {
-  const meta = { id: s.id, entryPoint: s.entryPoint, keywords: s.keywords, createdRun: s.createdRun };
+  const meta = { id: s.id, entryPoint: s.entryPoint, keywords: s.keywords, statement: s.statement ?? '', createdRun: s.createdRun };
   return `// skill: ${JSON.stringify(meta)}\n${s.code.trimEnd()}\n`;
 }
 

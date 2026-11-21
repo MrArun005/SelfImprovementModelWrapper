@@ -11,6 +11,7 @@ import { createLLM } from './llm/index.js';
 import { createBudget, budgeted, BudgetExhausted } from './budget.js';
 import { solve } from './agent/solve.js';
 import { reflect } from './agent/reflect.js';
+import { statementOf } from './agent/solve.js';
 import { attemptWithChecks, attemptCost } from './agent/attempt.js';
 import { problemKeywords } from './agent/retrieve.js';
 import { RESULT } from './judge/run-tests.js';
@@ -104,7 +105,7 @@ async function trainPhase({ llm, cfg, mem, track, templates, runIndex, working, 
       let rejectedReason = null;
       if (passed) {
         if (lv.skills && !mem.skills.has(id)) {
-          mem.skills.set(id, { id, entryPoint: task.entryPoint, keywords: [...problemKeywords(task, cfg.retrieve)], code: track.storeCode ? res.code : '', createdRun: runIndex });
+          mem.skills.set(id, { id, entryPoint: task.entryPoint, keywords: [...problemKeywords(task, cfg.retrieve)], code: track.storeCode ? res.code : '', statement: track.storeCode ? statementOf(task, cfg.agent.skillStatementChars) : '', createdRun: runIndex });
           working.skillIds.push(id);
           stats.newSkills.push(id);
         }

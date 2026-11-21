@@ -74,3 +74,15 @@ test('reflection rejects problem-specific lessons (that name the function) when 
   const good = await reflect({ llm: llm('Check loop bounds when comparing two strings.'), problem, code: '', result, templates, cfg });
   assert.match(good.lesson.text, /loop bounds/);
 });
+
+test('skills are shown with the earlier problem statement and a warning that it is a different problem', async () => {
+  const { formatSkills, statementOf } = await import('../src/agent/solve.js');
+  const task = { prompt: '// Sum the odd numbers in a list.\n// >>> f([1,2,3])\n// 4\nfunction f(xs){\n' };
+  const st = statementOf(task, 400);
+  assert.match(st, /^Sum the odd numbers in a list\./);
+  const text = formatSkills([{ code: 'function f(xs){ return 4; }', statement: st }], 1200);
+  assert.match(text, /A DIFFERENT problem you solved before/);
+  assert.match(text, /Earlier problem: Sum the odd numbers/);
+  assert.match(text, /function f/);
+  assert.equal(formatSkills([], 1200), '');
+});

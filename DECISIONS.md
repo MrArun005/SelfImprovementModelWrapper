@@ -137,6 +137,22 @@ lessons would have been verified (lessons 2 of 41, lessons+skills 4 of 35, full 
 So about 9 in 10 lessons never helped even on the problem they came from, which fits the score drop. From day 2
 only the verified ones are kept, so expect a few lessons per run instead of dozens.
 
+## 4e. Day 2: lessons stopped hurting; skills hurt, more so the more similar they are
+
+Day 2 (2026-11-21, run 44854047467), the first with verified lessons: the lessons variant went from "reject, -8.7"
+to "keep, +0.0" (3 of 41 lessons verified; none harmful). The remaining drops all came from variants with skills:
+skills -3.3, lessons+skills -5.3, full -7.1 (CIs include 0; none significant after Holm). Per attempt, showing a
+stored solution changed the pass rate by -3.9 (skills), -6.9 (lessons+skills) and -10.3 pts (full) against the
+champion on the same problem and repeat, and by 0 to -2.1 when none was shown. By similarity of the shown solution's
+problem: 0.2-0.3 -2.9 pts (105 attempts), 0.3-0.4 -3.0 (66), 0.4-0.5 -9.0 (78), >=0.5 -13.0 (69). The more similar,
+the more the small model copies a solution to a different problem, so a stricter threshold would make it worse.
+
+Changes (before day 3):
+- `full` no longer uses skills (its champion was still empty): it is now lessons + self-repair + sample-and-filter +
+  prompt optimizer, the best combination the evidence supports.
+- The `skills` lever now shows each solution with the earlier problem's statement and a warning that it is a
+  different problem (`formatSkills`), as a test of whether comparing specs stops the copying. Measured as usual.
+
 ## 5. Evaluation and statistics
 
 - **Repeats:** every holdout evaluation runs `eval.repeats` = 3 times at `eval.temperature` 0.2. Repeat `r` of

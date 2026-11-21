@@ -6,10 +6,20 @@ export function formatLessons(lessons) {
   return '## Lessons from past mistakes\n' + lessons.map((l) => `- ${l.text}`).join('\n') + '\n\n';
 }
 
+/**
+ * Day 2 showed that a shown solution hurt MORE the more similar its problem was (the small model copied it), so a
+ * skill is shown with the statement of the problem it solved and a warning to compare before reusing anything.
+ */
 export function formatSkills(skills, maxChars) {
   if (!skills.length) return '';
-  return '## Related functions you solved before (for reference)\n' +
-    skills.map((s) => '```javascript\n' + s.code.slice(0, maxChars) + '\n```').join('\n') + '\n\n';
+  return '## A DIFFERENT problem you solved before\nIt may look similar, but the requirements are not the same. Compare the two statements and only reuse ideas that fit the new problem.\n' +
+    skills.map((s) => (s.statement ? `Earlier problem: ${s.statement}\n` : '') + '```javascript\n' + s.code.slice(0, maxChars) + '\n```').join('\n') + '\n\n';
+}
+
+/** The statement text of a problem (its comment lines), for showing next to a skill. */
+export function statementOf(task, maxChars) {
+  const text = task.vars?.prompt ?? task.prompt ?? '';
+  return text.split('\n').filter((l) => l.trim().startsWith('//')).map((l) => l.trim().replace(/^\/\/\s?/, '')).join(' ').slice(0, maxChars);
 }
 
 export function buildMessages({ systemPrompt, userTemplate, problem, lessons, skills, cfg }) {

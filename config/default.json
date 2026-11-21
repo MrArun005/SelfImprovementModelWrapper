@@ -218,7 +218,8 @@
     },
     "samples": 3,
     "sampleSeedStride": 1000,
-    "verifyLessons": true
+    "verifyLessons": true,
+    "skillStatementChars": 400
   },
   "retrieve": {
     "minTokenLength": 3,
@@ -577,11 +578,11 @@
     },
     {
       "name": "full",
-      "label": "Full (all levers)",
+      "label": "Full (lessons, self-repair, sample+filter, optimizer)",
       "track": "multipl-e",
       "levers": {
         "lessons": true,
-        "skills": true,
+        "skills": false,
         "promptOptimizer": true,
         "selfRepair": true,
         "sampleFilter": true
