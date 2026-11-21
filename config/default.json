@@ -936,16 +936,14 @@
     "baseRevision": "2e1fd397ee46e1388853d2af2c993145b0f1098a",
     "ollamaModel": "sic-finetuned",
     "pythonIndexUrl": "https://download.pytorch.org/whl/cpu",
-    "torchPackage": "torch==2.8.0",
+    "torchPackage": "torch==2.9.0",
     "pythonPackages": [
       "transformers==4.56.2",
       "peft==0.17.1",
       "safetensors==0.6.2",
       "accelerate==1.10.1",
-      "sentencepiece==0.2.1",
       "numpy==2.3.3",
-      "huggingface_hub==0.35.3",
-      "protobuf==6.32.1"
+      "huggingface_hub==0.35.3"
     ],
     "llamaCppRepo": "https://github.com/ggml-org/llama.cpp",
     "llamaCppCommit": "afe77e18fadc2e673c6a6299495a443e17378ce4",

@@ -103,6 +103,7 @@ jobs:
           PACKAGES: ${{ steps.cfg.outputs.ft_python_packages }}
         run: |
           set -euo pipefail
+          python3 --version
           python3 -m venv "$HOME/.sic-venv"
           "$HOME/.sic-venv/bin/pip" install -q --index-url "$TORCH_INDEX" "$TORCH_PACKAGE"
           read -ra pkgs <<< "$PACKAGES"
