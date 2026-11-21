@@ -70,9 +70,11 @@ Hugging Face `nuprl/MultiPL-E` Parquet files pinned to revision `28441b60…` (5
 
 ## 4. Variants (WOW phase 6)
 
-Variants are data (`config.variants`): `baseline` (**control**: no lessons, no skills, no prompt changes),
-`lessons`, `skills`, `lessons-skills`, `full` (+ prompt optimizer), `mutation-baseline` (control),
-`mutation-lessons`. Each has its own `state/variants/<name>/`, its own budget share, and its own job in the matrix.
+Variants are data (`config.variants`; this list is checked against the config by `test/docs.test.js`):
+`baseline` (**control**: no memory, no inference-time levers), `lessons`, `skills`, `lessons-skills`, `self-repair`
+(§4b), `sample-filter` (§4c), `full` (lessons + self-repair + sample-filter + prompt optimizer; skills removed after
+day 2, §4e), `mutation-baseline` (control) and `mutation-lessons`. Each has its own `state/variants/<name>/`, its own
+budget share, and its own job in the matrix.
 The workflow's matrix is read from config by the `plan` job, so adding a variant is a config change only.
 
 Control variants exist because day-to-day differences are not only noise: sampling seeds change, the
@@ -210,8 +212,10 @@ small real gains.
 
 ## 7. Budget
 
-`budget.totalRequestsPerRun` (2,940) is split across variants by `budgetShare` (equal: 420 each);
-`holdoutFraction` 0.72 of each variant's share is reserved for evaluation (50 × 3 × champion + candidate = 300).
+`budget.totalRequestsPerRun` is split across variants by `budgetShare`: 420 requests per unit of share (the
+sample-based `sample-filter` and `full` have share 1.5, i.e. 630, because their evaluation costs more), so the total
+grows with the number of variants (it started at 2,940 for 7 equal variants). `holdoutFraction` 0.72 of each
+variant's share is reserved for evaluation (50 problems x 3 repeats x champion + candidate = 300 at share 1).
 Variant jobs run on separate runners in parallel, so the split is about fairness and run time, not a shared quota.
 The counter is checked **before** every model call; a time limit (`maxRunMinutes`, with `reserveMinutesForHoldout`)
 stops training early enough to evaluate. If evaluation can't finish, its scores are discarded (`no-eval`) and state is still written.
@@ -307,7 +311,8 @@ Output is identical for the same seed (tested). Data from it is labelled "Demo d
 - **Sandbox:** empty env, temp dir, process-group kill on timeout, heap cap, output cap, Node permission model
   (reads only in the temp dir plus pinned test dependencies; no writes, no child processes). Judge output drops
   Node-internal stack frames (config `judge.dropOutputLinePatterns`), which is cleaner for the dashboard and wastes less of the model's context.
-- **Retrieval:** keyword overlap (cosine on token sets), no embeddings: offline, free, deterministic.
+- **Retrieval:** keyword overlap (cosine on token sets), no embeddings: offline, free, deterministic. Current
+  limits (`retrieve.minScore` 0.2, `agent.lessonsTopK` 2, `agent.skillsTopK` 1) came from day 1's evidence (§4d).
 - **Prompt optimizer (phase 5):** `@ax-llm/ax` GEPA with train-only examples, budget-proxied, flag + lever gated,
   every `promptOptimizer.everyNRuns` runs, in the `full` variant only. Errors are caught and logged in the gate log.
   With the mock provider a deterministic stand-in proposes a prompt so the path is exercised offline.

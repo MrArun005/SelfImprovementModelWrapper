@@ -48,6 +48,10 @@ DECISIONS.md updated for any non-obvious choice, README claims backed by generat
 - [x] **Product + stronger sample-filter.** `npm run solve` completes a function stub using the champion memory and
   levers; extra samples drawn at `agent.sampleTemperature` 0.8 for real diversity (DECISIONS.md §4f).
 
+- [x] **Docs consistency pass.** Fixed stale variant list and budget numbers in DECISIONS.md; `test/docs.test.js`
+  now fails if a configured variant is undocumented, the README names another model, or the README tells people to
+  run an npm script that doesn't exist.
+
 ## Next, in order
 
 0. **Capability levers (user asked to make the model as capable as possible).** In order of expected gain:
@@ -72,4 +76,4 @@ DECISIONS.md updated for any non-obvious choice, README claims backed by generat
 7. **Dashboard:** curriculum level timeline, gate-log rows linked to their replays, per-variant anchors.
 8. ~~**Independent review**~~ DONE. (a fresh reviewer, not anchored on my reading) of the sandbox, workflow permissions and the
    statistics; fix what it finds.
-9. **Docs:** "how to read the dashboard" section; final pass on README/DECISIONS consistency.
+9. ~~**Docs:**~~ DONE (consistency pass + test). "how to read the dashboard" section; final pass on README/DECISIONS consistency.
