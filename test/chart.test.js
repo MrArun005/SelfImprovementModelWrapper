@@ -26,13 +26,13 @@ test('scores.csv round-trips with the documented columns', () => {
   assert.equal(row.ciHigh, null);
 });
 
-test('holdout series: accepted runs use the candidate score, others the champion score', () => {
+test('holdout series always uses the champion measurement (no winner\'s curse on accept days)', () => {
   const rows = readScores(path.join(FIXTURE_STATE, 'variants/lessons/scores.csv'));
   const s = holdoutSeries(rows);
   assert.equal(s.length, 5);
   assert.deepEqual(s.map((p) => p.decision), ['baseline', 'baseline', 'accept', 'reject', 'accept']);
-  assert.equal(s[2].y, 0.47); // accepted candidate
-  assert.equal(s[3].y, 0.47); // rejected: champion stays
+  assert.equal(s[2].y, 0.43); // accept day: the champion's own measurement, not the winning candidate's 0.47
+  assert.equal(s[3].y, 0.47); // next day: the accepted change measured fresh as champion
   assert.deepEqual([s[2].low, s[2].high, s[2].n, s[2].repeats], [0.40, 0.54, 50, 3]);
 });
 

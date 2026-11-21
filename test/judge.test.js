@@ -60,3 +60,15 @@ test('permission model blocks spawning processes and writing files', async () =>
   const readTry = "function dbl(x){ require('node:fs').readFileSync('/etc/hostname'); return x * 2; }";
   assert.equal((await runTests(readTry, tests('dbl'), judge)).type, RESULT.ERROR);
 });
+
+test('the solution cannot fake a pass: early exit, patched assert, swallowed errors (found by an independent review)', async () => {
+  const wrong = 'function dbl(x){ return x + 1; }';
+  const cases = [
+    ['process.exit(0)', `${wrong}\nprocess.exit(0);`],
+    ['process.reallyExit(0)', `${wrong}\nprocess.reallyExit(0);`],
+    ['patched assert', `require('node:assert').deepEqual = () => {};\nrequire('node:assert').strictEqual = () => {};\n${wrong}`],
+    ['swallowed exception', `process.on('uncaughtException', () => {});\n${wrong}`],
+  ];
+  for (const [name, code] of cases) assert.notEqual((await runTests(code, tests('dbl'), judge)).type, RESULT.PASS, name);
+  assert.equal((await runTests('const dbl = (x) => x * 2;', tests('dbl'), judge)).type, RESULT.PASS, 'honest arrow function still passes');
+});

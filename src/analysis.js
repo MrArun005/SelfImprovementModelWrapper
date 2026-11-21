@@ -5,7 +5,7 @@ import path from 'node:path';
 import { variantStateDir } from './variants.js';
 import { readJsonl } from './recorder.js';
 import { readScores } from './metrics.js';
-import { readJson } from './util.js';
+import { readJson, isoDay } from './util.js';
 import { mean, pairedGroupCI, groupCI, didCI, pairedBootstrapP, holm } from './stats.js';
 
 const byStr = (f) => (a, b) => String(f(a)).localeCompare(String(f(b)));
@@ -54,7 +54,9 @@ function runBatches(vs) {
     const champ = vs.evals.find((e) => e.runId === g.runId && e.state === 'champion');
     if (!champ) continue;
     const cand = vs.evals.find((e) => e.runId === g.runId && e.state === 'candidate');
-    out.push({ runId: g.runId, ts: g.ts, runIndex: g.runIndex, decision: g.decision, batch: g.decision === 'accept' && cand ? cand : champ, champBatch: champ, candBatch: cand ?? null });
+    out.push({ runId: g.runId, ts: g.ts, runIndex: g.runIndex, decision: g.decision, // Always the champion's own measurement: on an accept day the candidate's batch is the one that won the gate on
+    // this very data (winner's curse), so the accepted change is reported from the next run's fresh measurement.
+    batch: champ, champBatch: champ, candBatch: cand ?? null });
   }
   return out;
 }
@@ -275,7 +277,11 @@ export function analyze(cfg) {
     for (const v of vs) {
       if (!control || v === control || !v._runs.length || !control._runs.length) continue;
       salt++;
-      const p = pairedCI(cfg, salt, problemGroups(control._runs.at(-1).batch), problemGroups(v._runs.at(-1).batch));
+      // same-day comparison only: the control run from the same UTC day as this variant's latest run
+      const vDay = isoDay(v._runs.at(-1).ts);
+      const cRun = [...control._runs].reverse().find((r) => isoDay(r.ts) === vDay);
+      if (!cRun) { comparisons.push({ variant: v.name, control: control.name, missing: `no control run on ${vDay}` }); continue; }
+      const p = pairedCI(cfg, salt, problemGroups(cRun.batch), problemGroups(v._runs.at(-1).batch));
       if (!p.ids.length) continue;
       const d = p.d;
       const pValue = pairedBootstrapP(p.a.map(mean), p.b.map(mean), statOpts(cfg, salt));
@@ -302,8 +308,9 @@ export function analyze(cfg) {
       return { class: c, controlDelta, learners, fixedBy, verdict };
     });
     // Holm-Bonferroni across this track's variant-vs-control comparisons (family-wise error at 1 - confidence)
-    const adjusted = holm(comparisons.map((c) => c.pValue));
-    comparisons.forEach((c, i) => { c.pHolm = adjusted[i]; c.significantHolm = adjusted[i] < 1 - cfg.stats.confidence; });
+    const tested = comparisons.filter((c) => !c.missing);
+    const adjusted = holm(tested.map((c) => c.pValue));
+    tested.forEach((c, i) => { c.pHolm = adjusted[i]; c.significantHolm = adjusted[i] < 1 - cfg.stats.confidence; });
     result.tracks[track] = { control: control?.name ?? null, variants: vs.map((v) => v.name), comparisons, taxonomyChange, difficulty: difficultyCheck(vs, track, cfg) };
   }
   for (const v of Object.values(result.variants)) { delete v._runs; delete v._base; }

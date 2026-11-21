@@ -303,7 +303,8 @@
       "^\\s+throw new AssertionError\\(obj\\);$",
       "^\\s+\\^$",
       "^Node\\.js v\\d+"
-    ]
+    ],
+    "markerBytes": 16
   },
   "gate": {
     "minImprovement": 0.025,
@@ -498,7 +499,7 @@
       "timeout": "the tests did not finish in time (usually an infinite loop)",
       "wrong-output": "the code runs but a test assertion fails",
       "spec-misread": "wrong function name or signature, or the function is missing",
-      "other": "non-zero exit with no recognisable error (e.g. process.exit, out of memory)"
+      "other": "non-zero exit with no recognisable error (e.g. process.exitCode set, out of memory)"
     }
   },
   "defaultTrack": "multipl-e",
@@ -741,10 +742,12 @@
         "3": 2
       },
       "testTimeoutMs": 5000,
-      "cacheDir": ".dry-run/curriculum"
+      "cacheDir": ".dry-run/curriculum",
+      "tapSummaryRequired": false
     },
     "functionPickTriesFactor": 4,
-    "detailChars": 20
+    "detailChars": 20,
+    "tapSummaryRequired": true
   },
   "analysis": {
     "plateauRuns": 3,

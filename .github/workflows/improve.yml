@@ -46,6 +46,9 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          # the branch head, not the trigger commit: a run that waited in the queue must see the state the
+          # previous run committed
+          ref: ${{ github.ref }}
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
@@ -77,6 +80,9 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          # the branch head, not the trigger commit: a run that waited in the queue must see the state the
+          # previous run committed
+          ref: ${{ github.ref }}
 
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
@@ -194,6 +200,9 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          # the branch head, not the trigger commit: a run that waited in the queue must see the state the
+          # previous run committed
+          ref: ${{ github.ref }}
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
@@ -242,6 +251,8 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.ref }}
 
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
@@ -279,7 +290,7 @@ jobs:
   pages:
     # Publishes the static dashboard. Needs Settings -> Pages -> Source: GitHub Actions.
     needs: [aggregate, commit]
-    if: ${{ !cancelled() && needs.aggregate.result == 'success' && vars.SIC_PAGES != 'off' }}
+    if: ${{ !cancelled() && needs.aggregate.result == 'success' && needs.commit.result == 'success' && vars.SIC_PAGES != 'off' }}
     runs-on: ubuntu-latest
     timeout-minutes: ${{ fromJSON(vars.SIC_PAGES_TIMEOUT_MINUTES || '10') }}
     permissions:

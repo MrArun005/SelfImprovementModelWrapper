@@ -17,7 +17,8 @@ export function holdoutSeries(rows) {
     const champ = rows.find((x) => x.runId === runId && x.split === 'holdout-champion');
     if (!champ) return null;
     const cand = rows.find((x) => x.runId === runId && x.split === 'holdout-candidate');
-    const p = cand && cand.gateDecision === 'accept' ? cand : champ;
+    // champion's measurement even on accept days (the winning candidate score is biased upward); see analysis.js
+    const p = champ;
     return { runId, date: champ.timestamp.slice(0, ISO_DATE_LEN), timestamp: champ.timestamp, y: p.passRate, low: p.ciLow ?? p.passRate, high: p.ciHigh ?? p.passRate, n: p.n, repeats: p.repeats, decision: champ.gateDecision };
   }).filter(Boolean);
 }

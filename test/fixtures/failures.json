@@ -7,5 +7,5 @@
   { "name": "wrong answer", "expected": "wrong-output", "code": "function add(a, b){ return a - b; }" },
   { "name": "wrong function name", "expected": "spec-misread", "code": "function sum(a, b){ return a + b; }" },
   { "name": "wrong arity", "expected": "spec-misread", "code": "function add(a){ return a; }" },
-  { "name": "exits without an error", "expected": "other", "code": "function add(a, b){ process.exit(3); }" }
+  { "name": "exits without an error", "expected": "other", "code": "function add(a, b){ process.exitCode = 3; return a + b; }" }
 ]

@@ -47,6 +47,13 @@ export function ensureRepo(cfg) {
   return { repoDir, depsDir };
 }
 
+/** True when a TAP summary reports N tests and N passes (N > 0) and no failures. */
+export function tapAllPassed(output) {
+  const tests = output.match(/^# tests\s+(\d+)\s*$/m);
+  const pass = output.match(/^# pass\s+(\d+)\s*$/m);
+  return Boolean(tests && pass && Number(tests[1]) > 0 && tests[1] === pass[1] && !/^# fail\s+[1-9]/m.test(output));
+}
+
 /** Test files to run, relative to the repo root, sorted. */
 export function testFiles(repoDir, c) {
   const dir = path.join(repoDir, c.testDir);
@@ -80,7 +87,10 @@ export async function runSuite(cfg, env, files = {}) {
     if (env.depsDir) fs.symlinkSync(path.join(env.depsDir, 'node_modules'), path.join(dir, 'node_modules'), 'dir');
     const runner = path.join(dir, c.runnerFile);
     fs.writeFileSync(runner, runnerSource(testFiles(env.repoDir, c), c.hideOkLines ? c.okLinePattern : null));
-    return await runNode({ dir, entry: runner, judgeCfg: cfg.judge, extraReadDirs: env.depsDir ? [env.depsDir] : [], timeoutMs: c.testTimeoutMs });
+    // With tape, a pass needs its own summary to show every test passed: a patched function that ends the process
+    // early (process.exit(0)) leaves no summary and is not a pass.
+    const completion = c.tapSummaryRequired ? { check: tapAllPassed } : null;
+    return await runNode({ dir, entry: runner, judgeCfg: cfg.judge, extraReadDirs: env.depsDir ? [env.depsDir] : [], timeoutMs: c.testTimeoutMs, completion });
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }

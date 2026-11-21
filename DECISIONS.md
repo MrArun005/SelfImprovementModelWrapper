@@ -253,6 +253,35 @@ GitHub created no run at all for the first scheduled time (2026-11-20 04:17 UTC)
 cron times and the plan job runs `src/ci/due.js`: if every variant already has a cycle dated today (UTC), all
 later jobs are skipped, so backups never train twice or spend the daily budget twice. A `force` input overrides.
 
+## 9e. Independent review (2026-11-21) and what changed
+
+A separate reviewer, given the code and not my conclusions, read the sandbox, the workflow and the statistics. Its
+confirmed findings, most severe first, and what was done:
+1. **Critical: model code could fake a pass.** The verdict was "exit code 0", and the solution ran first in the
+   same process as the tests: `process.exit(0)`, replacing `assert.deepEqual`, or an `uncaughtException` handler all
+   scored as passes (reproduced). Fixed: a harness loads solution and tests after freezing `node:assert` and
+   disabling `process.exit`/`reallyExit`/`abort`, and a pass needs a random completion marker printed only after the
+   last test ran. On the mutation track a pass needs tape's own summary (`# tests N` = `# pass N`, no failures).
+   Regression tests cover each trick. **Existing data:** none of the recorded passing train attempts used these
+   tricks (checked in every traces.jsonl); holdout attempts do not store code, so those cannot be checked the same way.
+   Residual: code that deliberately reads the harness file from disk could learn the marker.
+2. **High (stats): winner's curse.** On an accept day the reported score was the candidate batch that had just won
+   the gate on the same data. Reports and charts now always use the champion's own measurement, so an accepted
+   change is reported from the next run's fresh measurement.
+3. **Medium: pending changes got one evaluation too many** (`maxPendingRuns` 3 allowed 4). Fixed (`>=`). Still open:
+   items added to an existing pending set inherit its start run; no alpha spending across re-tests (measured cost in
+   docs/power.md).
+4. **Medium (CI): one failed variant made every variant train twice** when a backup cron re-ran the matrix. Fixed:
+   each variant skips itself if it already ran that UTC day (`SIC_FORCE=1` overrides); tested.
+5. **Medium (CI): a queued run decided on stale state** (checked out the trigger commit). Fixed: jobs check out the
+   branch head; Pages deploys only after a successful commit.
+6. **Low (stats): "same day" control comparisons could mix days.** Fixed: a variant is compared only with the
+   control's run from the same UTC day; otherwise the comparison is reported as missing.
+7. **Medium, open: no network isolation** (the sandbox could reach the local Ollama API, e.g. to delete the model,
+   affecting only that job). **Medium, open: the heap cap does not cover Buffers** (a solution could allocate GBs
+   and get the runner OOM-killed). Both need OS-level isolation (network namespace / cgroup) that GitHub's hosted
+   runners do not make simple; documented in the README.
+
 ## 10. Reproduction and the synthetic mock
 
 `npm run reproduce -- --variant=<name> --seed=<n>` runs simulated days with a fake clock, entirely offline.

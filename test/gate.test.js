@@ -31,9 +31,8 @@ test('applyDecision keep: champion unchanged, additions pending; stale pending d
   const c = applyDecision(champ(), cand, DECISION.KEEP, opts);
   assert.deepEqual(c.lessonIds, ['L1']);
   assert.deepEqual(c.pending, { lessonIds: ['L2'], skillIds: ['s2'], promptVersion: 'v002', sinceRun: 5 });
+  // maxPendingRuns 2 = at most 2 evaluations: the second 'keep' (run 6) ends it (the review found a 3rd slipped through)
   applyDecision(c, cand, DECISION.KEEP, { ...opts, runIndex: 6 });
-  assert.equal(c.pending.sinceRun, 5);
-  applyDecision(c, cand, DECISION.KEEP, { ...opts, runIndex: 7 }); // 3 runs pending > maxPendingRuns 2
   assert.deepEqual(c.pending.lessonIds, []);
 });
 

@@ -132,3 +132,11 @@ test('`node src/mutate/generate.js --dry-run` prints the manifest', () => {
   assert.ok(parsed.count > 0);
   assert.ok(parsed.manifest.every((m) => Number.isInteger(m.seed) && m.operators.length >= 1));
 });
+
+test('mutation track: a TAP run passes only with a summary showing every test passed', async () => {
+  const { tapAllPassed } = await import('../src/mutate/repo.js');
+  assert.equal(tapAllPassed('TAP version 13\n# tests 12\n# pass  12\n\n# ok\n'), true);
+  assert.equal(tapAllPassed('TAP version 13\n# tests 12\n# pass  11\n# fail  1\n'), false);
+  assert.equal(tapAllPassed('TAP version 13\nok 1 something\n'), false); // exited early: no summary
+  assert.equal(tapAllPassed('# tests 0\n# pass 0\n'), false);
+});

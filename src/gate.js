@@ -40,7 +40,8 @@ export function applyDecision(champion, candidate, decision, { runIndex, holdout
     champion.pending = emptyPending;
   } else if (decision === DECISION.KEEP || decision === DECISION.NO_EVAL) {
     const sinceRun = champion.pending.sinceRun ?? runIndex;
-    if (runIndex - sinceRun + 1 > maxPendingRuns) champion.pending = emptyPending; // stale: drop
+    // this was evaluation number (runIndex - sinceRun + 1); after maxPendingRuns evaluations the change is dropped
+    if (runIndex - sinceRun + 1 >= maxPendingRuns) champion.pending = emptyPending;
     else champion.pending = { ...added, sinceRun };
   } else if (decision === DECISION.REJECT) {
     champion.pending = emptyPending;

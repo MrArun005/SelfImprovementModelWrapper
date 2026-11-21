@@ -35,3 +35,19 @@ test('state written before lastRunDay existed: last-run.json timestamp counts', 
   assert.equal(isDue(cfg, { now: new Date('2026-11-20T10:17:00Z') }).due, false);
   assert.equal(isDue(cfg, { now: new Date('2026-11-21T04:17:00Z') }).due, true);
 });
+
+import { execFileSync } from 'node:child_process';
+import { ROOT } from '../src/config.js';
+import { tmpDir } from './helpers.js';
+
+test('the CLI skips a variant that already ran today (a backup cron re-running the matrix cannot train twice)', () => {
+  const stateDir = tmpDir();
+  const env = { ...process.env, SIC_FORCE: '', SIC_QUIET: '', SIC_CONFIG_OVERRIDES: JSON.stringify({
+    llm: { provider: 'mock' }, dataset: { useFixture: true }, split: { holdoutSize: 4 }, gate: { baselineRuns: 0 },
+    paths: { stateDir, chartsDir: stateDir }, budget: { reserveMinutesForHoldout: 0 } }) };
+  const run = () => execFileSync(process.execPath, ['src/run.js', '--variant=lessons-skills'], { cwd: ROOT, env }).toString();
+  assert.match(run(), /\[lessons-skills\] done:/);
+  assert.match(run(), /already ran today .*skipping/);
+  const forced = execFileSync(process.execPath, ['src/run.js', '--variant=lessons-skills'], { cwd: ROOT, env: { ...env, SIC_FORCE: '1' } }).toString();
+  assert.match(forced, /\[lessons-skills\] done:/);
+});

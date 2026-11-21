@@ -24,7 +24,7 @@ import { createTrack } from './tracks/index.js';
 import { classify } from './taxonomy.js';
 import { summarizeEval, pairedGroupCI } from './stats.js';
 import { variantConfig, listVariants } from './variants.js';
-import { seededShuffle, writeJson, log, argValue, hash32, ISO_DATE_LEN } from './util.js';
+import { seededShuffle, writeJson, log, argValue, hash32, ISO_DATE_LEN, today } from './util.js';
 
 export function loadSharedTemplates(cfg) {
   const dir = rootPath(cfg, cfg.paths.templatesDir);
@@ -362,7 +362,12 @@ async function main() {
   const args = parseArgs(process.argv.slice(2));
   const cfg = loadConfig({ dryRun: args.dryRun });
   const names = args.variant ? [args.variant] : listVariants(cfg);
+  const force = process.env.SIC_FORCE === '1' || args.dryRun;
   for (const variant of names) {
+    // one cycle per UTC day per variant: if this variant already ran today (e.g. a backup cron re-ran the matrix
+    // because another variant failed), skip it; SIC_FORCE=1 overrides
+    const vrs = loadMemory(variantConfig(cfg, variant)).runState;
+    if (!force && vrs.lastRunDay === today()) { log(`[${variant}] already ran today (${vrs.lastRunDay}); skipping`); continue; }
     const s = await runCycle({ cfg, variant });
     log(`[${variant}] done: ${s.decision}, ${s.requestsUsed} requests, ${s.tokensIn}+${s.tokensOut} tokens`);
   }

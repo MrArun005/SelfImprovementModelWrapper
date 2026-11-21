@@ -111,7 +111,7 @@ Share of champion holdout attempts in each class, first evaluated run vs latest.
 | timeout | the tests did not finish in time (usually an infinite loop) | +0.0 pts | Lessons -0.7 pts; Skills +0.0 pts; Lessons + skills +0.0 pts; Self-repair +0.0 pts; Sample + filter +0.0 pts; Full (lessons, self-repair, sample+filter, optimizer) -0.7 pts | not-reduced |
 | wrong-output | the code runs but a test assertion fails | +5.3 pts | Lessons +6.0 pts; Skills -0.7 pts; Lessons + skills +3.3 pts; Self-repair +2.0 pts; Sample + filter +1.3 pts; Full (lessons, self-repair, sample+filter, optimizer) -1.8 pts | not-reduced |
 | spec-misread | wrong function name or signature, or the function is missing | +0.0 pts | Lessons +0.0 pts; Skills +0.0 pts; Lessons + skills +0.0 pts; Self-repair +0.0 pts; Sample + filter +0.0 pts; Full (lessons, self-repair, sample+filter, optimizer) +0.0 pts | not-reduced |
-| other | non-zero exit with no recognisable error (e.g. process.exit, out of memory) | +0.0 pts | Lessons +0.0 pts; Skills +0.0 pts; Lessons + skills +0.0 pts; Self-repair +0.0 pts; Sample + filter +0.0 pts; Full (lessons, self-repair, sample+filter, optimizer) +0.0 pts | not-reduced |
+| other | non-zero exit with no recognisable error (e.g. process.exitCode set, out of memory) | +0.0 pts | Lessons +0.0 pts; Skills +0.0 pts; Lessons + skills +0.0 pts; Self-repair +0.0 pts; Sample + filter +0.0 pts; Full (lessons, self-repair, sample+filter, optimizer) +0.0 pts | not-reduced |
 
 **Which failure types does self-improvement fix here?** none so far. **Which does it not fix?** syntax, runtime-error, timeout, wrong-output, spec-misread, other.
 
@@ -124,7 +124,7 @@ Share of champion holdout attempts in each class, first evaluated run vs latest.
 | timeout | the tests did not finish in time (usually an infinite loop) | +0.0 pts | Mutation: lessons +0.0 pts | not-reduced |
 | wrong-output | the code runs but a test assertion fails | -1.1 pts | Mutation: lessons +0.0 pts | not-reduced |
 | spec-misread | wrong function name or signature, or the function is missing | +1.1 pts | Mutation: lessons +1.1 pts | not-reduced |
-| other | non-zero exit with no recognisable error (e.g. process.exit, out of memory) | +0.0 pts | Mutation: lessons +0.0 pts | not-reduced |
+| other | non-zero exit with no recognisable error (e.g. process.exitCode set, out of memory) | +0.0 pts | Mutation: lessons +0.0 pts | not-reduced |
 
 **Which failure types does self-improvement fix here?** none so far. **Which does it not fix?** syntax, runtime-error, timeout, wrong-output, spec-misread, other.
 

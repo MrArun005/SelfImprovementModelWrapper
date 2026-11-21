@@ -41,6 +41,10 @@ DECISIONS.md updated for any non-obvious choice, README claims backed by generat
 - [x] **Skills hurt (day 2).** Shown solutions lowered pass rates, most at high similarity (copying). `full` drops
   skills; skills now shown with the earlier statement + "different problem" warning (DECISIONS.md §4e).
 
+- [x] **Independent review.** 8 findings; fixed: faked passes (critical), winner's curse, pending off-by-one,
+  double training after a failed variant, stale checkouts / Pages after failed commit, cross-day control
+  comparisons. Open and documented: network isolation, Buffer memory (DECISIONS.md §9e).
+
 ## Next, in order
 
 0. **Capability levers (user asked to make the model as capable as possible).** In order of expected gain:
@@ -63,6 +67,6 @@ DECISIONS.md updated for any non-obvious choice, README claims backed by generat
 6. ~~**Gate re-test inflation.**~~ DONE. Make the pending re-test rule explicit in numbers: simulate the false-accept rate
    of "keep up to N runs" with the power simulator and report it in docs/power.md.
 7. **Dashboard:** curriculum level timeline, gate-log rows linked to their replays, per-variant anchors.
-8. **Independent review** (a fresh reviewer, not anchored on my reading) of the sandbox, workflow permissions and the
+8. ~~**Independent review**~~ DONE. (a fresh reviewer, not anchored on my reading) of the sandbox, workflow permissions and the
    statistics; fix what it finds.
 9. **Docs:** "how to read the dashboard" section; final pass on README/DECISIONS consistency.

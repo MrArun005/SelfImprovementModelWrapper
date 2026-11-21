@@ -144,8 +144,13 @@ track), no writes, no child processes, no workers. The `aggregate` job runs this
 artifacts as data and escapes everything it puts into HTML. Only the `commit` job can push, and it only
 copies files; it refuses symlinks.
 
-**Not isolated:** same OS user (a Node permission-model bypass would expose the runner's files), and
-**no network isolation** (generated code can open sockets; it has no credentials to send). Model-written
+The verdict itself is protected too (after an independent review showed `process.exit(0)` could fake a pass):
+`node:assert` is frozen and `process.exit` disabled before the solution runs, and a pass needs a random marker
+printed only after the last test; on the mutation track, tape's summary must show every test passing.
+
+**Not isolated:** same OS user (a Node permission-model bypass would expose the runner's files); **no network
+isolation** (generated code can open sockets, including to the local Ollama API; it has no credentials to send);
+the heap limit does not cap Buffer memory, so a solution could exhaust the runner's RAM. Model-written
 lessons and skills are committed to the repo as data; they could contain prompt-injection text aimed
 at later prompts, which the holdout gate limits but does not prevent.
 
