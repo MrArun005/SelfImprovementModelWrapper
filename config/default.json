@@ -1018,7 +1018,7 @@
       "dtype": "float32",
       "gradientCheckpointing": true,
       "threads": 0,
-      "maxTrainSeconds": 7200,
+      "maxTrainSeconds": 10800,
       "logEverySteps": 5,
       "checkpointEverySteps": 10
     },

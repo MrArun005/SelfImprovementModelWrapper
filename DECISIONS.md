@@ -186,7 +186,7 @@ fixed 1.5B model can do with better notes. Variant `finetune` (lever `finetune`)
   gradient checkpointing: without it a full local run was OOM-killed at ~14 GB)
   on CPU in a separate `finetune` job, retrained **from scratch each cycle** on the whole dataset (deterministic in
   the data; no adapter binaries in git). Measured in a runner-sized container: about 5 s per example, so 340
-  examples x 2 epochs is about an hour; `finetune.train.maxTrainSeconds` (2 h) caps it as the data grows. Base model
+  examples x 2 epochs is about an hour; `finetune.train.maxTrainSeconds` (3 h; day 3 on the runner ran at 16 s per example and stopped at 1.3 of 2 epochs under the old 2 h cap) caps it as the data grows. Base model
   and every package are pinned (`finetune.baseRevision` + a SHA-256 per file, `pythonPackages`, `llamaCppCommit`). On the runner, with
   gradient checkpointing, expect ~8-10 s per example; `maxTrainSeconds` stops training cleanly if the data outgrows it.
 - **Serving and fairness.** Three smoke runs found what Ollama 0.40 no longer does: it refuses LoRA adapters, only

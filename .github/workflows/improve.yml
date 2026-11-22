@@ -69,7 +69,7 @@ jobs:
     needs: plan
     if: ${{ needs.plan.outputs.due == 'true' && needs.plan.outputs.finetune_variant != '' }}
     runs-on: ubuntu-latest
-    timeout-minutes: ${{ fromJSON(vars.SIC_FINETUNE_TIMEOUT_MINUTES || '180') }}
+    timeout-minutes: ${{ fromJSON(vars.SIC_FINETUNE_TIMEOUT_MINUTES || '240') }}
     permissions:
       contents: read
     env:

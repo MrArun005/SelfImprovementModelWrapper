@@ -139,7 +139,7 @@ Optional repo **variables** (Settings → Secrets and variables → Actions → 
 |---|---|
 | `SIC_CONFIG_OVERRIDES` | JSON merged over `config/default.json`, e.g. `{"llm":{"model":"qwen2.5-coder:3b"},"eval":{"repeats":5}}` |
 | `SIC_IMPROVE_TIMEOUT_MINUTES` | timeout of each variant's job (default 170) |
-| `SIC_FINETUNE_TIMEOUT_MINUTES` | timeout of the fine-tuning job (default 180) |
+| `SIC_FINETUNE_TIMEOUT_MINUTES` | timeout of the fine-tuning job (default 240) |
 | `SIC_MAX_PARALLEL` | how many variant jobs run at once (default 7) |
 | `SIC_PAGES` | `off` to skip the Pages deploy |
 
