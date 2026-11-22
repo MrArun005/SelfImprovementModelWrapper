@@ -66,3 +66,11 @@ test('trainer reads every setting from the generated settings file (no literals)
   for (const k of Object.keys(cfg.finetune.train)) if (k !== 'threads') assert.match(py, new RegExp(`s\\["${k}"\\]|s\\.get\\("${k}"\\)`), k);
   assert.doesNotMatch(py, /Qwen|huggingface\.co|https?:\/\//);
 });
+
+test('base model files are pinned by SHA-256 and fetched through the mirror script', () => {
+  for (const [f, sha] of Object.entries(cfg.finetune.baseFiles)) assert.match(sha, /^[0-9a-f]{64}$/, f);
+  assert.ok(cfg.finetune.baseMirrors.length >= 2, 'a fallback mirror');
+  const yml = fs.readFileSync(path.join(ROOT, '.github/workflows/improve.yml'), 'utf8');
+  assert.match(yml, /run: bash tools\/finetune\/fetch-base\.sh/);
+  assert.match(fs.readFileSync(path.join(ROOT, 'tools/finetune/fetch-base.sh'), 'utf8'), /sha256sum -c/);
+});

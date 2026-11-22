@@ -108,33 +108,15 @@ jobs:
           "$HOME/.sic-venv/bin/pip" install -q --index-url "$TORCH_INDEX" "$TORCH_PACKAGE"
           read -ra pkgs <<< "$PACKAGES"
           "$HOME/.sic-venv/bin/pip" install -q "${pkgs[@]}"
-      - name: Base model files (pinned revision; plain downloads with retries and a time limit)
+      - name: Base model files (pinned SHA-256; mirrors tried in turn, resumable retries, time limit)
         timeout-minutes: ${{ fromJSON(steps.cfg.outputs.ft_download_step_minutes) }}
         env:
           BASE_REVISION: ${{ steps.cfg.outputs.ft_base_revision }}
-          URLS: ${{ steps.cfg.outputs.ft_base_urls }}
+          FILES: ${{ steps.cfg.outputs.ft_base_files }}
+          MIRRORS: ${{ steps.cfg.outputs.ft_base_mirrors }}
           RETRIES: ${{ steps.cfg.outputs.ft_download_retries }}
           MAX_SECONDS: ${{ steps.cfg.outputs.ft_download_max_seconds }}
-        run: |
-          set -euo pipefail
-          dir="$HOME/.sic-hf/$BASE_REVISION"
-          mkdir -p "$dir"
-          read -ra urls <<< "$URLS"
-          for u in "${urls[@]}"; do
-            f="$dir/${u##*/}"
-            if [ -s "$f" ]; then echo "cached: ${u##*/}"; continue; fi
-            echo "downloading ${u##*/}"
-            # resumable: a retry continues the partial file instead of starting over
-            ok=0
-            for i in $(seq "$RETRIES"); do
-              if curl -fL -C - --max-time "$MAX_SECONDS" -sS -o "$f.part" "$u"; then ok=1; break; fi
-              echo "attempt $i interrupted, resuming"
-              sleep $((i * 5))
-            done
-            [ "$ok" = 1 ] || { echo "::error::could not download ${u##*/}"; exit 1; }
-            mv "$f.part" "$f"
-          done
-          ls -la "$dir"
+        run: bash tools/finetune/fetch-base.sh
       - name: Save the cache now (so a later failure doesn't force a full re-download)
         if: steps.ftcache.outputs.cache-hit != 'true'
         uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0

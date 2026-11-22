@@ -38,7 +38,9 @@ Object.assign(out, {
   ft_base_model: ft.baseModel,
   ft_base_revision: ft.baseRevision,
   ft_ollama_model: ft.ollamaModel,
-  ft_base_urls: ft.baseFiles.map((f) => ft.baseFileUrl.replace('{model}', ft.baseModel).replace('{revision}', ft.baseRevision).replace('{file}', f)).join(' '),
+  // file:sha256 pairs; mirrors are URL templates with {file} left for the download script
+  ft_base_files: Object.entries(ft.baseFiles).map(([f, sha]) => `${f}:${sha}`).join(' '),
+  ft_base_mirrors: ft.baseMirrors.map((m) => m.replace('{model}', ft.baseModel).replace('{revision}', ft.baseRevision)).join(' '),
   ft_download_retries: ft.downloadRetries,
   ft_download_max_seconds: ft.downloadMaxSeconds,
   ft_download_step_minutes: ft.downloadStepMinutes,
