@@ -16,10 +16,12 @@ import json
 import math
 import os
 import random
+import shutil
 import time
 
 import torch
-from peft import LoraConfig, get_peft_model
+from peft import LoraConfig, get_peft_model, set_peft_model_state_dict
+from safetensors.torch import load_file
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 
@@ -78,12 +80,38 @@ def main():
     sched = torch.optim.lr_scheduler.LambdaLR(
         opt, lambda st: (st + 1) / warm if st < warm else max(0.0, (total_steps - st) / max(1, total_steps - warm)))
 
+    # Checkpoint/resume: a killed or restarted process continues where it stopped (same order, optimizer state,
+    # elapsed time counted against the budget) instead of starting over.
+    ckpt = s.get("checkpointDir")
+    every = s.get("checkpointEverySteps") or 0
+    losses, seen, steps, stopped, start_i, spent = [], 0, 0, "finished", 0, 0.0
+    if ckpt and os.path.exists(os.path.join(ckpt, "state.json")):
+        st = json.load(open(os.path.join(ckpt, "state.json"), encoding="utf-8"))
+        set_peft_model_state_dict(model, load_file(os.path.join(ckpt, "adapter", "adapter_model.safetensors")))
+        o = torch.load(os.path.join(ckpt, "optim.pt"), weights_only=False)
+        opt.load_state_dict(o["opt"])
+        sched.load_state_dict(o["sched"])
+        losses, seen, steps, start_i, spent = st["losses"], st["seen"], st["steps"], st["nextIndex"], st["seconds"]
+        print(f"resumed from checkpoint at step {steps} ({seen} examples, {spent:.0f}s already spent)", flush=True)
+
+    def save_checkpoint(next_i):
+        tmp = ckpt + ".tmp"
+        shutil.rmtree(tmp, ignore_errors=True)
+        model.save_pretrained(os.path.join(tmp, "adapter"))
+        torch.save({"opt": opt.state_dict(), "sched": sched.state_dict()}, os.path.join(tmp, "optim.pt"))
+        with open(os.path.join(tmp, "state.json"), "w", encoding="utf-8") as f:
+            json.dump({"losses": losses, "seen": seen, "steps": steps, "nextIndex": next_i,
+                       "seconds": spent + time.time() - train_start}, f)
+        shutil.rmtree(ckpt, ignore_errors=True)
+        os.replace(tmp, ckpt)
+
     model.train()
-    losses, seen, steps, stopped = [], 0, 0, "finished"
-    deadline = t0 + s["maxTrainSeconds"]
+    deadline = time.time() + s["maxTrainSeconds"] - spent
     train_start = time.time()
     running = 0.0
     for i, idx in enumerate(order):
+        if i < start_i:
+            continue
         if time.time() > deadline:
             stopped = "time-limit"
             break
@@ -101,15 +129,17 @@ def main():
             losses.append(round(running, 4))
             running = 0.0
             if steps % s["logEverySteps"] == 0:
-                el = time.time() - train_start
+                el = spent + time.time() - train_start
                 print(f"step {steps}/{total_steps} loss {losses[-1]:.4f} examples {seen} {el / seen:.1f}s/example", flush=True)
+            if ckpt and every and steps % every == 0:
+                save_checkpoint(i + 1)
     model.save_pretrained(s["adapterDir"])
     metrics = {
         "examples": len(examples), "usable": len(encoded), "skippedTooLong": skipped, "examplesSeen": seen,
         "epochsPlanned": s["epochs"], "steps": steps, "stepsPlanned": total_steps, "stopped": stopped,
         "lossFirst": losses[0] if losses else None, "lossLast": losses[-1] if losses else None,
         "lossMeanLastTenth": round(sum(losses[-max(1, len(losses) // 10):]) / max(1, len(losses[-max(1, len(losses) // 10):])), 4) if losses else None,
-        "secondsTotal": round(time.time() - t0, 1), "secondsPerExample": round((time.time() - train_start) / max(1, seen), 2),
+        "secondsTotal": round(time.time() - t0 + spent, 1), "secondsPerExample": round((spent + time.time() - train_start) / max(1, seen), 2),
     }
     with open(s["metricsFile"], "w", encoding="utf-8") as f:
         json.dump(metrics, f, indent=2)

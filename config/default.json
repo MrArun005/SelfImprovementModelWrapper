@@ -1012,7 +1012,9 @@
       "gradientCheckpointing": true,
       "threads": 0,
       "maxTrainSeconds": 7200,
-      "logEverySteps": 5
-    }
+      "logEverySteps": 5,
+      "checkpointEverySteps": 10
+    },
+    "checkpointDir": "checkpoint"
   }
 }

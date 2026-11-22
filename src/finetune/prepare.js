@@ -81,7 +81,7 @@ export async function prepare(cfg, { variant, outDir, baseDir }) {
   writeJson(path.join(outDir, ft.settingsFile), {
     ...t, seed: ft.seed, baseDir: path.resolve(baseDir), datasetFile: path.resolve(datasetFile),
     adapterDir: path.resolve(outDir, ft.adapterDir), metricsFile: path.resolve(outDir, ft.metricsFile),
-    mergedDir: path.resolve(outDir, ft.mergedDir), mergedDtype: ft.mergedDtype,
+    mergedDir: path.resolve(outDir, ft.mergedDir), mergedDtype: ft.mergedDtype, checkpointDir: path.resolve(outDir, ft.checkpointDir),
   });
   writeJson(path.join(outDir, ft.manifestFile), manifest);
   return manifest;
