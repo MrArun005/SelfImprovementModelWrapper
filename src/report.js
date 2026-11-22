@@ -235,6 +235,14 @@ export function buildReport(cfg, a) {
     L.push('');
     L.push(table(['lesson', 'status', 'born from', 'retrieved (train)', 'passing when retrieved'], best.map((l) => [`${l.id}: ${l.text}`, l.status, `${l.born.problemId} (${l.born.failureClass})`, l.trainRetrievals, l.trainPasses])));
     L.push('');
+    const eff = v.lessonEffects ?? [];
+    L.push(`**Lesson effect (observational, not an experiment).** Train attempts that retrieved a lesson vs train attempts in the same runs that did not, the lesson's own problem excluded; retrieval follows the problem's topic, so this is confounded and only the controlled variant comparisons above are evidence. ${eff.length ? `${eff.filter((e) => e.effect > 0).length} of ${eff.length} lessons with at least ${cfg.analysis.lessonEffectMinUses} uses had a higher pass rate when retrieved.` : `No lesson has at least ${cfg.analysis.lessonEffectMinUses} uses and comparable attempts yet.`}`);
+    L.push('');
+    if (eff.length) {
+      const show = [...eff.slice(0, cfg.analysis.reportTopLessons), ...eff.slice(-cfg.analysis.reportTopLessons)].filter((e, i, arr) => arr.findIndex((x) => x.id === e.id) === i);
+      L.push(table(['lesson', 'uses', 'pass rate when retrieved', 'pass rate without (same runs)', 'difference'], show.map((e) => [e.id, e.uses, pct(e.withRate), `${pct(e.withoutRate)} (n=${e.comparable})`, pts(e.effect)])));
+      L.push('');
+    }
     if (v.conflicts.length) {
       L.push('**Lessons that conflicted** (retrieved together on failed attempts, with a lower pass rate together than either alone):');
       L.push('');

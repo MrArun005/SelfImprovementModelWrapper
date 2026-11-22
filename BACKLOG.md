@@ -72,8 +72,9 @@ DECISIONS.md updated for any non-obvious choice, README claims backed by generat
 4. ~~**Reflection quality metrics.**~~ DONE (see Done). Rate of reflections that produced no usable lesson, duplicate-lesson rate,
    near-duplicate merging (token Jaccard above a configured threshold), and the expected/actual values given to the
    reflection prompt explicitly.
-5. **Lesson effect estimate (observational, labelled as such).** Per lesson: pass rate of train attempts where it
-   was retrieved vs comparable attempts without it.
+5. ~~**Lesson effect estimate**~~ DONE (`analysis.lessonEffects`, REPORT.md "Lesson effect"): per lesson with >= 5 uses,
+   train pass rate when retrieved vs the same runs without it, own problem excluded; labelled observational. After
+   day 3 about half the lessons (12 of 28) look positive: consistent with the variant comparisons (no clear effect).
 6. ~~**Gate re-test inflation.**~~ DONE. Make the pending re-test rule explicit in numbers: simulate the false-accept rate
    of "keep up to N runs" with the power simulator and report it in docs/power.md.
 7. **Dashboard:** curriculum level timeline. (Per-variant anchors DONE with the leaderboard; gate-log rows now link to the

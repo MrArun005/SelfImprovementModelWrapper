@@ -788,7 +788,8 @@
         "tooHard": "lower curriculum.maxFunctionChars, start at level 1 only (curriculum.holdoutCount), or favour simpler operators (curriculum.operators weights)",
         "tooEasy": "raise curriculum.maxFunctionChars or the weight of harder operators (drop-branch, swap-arguments)"
       }
-    }
+    },
+    "lessonEffectMinUses": 5
   },
   "reproduce": {
     "days": 7,

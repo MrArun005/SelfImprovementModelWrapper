@@ -131,6 +131,26 @@ function genealogy(vs) {
 }
 
 /**
+ * Observational lesson effect (not an experiment: retrieval depends on the problem's topic, so confounded). Per lesson
+ * with enough uses: pass rate of train attempts that retrieved it vs train attempts in the same runs that did not,
+ * both excluding the problem the lesson was born on (its pinned verification retry would flatter it).
+ */
+export function lessonEffects(vs, minUses) {
+  const train = vs.attempts.filter((a) => a.phase === 'train');
+  return vs.traces.filter((t) => t.lessonCreated).map((b) => {
+    const id = b.lessonCreated;
+    const after = train.filter((a) => a.ts >= b.ts && a.problemId !== b.problemId);
+    const withL = after.filter((a) => (a.lessonIds ?? []).includes(id));
+    const runs = new Set(withL.map((a) => a.runId));
+    const without = after.filter((a) => runs.has(a.runId) && !(a.lessonIds ?? []).includes(id));
+    const rate = (rows) => (rows.length ? rows.filter((a) => a.result === 'pass').length / rows.length : null);
+    const w = rate(withL);
+    const wo = rate(without);
+    return { id, uses: withL.length, comparable: without.length, withRate: w, withoutRate: wo, effect: w !== null && wo !== null ? w - wo : null };
+  }).filter((e) => e.uses >= minUses && e.comparable >= minUses).sort((x, y) => y.effect - x.effect || byStr((e) => e.id)(x, y));
+}
+
+/**
  * What happened to every reflection: rejected (problem-specific / unparsable), a duplicate, or a lesson; and of the
  * lessons, how many were verified (a later attempt on the same problem in the same run, with the lesson in its
  * prompt, passed). Per run, so a change in the lesson rules shows up as a change between runs.
@@ -255,6 +275,7 @@ export function analyze(cfg) {
       cost: costOf(vs),
       taxonomy: taxonomyByRun(vs, classes),
       lessons: genealogy(vs),
+      lessonEffects: lessonEffects(vs, cfg.analysis.lessonEffectMinUses),
       reflection: reflectionQuality(vs.traces),
       conflicts: conflicts(vs, cfg.analysis.minConflictCount),
       replays: replays(vs, cfg.analysis.maxReplaysPerVariant),

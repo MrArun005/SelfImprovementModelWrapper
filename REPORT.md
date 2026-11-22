@@ -233,6 +233,18 @@ Every failed train attempt in a lesson-learning variant is reflected on. A lesso
 | L0100: When dealing with odd natural numbers, it's important to remember that odd numbers can be represented as 2k - 1, where k is a positive integer. This relationship helps in simplifying the calculation of the sum of squares of odd… | dropped | mbpp_267_square_Sum (wrong-output) | 5 | 3 |
 | L0004: When checking if a number is undulating, ensure to loop from 0 to the second last digit of the string representation of the number. This approach ensures all digits are consecutive except for the first and last digits, which must… | dropped | mbpp_92_is_undulating (wrong-output) | 5 | 2 |
 
+**Lesson effect (observational, not an experiment).** Train attempts that retrieved a lesson vs train attempts in the same runs that did not, the lesson's own problem excluded; retrieval follows the problem's topic, so this is confounded and only the controlled variant comparisons above are evidence. 3 of 7 lessons with at least 5 uses had a higher pass rate when retrieved.
+
+| lesson | uses | pass rate when retrieved | pass rate without (same runs) | difference |
+|---|---|---|---|---|
+| L0005 | 12 | 58.3% | 44.4% (n=63) | +13.9 pts |
+| L0002 | 12 | 50.0% | 46.0% (n=63) | +4.0 pts |
+| L0009 | 6 | 50.0% | 46.4% (n=69) | +3.6 pts |
+| L0028 | 7 | 42.9% | 47.1% (n=68) | -4.2 pts |
+| L0001 | 19 | 42.1% | 48.2% (n=56) | -6.1 pts |
+| L0004 | 5 | 40.0% | 47.1% (n=70) | -7.1 pts |
+| L0006 | 7 | 14.3% | 50.0% (n=68) | -35.7 pts |
+
 **Lessons that conflicted** (retrieved together on failed attempts, with a lower pass rate together than either alone):
 
 - L0001 + L0002: failed together 4 of 6 times (pass rate together 33.3%, alone 40.0% / 50.0%)
@@ -255,6 +267,20 @@ Every failed train attempt in a lesson-learning variant is reflected on. A lesso
 | L0019: When counting the number of uppercase characters in a string, ensure the loop iterates up to the last character to capture all occurrences. | dropped | mbpp_461_upper_ctr (wrong-output) | 10 | 4 |
 | L0002: When checking if a number is undulating, ensure to consider both consecutive digits and the first and last digit. If any digit does not match the pattern of consecutive digits, the number is not undulating. | dropped | mbpp_92_is_undulating (wrong-output) | 12 | 3 |
 | L0006: When comparing arrays, ensure to compare the second element of each array (the second value) rather than the entire array. This will correctly identify the array with the smallest second value and return its index. | dropped | mbpp_94_index_minimum (wrong-output) | 5 | 3 |
+
+**Lesson effect (observational, not an experiment).** Train attempts that retrieved a lesson vs train attempts in the same runs that did not, the lesson's own problem excluded; retrieval follows the problem's topic, so this is confounded and only the controlled variant comparisons above are evidence. 4 of 9 lessons with at least 5 uses had a higher pass rate when retrieved.
+
+| lesson | uses | pass rate when retrieved | pass rate without (same runs) | difference |
+|---|---|---|---|---|
+| L0005 | 7 | 100.0% | 49.3% (n=71) | +50.7 pts |
+| L0004 | 8 | 62.5% | 51.4% (n=70) | +11.1 pts |
+| L0006 | 5 | 60.0% | 53.4% (n=73) | +6.6 pts |
+| L0020 | 11 | 54.5% | 53.7% (n=67) | +0.8 pts |
+| L0001 | 10 | 50.0% | 54.4% (n=68) | -4.4 pts |
+| L0019 | 9 | 44.4% | 55.1% (n=69) | -10.6 pts |
+| L0009 | 13 | 38.5% | 56.9% (n=65) | -18.5 pts |
+| L0002 | 11 | 27.3% | 58.2% (n=67) | -30.9 pts |
+| L0010 | 6 | 16.7% | 56.9% (n=72) | -40.3 pts |
 
 **Lessons that conflicted** (retrieved together on failed attempts, with a lower pass rate together than either alone):
 
@@ -279,6 +305,23 @@ Every failed train attempt in a lesson-learning variant is reflected on. A lesso
 | L0006: When comparing strings, use strict equality (`===`) instead of loose equality (`==`) to avoid unexpected results due to type coercion. | dropped | mbpp_9_find_Rotations (wrong-output) | 11 | 4 |
 | L0009: When comparing arrays, ensure to compare the second element of each array (the value) instead of the array itself. This will correctly identify the array with the smallest second value, as the comparison is based on the value rather than… | dropped | mbpp_94_index_minimum (wrong-output) | 6 | 4 |
 
+**Lesson effect (observational, not an experiment).** Train attempts that retrieved a lesson vs train attempts in the same runs that did not, the lesson's own problem excluded; retrieval follows the problem's topic, so this is confounded and only the controlled variant comparisons above are evidence. 5 of 12 lessons with at least 5 uses had a higher pass rate when retrieved.
+
+| lesson | uses | pass rate when retrieved | pass rate without (same runs) | difference |
+|---|---|---|---|---|
+| L0009 | 5 | 80.0% | 48.5% (n=97) | +31.5 pts |
+| L0019 | 10 | 60.0% | 48.9% (n=92) | +11.1 pts |
+| L0010 | 9 | 55.6% | 49.5% (n=93) | +6.1 pts |
+| L0020 | 9 | 55.6% | 49.5% (n=93) | +6.1 pts |
+| L0013 | 13 | 53.8% | 49.4% (n=89) | +4.4 pts |
+| L0008 | 5 | 40.0% | 50.5% (n=97) | -10.5 pts |
+| L0006 | 11 | 36.4% | 51.6% (n=91) | -15.3 pts |
+| L0005 | 20 | 35.0% | 53.7% (n=82) | -18.7 pts |
+| L0001 | 15 | 26.7% | 54.0% (n=87) | -27.4 pts |
+| L0012 | 9 | 22.2% | 52.7% (n=93) | -30.5 pts |
+| L0011 | 5 | 20.0% | 51.5% (n=97) | -31.5 pts |
+| L0014 | 5 | 20.0% | 51.5% (n=97) | -31.5 pts |
+
 **Lessons that conflicted** (retrieved together on failed attempts, with a lower pass rate together than either alone):
 
 - L0001 + L0005: failed together 9 of 11 times (pass rate together 18.2%, alone 25.0% / 33.3%)
@@ -301,6 +344,20 @@ Every failed train attempt in a lesson-learning variant is reflected on. A lesso
 | L0004: When dealing with paths that include leading or trailing C0 controls or spaces, ensure that the normalization function does not remove these characters. This can lead to incorrect normalization and ultimately, incorrect results when resolving the paths. | dropped | mut-train-L1-1903249690 (spec-misread) | 6 | 0 |
 | L0005: When dealing with paths that include leading or trailing C0 controls or spaces, ensure that the normalization function does not remove these characters. This can lead to incorrect normalization results and may affect the behavior of other functions that rely… | dropped | mut-train-L1-1903249690 (spec-misread) | 4 | 0 |
 | L0006: When dealing with leading or trailing C0 controls or spaces in strings, it's important to ensure that the string is properly normalized before processing. This can be done by removing any unwanted characters before performing any operations that depend on… | dropped | mut-train-L1-1852225285 (wrong-output) | 2 | 0 |
+
+**Lesson effect (observational, not an experiment).** Train attempts that retrieved a lesson vs train attempts in the same runs that did not, the lesson's own problem excluded; retrieval follows the problem's topic, so this is confounded and only the controlled variant comparisons above are evidence. 2 of 9 lessons with at least 5 uses had a higher pass rate when retrieved.
+
+| lesson | uses | pass rate when retrieved | pass rate without (same runs) | difference |
+|---|---|---|---|---|
+| L0001 | 12 | 8.3% | 4.3% (n=47) | +4.1 pts |
+| L0002 | 29 | 6.9% | 6.7% (n=30) | +0.2 pts |
+| L0004 | 5 | 0.0% | 7.4% (n=54) | -7.4 pts |
+| L0031 | 5 | 0.0% | 7.4% (n=54) | -7.4 pts |
+| L0019 | 6 | 0.0% | 7.5% (n=53) | -7.5 pts |
+| L0007 | 7 | 0.0% | 7.7% (n=52) | -7.7 pts |
+| L0009 | 7 | 0.0% | 7.7% (n=52) | -7.7 pts |
+| L0015 | 11 | 0.0% | 8.3% (n=48) | -8.3 pts |
+| L0016 | 11 | 0.0% | 8.3% (n=48) | -8.3 pts |
 
 **Lessons that conflicted** (retrieved together on failed attempts, with a lower pass rate together than either alone):
 
