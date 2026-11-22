@@ -1,4 +1,25 @@
 {
-  "nextId": 77,
-  "items": []
+  "nextId": 110,
+  "items": [
+    {
+      "id": "L0094",
+      "text": "When a function fails to correctly escape characters, it can lead to incorrect results. In this case, the `escapePreservingEscapes` function was failing because it was missing the escape character for the underscore character. Adding the missing escape character resolved the…",
+      "tags": [
+        "escape",
+        "characters",
+        "function",
+        "error",
+        "missing character",
+        "safe"
+      ],
+      "sourceProblem": "mut-train-L1-3017418999",
+      "sourceResult": "error",
+      "sourceClass": "syntax",
+      "sourceAttempt": 1,
+      "createdRun": 5,
+      "uses": 1,
+      "helped": 1,
+      "verified": true
+    }
+  ]
 }
