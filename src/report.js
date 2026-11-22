@@ -275,9 +275,9 @@ export function readmeBlock(cfg, a) {
   for (const [track, t] of Object.entries(a.tracks)) {
     const rows = leaderboard(a, track);
     if (rows.length) {
-      L.push(`**${track}**: points vs the control on the same day, best first (control at ${pct(a.variants[t.control]?.latest?.passRate)}).`, '');
+      L.push(`**${cfg.groupTitles?.[track] ?? track}**: points vs the control on the same day, best first (control at ${pct(a.variants[t.control]?.latest?.passRate)}).`, '');
       L.push(table(['Variant', 'Pass rate', 'vs control', '95% CI', 'p (Holm)', 'vs own start, net of control'],
-        rows.map((r) => [r.label, pct(r.passRate), r.vsControl ? pts(r.vsControl.estimate) : 'n/a',
+        rows.map((r) => [`${r.label}${r.active ? '' : ' (stopped)'}`, pct(r.passRate), r.vsControl ? pts(r.vsControl.estimate) : 'n/a',
           r.vsControl ? `${pts(r.vsControl.low)} to ${pts(r.vsControl.high)}` : 'n/a',
           r.pHolm === null ? 'n/a' : `${fmtNum(r.pHolm, PVAL_DIGITS)}${r.significantHolm ? ' (significant)' : ''}`,
           r.vsStart ? pts(r.vsStart.estimate) : 'n/a'])), '');

@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { loadConfig, rootPath } from './config.js';
 import { readScores } from './metrics.js';
-import { variantStateDir } from './variants.js';
+import { variantStateDir, groupOf } from './variants.js';
 import { writeText, ISO_DATE_LEN } from './util.js';
 
 const escXml = (s) => String(s).replace(/[<>&"']/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -25,7 +25,7 @@ export function holdoutSeries(rows) {
 
 /** Read every variant of `track` from disk. */
 export function loadTrackSeries(cfg, track) {
-  return cfg.variants.filter((v) => v.track === track).map((v) => {
+  return cfg.variants.filter((v) => groupOf(v) === track).map((v) => {
     const file = path.resolve(cfg.root, variantStateDir(cfg, v.name), cfg.paths.scores);
     return { name: v.name, label: v.label, color: v.color, rows: readScores(file) };
   });

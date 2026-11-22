@@ -97,11 +97,11 @@ ${v.control ? '' : `<div class="small">vs control: <strong>${c ? `${pts(c.estima
     }).join('');
     const lb = leaderboard(a, track);
     const board = lb.length ? `<div class="leaderboard">${tableHtml(['#', 'Variant', 'vs control (pts)', '95% CI', 'p after Holm', 'vs own start, net of control (pts)'],
-      lb.map((r, i) => [String(i + 1), `<a href="#variant-${slug(r.variant)}">${esc(r.label)}</a>`, `<strong>${r.vsControl ? pts(r.vsControl.estimate) : 'n/a'}</strong> ${badge(r.vsControl)}`,
+      lb.map((r, i) => [String(i + 1), `<a href="#variant-${slug(r.variant)}">${esc(r.label)}</a>${r.active ? '' : ' <span class="badge muted" title="no longer run daily; latest result shown">stopped</span>'}`, `<strong>${r.vsControl ? pts(r.vsControl.estimate) : 'n/a'}</strong> ${badge(r.vsControl)}`,
         r.vsControl ? `[${pts(r.vsControl.low)}, ${pts(r.vsControl.high)}]` : 'n/a', r.pHolm === null ? 'n/a' : `${r.pHolm.toFixed(PVAL_DIGITS)}${r.significantHolm ? ' ✓' : ''}`,
         r.vsStart ? pts(r.vsStart.estimate) : 'n/a']), 'board')}</div>` : '';
     const title = cfg.charts.find((c) => c.track === track)?.title ?? track;
-    return `<section class="track"><h3>${esc(track === 'multipl-e' ? 'MultiPL-E (HumanEval + MBPP, JavaScript)' : `Mutation repair (${cfg.curriculum.name}, contamination-free)`)}</h3>
+    return `<section class="track"><h3>${esc(cfg.groupTitles?.[track] ?? track)}</h3>
 ${board}<div class="cards">${cards}</div><figure class="chart">${renderChart(loadTrackSeries(cfg, track), chartCfg, title)}</figure></section>`;
   }).join('');
   parts.push(`<section id="headline"><h2>Holdout pass rate</h2><p class="lede">Each variant toggles one lever and keeps its own memory. Bands are 95% bootstrap confidence intervals (problems and repeats resampled); "significant" means the CI of the difference excludes zero. The control learns nothing, so its movement is the noise floor.</p>${headline}</section>`);

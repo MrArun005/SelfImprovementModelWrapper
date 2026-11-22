@@ -5,14 +5,14 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { loadConfig, rootPath } from '../config.js';
-import { variantStateDir } from '../variants.js';
+import { variantStateDir, activeVariants } from '../variants.js';
 import { today, ISO_DATE_LEN } from '../util.js';
 
 export function isDue(cfg, { force = false, now = new Date() } = {}) {
   if (force) return { due: true, reason: 'forced' };
   const day = today(now);
   const read = (file) => { try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return null; } };
-  const pending = cfg.variants.filter((v) => {
+  const pending = activeVariants(cfg).filter((v) => {
     const dir = rootPath(cfg, variantStateDir(cfg, v.name));
     // run-state.lastRunDay; for cycles written before that field existed, last-run.json's timestamp
     const ranOn = read(path.join(dir, cfg.paths.runState))?.lastRunDay ?? read(path.join(dir, cfg.paths.lastRun))?.timestamp?.slice(0, ISO_DATE_LEN);

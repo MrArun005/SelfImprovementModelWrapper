@@ -3,7 +3,7 @@
 //   node src/ci/config-out.js                    -> global values + matrix (JSON list of variant names)
 //   node src/ci/config-out.js --variant=<name>   -> also that variant's track and state dir
 import { loadConfig } from '../config.js';
-import { variantConfig, servedModel } from '../variants.js';
+import { variantConfig, servedModel, activeVariants } from '../variants.js';
 
 const cfg = loadConfig();
 const rt = cfg.runtime;
@@ -28,7 +28,9 @@ const out = {
   site_dir: cfg.site.outFile.split('/').slice(0, -1).join('/') || '.',
   curriculum_cache: cfg.curriculum.cacheDir,
   dataset_cache: cfg.dataset.cacheDir,
-  matrix: JSON.stringify(cfg.variants.map((v) => v.name)),
+  matrix: JSON.stringify(activeVariants(cfg).map((v) => v.name)),
+  // per-variant job time limits (a larger model needs longer); default runtime.improveJobMinutes
+  timeouts: JSON.stringify(Object.fromEntries(activeVariants(cfg).map((v) => [v.name, v.jobMinutes ?? rt.improveJobMinutes]))),
 };
 // fine-tuning (expert iteration): the first variant with the finetune lever, and everything its job needs
 const ftVariant = cfg.variants.find((v) => v.levers?.finetune)?.name ?? '';
@@ -69,6 +71,8 @@ if (variant) {
   const served = servedModel(cfg, vc.variant.levers);
   out.served = String(Boolean(served));
   out.served_artifact = served?.artifact ?? '';
+  // the stock Ollama model this job pulls: the variant's own model, or the base its served model is built on
+  out.pull_model = served ? cfg.llm.model : vc.llm.model;
   out.variant_model = vc.llm.model;
 }
 for (const [k, v] of Object.entries(out)) {

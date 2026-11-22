@@ -74,7 +74,7 @@ Variants are data (`config.variants`; this list is checked against the config by
 `baseline` (**control**: no memory, no inference-time levers), `lessons`, `skills`, `lessons-skills`, `self-repair`
 (§4b), `sample-filter` (§4c), `full` (lessons + self-repair + sample-filter + prompt optimizer; skills removed after
 day 2, §4e), `finetune` (the model's weights trained on its own verified solutions, §4g), `finetune-base` (its untrained
-reference, §4g), `full-finetuned` (every lever stacked on the fine-tuned weights, §4h), `mutation-baseline`
+reference, §4g), `full-finetuned` (every lever stacked on the fine-tuned weights, §4h), `baseline-7b` and `full-7b` (§4i), `mutation-baseline`
 (control) and `mutation-lessons`. Each has its own `state/variants/<name>/`, its own
 budget share, and its own job in the matrix.
 The workflow's matrix is read from config by the `plan` job, so adding a variant is a config change only.
@@ -228,6 +228,23 @@ fixed 1.5B model can do with better notes. Variant `finetune` (lever `finetune`)
 - **Stable seeds.** Bootstrap seeds were a running counter over the variant list, so adding a variant moved other
   variants' CIs slightly. They are now hashed from the variant's name (one-time shift of every CI by bootstrap noise;
   e.g. `full` Holm p 0.592 -> 0.680), with a test that adding a variant leaves the others unchanged.
+
+## 4i. After day 3: stop what shows nothing, add a 7B track
+
+- **Stopped** (`active: false`; history stays in every report, labelled "stopped"): `lessons`, `skills`,
+  `lessons-skills`, `self-repair`, `mutation-baseline`, `mutation-lessons`. After 3 days each was within ±1.3 pts of
+  its control with CIs across zero (mutation flat at 16.7%), and each cost a runner and a budget share every day.
+- **Why not a bigger exam instead.** The natural fix for wide CIs is more held-out problems, but MultiPL-E JavaScript
+  has 558 problems: 50 holdout + 508 train, and after 3 days every train problem has been practised on (lessons
+  verified on them, solutions in the fine-tuning data). Moving any of them into the holdout would test on seen
+  problems. So the holdout stays at 50.
+- **7B track** (`group: multipl-e-7b`, its own control `baseline-7b` and `full-7b` = the `full` levers): same dataset,
+  same 50 holdout problems, `qwen2.5-coder:7b` via per-variant `overrides` (`eval.repeats` 1, longer
+  `budget.maxRunMinutes`, `jobMinutes` 330 of the 360 a free runner allows) because a 7B model answers ~4-5x slower
+  on 4 CPUs. Model size is the largest single lever on these benchmarks; this measures it, and whether the levers
+  still help on a stronger base. Fine-tuning stays at 1.5B (7B training needs ~28 GB RAM).
+- Budget: every active variant keeps 420 requests per unit share (total = 420 x active shares = 3,780).
+- Results are grouped by `group` (default: track): each group has its own control, leaderboard and chart.
 
 ## 5. Evaluation and statistics
 

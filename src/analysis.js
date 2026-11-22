@@ -2,7 +2,7 @@
 // Deterministic: no clocks, no randomness except seeded bootstrap; stable sort orders everywhere.
 import fs from 'node:fs';
 import path from 'node:path';
-import { variantStateDir } from './variants.js';
+import { variantStateDir, groupOf } from './variants.js';
 import { readJsonl } from './recorder.js';
 import { readScores } from './metrics.js';
 import { readJson, isoDay, hash32 } from './util.js';
@@ -16,6 +16,8 @@ export function loadVariantState(cfg, v) {
   const exists = fs.existsSync(dir);
   return {
     ...v,
+    group: groupOf(v),
+    active: v.active !== false,
     dir,
     exists,
     champion: exists ? readJson(p('champion'), null) : null,
@@ -253,7 +255,8 @@ export function difficultyCheck(vs, track, cfg) {
 export function analyze(cfg) {
   const classes = cfg.taxonomy.classes;
   const variants = cfg.variants.map((v) => loadVariantState(cfg, v));
-  const tracks = [...new Set(variants.map((v) => v.track))];
+  // results are grouped by comparison group (default: track); each group has its own control
+  const tracks = [...new Set(variants.map((v) => v.group))];
   const result = { tracks: {}, variants: {}, generatedFrom: { runs: 0, lastTs: null } };
   // Bootstrap seeds are derived from the variant's name, not its position, so adding or reordering variants never
   // changes another variant's confidence intervals.
@@ -268,7 +271,7 @@ export function analyze(cfg) {
       vsBaseline = { baseline: mean(p.a.map(mean)), latest: mean(p.b.map(mean)), estimate: p.d.estimate, low: p.d.low, high: p.d.high, n: p.ids.length, significant: p.d.low > 0 || p.d.high < 0 };
     }
     result.variants[vs.name] = {
-      name: vs.name, label: vs.label, track: vs.track, color: vs.color, levers: vs.levers, control: Boolean(vs.control),
+      name: vs.name, label: vs.label, track: vs.track, group: vs.group, active: vs.active, color: vs.color, levers: vs.levers, control: Boolean(vs.control),
       runs: runs.map((r) => ({ runId: r.runId, ts: r.ts, runIndex: r.runIndex, decision: r.decision, ...summarizeBatch(r.batch, cfg, salt) })),
       latest: latest ? { runId: latest.runId, ts: latest.ts, ...summarizeBatch(latest.batch, cfg, salt) } : null,
       vsBaseline,
@@ -293,7 +296,7 @@ export function analyze(cfg) {
   }
   // per track: each variant vs the control variant on the same day's problems
   for (const track of tracks) {
-    const vs = Object.values(result.variants).filter((v) => v.track === track);
+    const vs = Object.values(result.variants).filter((v) => v.group === track);
     const control = vs.find((v) => v.control) ?? null;
     const comparisons = [];
     for (const v of vs) {
@@ -333,7 +336,7 @@ export function analyze(cfg) {
     const tested = comparisons.filter((c) => !c.missing);
     const adjusted = holm(tested.map((c) => c.pValue));
     tested.forEach((c, i) => { c.pHolm = adjusted[i]; c.significantHolm = adjusted[i] < 1 - cfg.stats.confidence; });
-    result.tracks[track] = { control: control?.name ?? null, variants: vs.map((v) => v.name), comparisons, taxonomyChange, difficulty: difficultyCheck(vs, track, cfg) };
+    result.tracks[track] = { control: control?.name ?? null, variants: vs.map((v) => v.name), comparisons, taxonomyChange, difficulty: difficultyCheck(vs, vs[0]?.track ?? track, cfg) };
   }
   for (const v of Object.values(result.variants)) { delete v._runs; delete v._base; }
   return result;
@@ -350,7 +353,7 @@ export function leaderboard(a, track) {
   return t.variants.filter((n) => !a.variants[n].control).map((n) => {
     const v = a.variants[n];
     const c = comp.get(n) ?? null;
-    return { variant: n, label: v.label, passRate: v.latest?.passRate ?? null, vsControl: c, vsStart: v.vsBaselineAdjusted ?? null,
+    return { variant: n, label: v.label, active: v.active !== false, passRate: v.latest?.passRate ?? null, vsControl: c, vsStart: v.vsBaselineAdjusted ?? null,
       pValue: c?.pValue ?? null, pHolm: c?.pHolm ?? null, significant: !!c?.significant, significantHolm: !!c?.significantHolm };
   }).sort((x, y) => (y.vsControl?.estimate ?? -Infinity) - (x.vsControl?.estimate ?? -Infinity) || x.variant.localeCompare(y.variant));
 }

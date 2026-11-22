@@ -2,9 +2,18 @@
 // its share of the request budget. variantConfig() returns a config whose paths/budget/features are
 // specialised for one variant, so the rest of the code doesn't need to know about variants.
 import path from 'node:path';
+import { deepMerge } from './config.js';
+
+/** Variants that still run daily (`active: false` keeps a stopped variant's history in the reports). */
+export function activeVariants(cfg) {
+  return cfg.variants.filter((v) => v.active !== false);
+}
+
+/** Comparison group: variants are compared with the control of their group (default: their track). */
+export const groupOf = (v) => v.group ?? v.track;
 
 export function listVariants(cfg) {
-  return cfg.variants.map((v) => v.name);
+  return activeVariants(cfg).map((v) => v.name);
 }
 
 export function getVariant(cfg, name) {
@@ -19,8 +28,10 @@ export function variantStateDir(cfg, name) {
 
 /** Budget for one variant = total x share / sum(shares), floored. */
 export function variantBudget(cfg, name) {
-  const total = cfg.variants.reduce((s, v) => s + v.budgetShare, 0);
-  const share = getVariant(cfg, name).budgetShare / total;
+  const self = getVariant(cfg, name);
+  const pool = activeVariants(cfg).some((v) => v.name === name) ? activeVariants(cfg) : [...activeVariants(cfg), self];
+  const total = pool.reduce((s, v) => s + v.budgetShare, 0);
+  const share = self.budgetShare / total;
   const b = cfg.budget;
   const requestsPerRun = Math.floor(b.totalRequestsPerRun * share);
   return {
@@ -38,8 +49,10 @@ export function servedModel(cfg, levers) {
   return null;
 }
 
-export function variantConfig(cfg, name) {
-  const v = getVariant(cfg, name);
+export function variantConfig(baseCfg, name) {
+  const v = getVariant(baseCfg, name);
+  // per-variant config overrides (e.g. a larger model with fewer eval repeats and a longer time budget)
+  const cfg = v.overrides ? deepMerge(baseCfg, v.overrides) : baseCfg;
   const levers = { lessons: false, skills: false, promptOptimizer: false, selfRepair: false, sampleFilter: false, finetune: false, requantizedBase: false, ...v.levers };
   return {
     ...cfg,

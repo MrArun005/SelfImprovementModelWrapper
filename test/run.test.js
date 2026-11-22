@@ -8,6 +8,7 @@ import { createLLM } from '../src/llm/index.js';
 import { readJson } from '../src/util.js';
 import { COLUMNS } from '../src/metrics.js';
 import { ROOT, loadConfig } from '../src/config.js';
+import { activeVariants, groupOf } from '../src/variants.js';
 import { testConfig, writeSplit, tmpDir, vdir } from './helpers.js';
 
 test('`node src/run.js --dry-run` runs a full cycle for every variant and writes scores.csv + charts', () => {
@@ -17,7 +18,7 @@ test('`node src/run.js --dry-run` runs a full cycle for every variant and writes
   execFileSync(process.execPath, ['src/run.js', '--dry-run'], { cwd: ROOT, env: { ...process.env, SIC_QUIET: '1',
     SIC_CONFIG_OVERRIDES: JSON.stringify({ paths: { stateDir, chartsDir }, curriculum: { fixture: { cacheDir } } }) } });
   const cfg = loadConfig({ dryRun: true, env: {} });
-  for (const v of cfg.variants) {
+  for (const v of activeVariants(cfg)) {
     const dir = path.join(stateDir, 'variants', v.name);
     const scores = fs.readFileSync(path.join(dir, 'scores.csv'), 'utf8').trim().split('\n');
     assert.equal(scores[0], COLUMNS.join(','), v.name);
@@ -27,7 +28,10 @@ test('`node src/run.js --dry-run` runs a full cycle for every variant and writes
       assert.ok(fs.existsSync(path.join(dir, f)), `${v.name}/${f}`);
     }
   }
-  for (const c of cfg.charts) assert.match(fs.readFileSync(path.join(chartsDir, c.file), 'utf8'), /<polyline/);
+  const runGroups = new Set(activeVariants(cfg).map(groupOf));
+  for (const c of cfg.charts.filter((x) => runGroups.has(x.track))) assert.match(fs.readFileSync(path.join(chartsDir, c.file), 'utf8'), /<polyline/);
+  // stopped variants are not run
+  for (const v of cfg.variants.filter((x) => x.active === false)) assert.ok(!fs.existsSync(path.join(stateDir, 'variants', v.name, 'scores.csv')), v.name);
 });
 
 test('running out of budget mid-training stops gracefully and still writes state + scores', async () => {
@@ -71,7 +75,9 @@ test('holdout problems are never trained on or reflected on', async () => {
 
 // Phase 5 acceptance: with the flag off, behaviour is identical to phase 4.
 async function snapshot(features, evolvePrompt) {
-  const cfg = testConfig({ features, promptOptimizer: { everyNRuns: 1 }, variants: [{ name: 'lessons-skills', track: 'multipl-e', levers: { lessons: true, skills: true, promptOptimizer: true }, budgetShare: 1, color: '#000' }] });
+  // generous judge timeout: under a loaded test machine a fixture solution must not flip to "timeout" in one of the
+  // two runs being compared (that, not the optimizer, made this test flaky)
+  const cfg = testConfig({ features, judge: { timeoutMs: 60000 }, promptOptimizer: { everyNRuns: 1 }, variants: [{ name: 'lessons-skills', track: 'multipl-e', levers: { lessons: true, skills: true, promptOptimizer: true }, budgetShare: 1, color: '#000' }] });
   writeSplit(cfg, ['fx_sum_to_n', 'fx_count_even_in_range', 'fx_max_of_list', 'fx_first_char'], ['fx_product_range', 'fx_reverse_words']);
   const llm = createLLM(cfg);
   const fixedNow = () => new Date('2026-11-20T03:17:00Z');

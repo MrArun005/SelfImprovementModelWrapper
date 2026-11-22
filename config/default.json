@@ -176,11 +176,12 @@
     "setupRetries": 3,
     "setupRetryDelaySec": 15,
     "warmupTimeoutSec": 300,
-    "warmupTokens": 4
+    "warmupTokens": 4,
+    "improveJobMinutes": 170
   },
   "budget": {
-    "totalRequestsPerRun": 5670,
-    "totalRequestsPerDay": 6480,
+    "totalRequestsPerRun": 3780,
+    "totalRequestsPerDay": 4320,
     "holdoutFraction": 0.72,
     "maxRunMinutes": 125,
     "reserveMinutesForHoldout": 70
@@ -535,7 +536,9 @@
         "lessons": true
       },
       "budgetShare": 1,
-      "color": "#2563eb"
+      "color": "#2563eb",
+      "active": false,
+      "stoppedReason": "no measurable effect after 3 days (day 3: within ±1.3 pts of the control, CIs across zero); budget moved to the contenders and the 7B track"
     },
     {
       "name": "skills",
@@ -545,7 +548,9 @@
         "skills": true
       },
       "budgetShare": 1,
-      "color": "#d97706"
+      "color": "#d97706",
+      "active": false,
+      "stoppedReason": "no measurable effect after 3 days (day 3: within ±1.3 pts of the control, CIs across zero); budget moved to the contenders and the 7B track"
     },
     {
       "name": "lessons-skills",
@@ -556,7 +561,9 @@
         "skills": true
       },
       "budgetShare": 1,
-      "color": "#16a34a"
+      "color": "#16a34a",
+      "active": false,
+      "stoppedReason": "no measurable effect after 3 days (day 3: within ±1.3 pts of the control, CIs across zero); budget moved to the contenders and the 7B track"
     },
     {
       "name": "self-repair",
@@ -566,7 +573,9 @@
         "selfRepair": true
       },
       "budgetShare": 1,
-      "color": "#0891b2"
+      "color": "#0891b2",
+      "active": false,
+      "stoppedReason": "no measurable effect after 3 days (day 3: within ±1.3 pts of the control, CIs across zero); budget moved to the contenders and the 7B track"
     },
     {
       "name": "sample-filter",
@@ -634,7 +643,9 @@
       "levers": {},
       "budgetShare": 1,
       "color": "#6b7280",
-      "control": true
+      "control": true,
+      "active": false,
+      "stoppedReason": "no measurable effect after 3 days (day 3: within ±1.3 pts of the control, CIs across zero); budget moved to the contenders and the 7B track"
     },
     {
       "name": "mutation-lessons",
@@ -644,7 +655,60 @@
         "lessons": true
       },
       "budgetShare": 1,
-      "color": "#2563eb"
+      "color": "#2563eb",
+      "active": false,
+      "stoppedReason": "no measurable effect after 3 days (day 3: within ±1.3 pts of the control, CIs across zero); budget moved to the contenders and the 7B track"
+    },
+    {
+      "name": "baseline-7b",
+      "label": "7B: no memory (control)",
+      "track": "multipl-e",
+      "group": "multipl-e-7b",
+      "levers": {},
+      "budgetShare": 0.5,
+      "color": "#374151",
+      "control": true,
+      "overrides": {
+        "llm": {
+          "model": "qwen2.5-coder:7b"
+        },
+        "eval": {
+          "repeats": 1
+        },
+        "budget": {
+          "maxRunMinutes": 300,
+          "reserveMinutesForHoldout": 200
+        }
+      },
+      "jobMinutes": 330
+    },
+    {
+      "name": "full-7b",
+      "label": "7B: full (lessons, self-repair, sample+filter, optimizer)",
+      "track": "multipl-e",
+      "group": "multipl-e-7b",
+      "levers": {
+        "lessons": true,
+        "skills": false,
+        "promptOptimizer": true,
+        "selfRepair": true,
+        "sampleFilter": true
+      },
+      "budgetShare": 1,
+      "color": "#7c3aed",
+      "overrides": {
+        "llm": {
+          "model": "qwen2.5-coder:7b"
+        },
+        "eval": {
+          "repeats": 1
+        },
+        "budget": {
+          "maxRunMinutes": 300,
+          "reserveMinutesForHoldout": 200
+        }
+      },
+      "jobMinutes": 330
     }
   ],
   "eval": {
@@ -673,6 +737,11 @@
       "file": "chart-mutation.svg",
       "track": "mutation",
       "title": "Mutation-repair holdout pass rate by variant (95% CI)"
+    },
+    {
+      "file": "chart-7b.svg",
+      "track": "multipl-e-7b",
+      "title": "MultiPL-E holdout pass rate, 7B model (95% CI)"
     }
   ],
   "curriculum": {
@@ -1043,5 +1112,10 @@
       "checkpointEverySteps": 10
     },
     "checkpointDir": "checkpoint"
+  },
+  "groupTitles": {
+    "multipl-e": "MultiPL-E (HumanEval + MBPP, JavaScript), 1.5B model",
+    "multipl-e-7b": "MultiPL-E (HumanEval + MBPP, JavaScript), 7B model",
+    "mutation": "Mutation repair (contamination-free)"
   }
 }

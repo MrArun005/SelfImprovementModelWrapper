@@ -43,6 +43,7 @@ jobs:
       matrix: ${{ steps.cfg.outputs.matrix }}
       due: ${{ steps.due.outputs.due }}
       finetune_variant: ${{ steps.cfg.outputs.finetune_variant }}
+      timeouts: ${{ steps.cfg.outputs.timeouts }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -227,7 +228,8 @@ jobs:
     needs: [plan, finetune]
     if: ${{ !cancelled() && needs.plan.outputs.due == 'true' }}
     runs-on: ubuntu-latest
-    timeout-minutes: ${{ fromJSON(vars.SIC_IMPROVE_TIMEOUT_MINUTES || '170') }}
+    # per variant from config (variants[].jobMinutes, default runtime.improveJobMinutes): a 7B model needs longer
+    timeout-minutes: ${{ fromJSON(needs.plan.outputs.timeouts)[matrix.variant] }}
     permissions:
       contents: read
     strategy:
@@ -266,7 +268,7 @@ jobs:
           path: |
             ~/.sic-ollama
             ~/.ollama/models
-          key: ollama-${{ steps.cfg.outputs.ollama_version }}-${{ steps.cfg.outputs.model }}
+          key: ollama-${{ steps.cfg.outputs.ollama_version }}-${{ steps.cfg.outputs.pull_model }}
 
       - name: Cache mutation curriculum (pinned repo, dev packages, generated tasks)
         if: steps.cfg.outputs.track == 'mutation'
@@ -280,7 +282,7 @@ jobs:
         env:
           OLLAMA_URL: ${{ steps.cfg.outputs.ollama_url }}
           OLLAMA_HOST: ${{ steps.cfg.outputs.ollama_host }}
-          MODEL: ${{ steps.cfg.outputs.model }}
+          MODEL: ${{ steps.cfg.outputs.pull_model }}
           READY_TIMEOUT: ${{ steps.cfg.outputs.ollama_ready_timeout }}
           RETRIES: ${{ steps.cfg.outputs.setup_retries }}
           RETRY_DELAY: ${{ steps.cfg.outputs.setup_retry_delay }}
