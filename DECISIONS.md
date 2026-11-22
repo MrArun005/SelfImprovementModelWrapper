@@ -74,7 +74,7 @@ Variants are data (`config.variants`; this list is checked against the config by
 `baseline` (**control**: no memory, no inference-time levers), `lessons`, `skills`, `lessons-skills`, `self-repair`
 (§4b), `sample-filter` (§4c), `full` (lessons + self-repair + sample-filter + prompt optimizer; skills removed after
 day 2, §4e), `finetune` (the model's weights trained on its own verified solutions, §4g), `finetune-base` (its untrained
-reference, §4g), `mutation-baseline`
+reference, §4g), `full-finetuned` (every lever stacked on the fine-tuned weights, §4h), `mutation-baseline`
 (control) and `mutation-lessons`. Each has its own `state/variants/<name>/`, its own
 budget share, and its own job in the matrix.
 The workflow's matrix is read from config by the `plan` job, so adding a variant is a config change only.
@@ -201,9 +201,29 @@ fixed 1.5B model can do with better notes. Variant `finetune` (lever `finetune`)
   need two models evaluated per day); its effect is the daily paired comparison with the control, with the same CIs
   and Holm correction as every other lever. If it is significantly worse, the report says so.
 - **Budget.** Adding a variant would have shrunk every other variant's requests; `budget.totalRequestsPerRun` was
-  raised to 5,040 (two new variants) so a unit share stays 420 requests and the running experiment is unchanged.
+  raised to 5,670 (three new variants) so a unit share stays 420 requests and the running experiment is unchanged.
 - **Mock / dry run.** The mock ignores model names, so in tests `finetune` behaves like the control; the training
   path is exercised by the smoke run (`smoke.finetune`: 40 examples, 5 minutes).
+
+## 4h. Day 3 → 4: hard wins, the stacked variant, and a product that follows the evidence
+
+- **Hard wins.** Day 3: fine-tuning on all verified solutions did nothing measurable (`finetune` vs `finetune-base`
+  -0.7 pts [-8.0, +4.7]; local probe on 60 never-solved problems 32 vs 31). Training loss started at 0.078: the
+  model already assigns high probability to its own easy solutions, so there is little to learn from them. From day 4
+  the data focuses on what the system learned the hard way: problems that failed at least once somewhere or were only
+  solved on a retry keep up to `finetune.maxSolutionsPerProblem` distinct solutions and are repeated `hardWeight`
+  times; easy problems keep `easyMaxSolutionsPerProblem`. One epoch over the weighted set (389 solutions, 94 hard
+  problems, 539 examples) fits the 3 h cap at the runner's ~16 s/example.
+- **`full-finetuned`.** The fine-tuned weights with every inference lever (lessons, self-repair, sample+filter, prompt
+  optimizer), share 1.5. If fine-tuning and the levers are complementary, this is the best system; if not, the
+  comparison with `full` shows it. Budget raised so every unit share stays 420 requests.
+- **The product follows the evidence.** `product.variant` = `auto`: `npm run solve` uses the variant with the highest
+  lower 95% bound of its gain over the control in the committed results (the most reliably good, not the luckiest),
+  among variants that run on the stock model; `--variant` overrides, `product.fallbackVariant` covers no data. As the
+  daily runs change the evidence, the product changes with it.
+- **Stable seeds.** Bootstrap seeds were a running counter over the variant list, so adding a variant moved other
+  variants' CIs slightly. They are now hashed from the variant's name (one-time shift of every CI by bootstrap noise;
+  e.g. `full` Holm p 0.592 -> 0.680), with a test that adding a variant leaves the others unchanged.
 
 ## 5. Evaluation and statistics
 
@@ -253,7 +273,7 @@ small real gains.
 
 `budget.totalRequestsPerRun` is split across variants by `budgetShare`: 420 requests per unit of share (the
 sample-based `sample-filter` and `full` have share 1.5, i.e. 630, because their evaluation costs more), so the total
-grows with the number of variants (it started at 2,940 for 7 equal variants; 5,040 since `finetune` and `finetune-base` were added). `holdoutFraction` 0.72 of each
+grows with the number of variants (it started at 2,940 for 7 equal variants; 5,670 since `finetune`, `finetune-base` and `full-finetuned` were added). `holdoutFraction` 0.72 of each
 variant's share is reserved for evaluation (50 problems x 3 repeats x champion + candidate = 300 at share 1).
 Variant jobs run on separate runners in parallel, so the split is about fairness and run time, not a shared quota.
 The counter is checked **before** every model call; a time limit (`maxRunMinutes`, with `reserveMinutesForHoldout`)

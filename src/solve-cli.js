@@ -10,7 +10,8 @@
 // code is printed to stdout and a short verdict to stderr. Needs the configured model (Ollama) unless --mock.
 import fs from 'node:fs';
 import { loadConfig } from './config.js';
-import { variantConfig } from './variants.js';
+import { variantConfig, servedModel } from './variants.js';
+import { analyze, leaderboard } from './analysis.js';
 import { createLLM } from './llm/index.js';
 import { loadMemory, readPrompt } from './memory.js';
 import { attemptWithChecks } from './agent/attempt.js';
@@ -33,8 +34,24 @@ export function stubToTask(stub) {
   return { id: 'cli', prompt: `${prompt}\n`, entryPoint, vars: { prompt }, keywordText: `${comments} ${entryPoint}` };
 }
 
+/**
+ * The product follows the evidence: with product.variant = "auto" it uses the variant whose gain over the control has
+ * the highest lower 95% bound in the committed results (the most reliably good one, not the luckiest), among variants
+ * that run on the stock model (a fine-tuned model only exists inside the CI run). No data yet -> product.fallbackVariant.
+ */
+export function pickProductVariant(cfg, a) {
+  const runnable = (name) => !servedModel(cfg, variantConfig(cfg, name).variant.levers);
+  const rows = leaderboard(a, cfg.product.track).filter((r) => r.vsControl && runnable(r.variant));
+  if (!rows.length) return { variant: cfg.product.fallbackVariant, why: 'no comparisons with the control yet' };
+  const best = rows.reduce((b, r) => (r.vsControl.low > b.vsControl.low ? r : b));
+  return { variant: best.variant, why: `highest lower bound of the gain over the control (${(best.vsControl.estimate * 100).toFixed(1)} pts, 95% CI from ${(best.vsControl.low * 100).toFixed(1)})` };
+}
+
 export async function solveStub({ cfg: baseCfg, stub, variant, llm }) {
-  const cfg = variantConfig(baseCfg, variant ?? baseCfg.product.variant);
+  let chosen = variant ?? baseCfg.product.variant;
+  let why = variant ? 'chosen with --variant' : 'product.variant';
+  if (chosen === 'auto') ({ variant: chosen, why } = pickProductVariant(baseCfg, analyze(baseCfg)));
+  const cfg = variantConfig(baseCfg, chosen);
   const task = stubToTask(stub);
   const mem = loadMemory(cfg);
   const lv = cfg.variant.levers;
@@ -56,7 +73,7 @@ export async function solveStub({ cfg: baseCfg, stub, variant, llm }) {
     examplesPass: check ? check.type === RESULT.PASS : null,
     output: check?.output ?? '',
     requests: a.requests, samples: a.samplesDrawn, repairs: a.repairsDone,
-    variant: cfg.variant.name, lessonsAvailable: memory.lessons.length, promptVersion: mem.champion.promptVersion,
+    variant: cfg.variant.name, why, lessonsAvailable: memory.lessons.length, promptVersion: mem.champion.promptVersion,
   };
 }
 
@@ -70,7 +87,7 @@ async function main() {
   const verdict = r.examplesPass === null ? 'no worked examples in the stub, so the answer is unchecked'
     : r.examplesPass ? `passes all ${r.examples} worked examples`
       : `does NOT pass the worked examples:\n${r.output.split('\n').filter((l) => / should be /.test(l)).join('\n') || r.output}`;
-  process.stderr.write(`\n[${r.variant}, prompt ${r.promptVersion}, ${r.lessonsAvailable} lessons, ${r.samples} sample(s), ${r.repairs} repair(s), ${r.requests} model calls] ${verdict}\n`);
+  process.stderr.write(`\n[${r.variant} (${r.why}), prompt ${r.promptVersion}, ${r.lessonsAvailable} lessons, ${r.samples} sample(s), ${r.repairs} repair(s), ${r.requests} model calls] ${verdict}\n`);
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {

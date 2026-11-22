@@ -27,23 +27,29 @@ const normalise = (code) => code.replace(/\s+/g, ' ').trim();
  * @param train  Set of train problem ids; holdout Set of holdout ids
  * @returns {{picked: Array<{problemId, code, variant, ts}>, excludedHoldout: number, notTrain: number}}
  */
-export function selectSolutions(rows, { train, holdout, maxPerProblem, maxExamples, seed }) {
+export function selectSolutions(rows, { train, holdout, maxPerProblem, maxExamples, seed, easyMaxPerProblem = maxPerProblem, hardWeight = 1 }) {
   let excludedHoldout = 0;
   let notTrain = 0;
   const byProblem = new Map();
+  // Hard wins: problems that failed at least once somewhere, or were only solved on a retry. These are where the
+  // system learned something the base model does not do by default, so they get more solutions and more weight.
+  const hard = new Set(rows.filter((r) => r.result !== 'pass' || (r.attempt ?? 1) > 1).map((r) => r.problemId));
   const sorted = [...rows].filter((r) => r.result === 'pass' && r.code)
     .sort((a, b) => String(a.ts).localeCompare(String(b.ts)) || String(a.variant).localeCompare(String(b.variant)));
   for (const r of sorted) {
     if (holdout.has(r.problemId)) { excludedHoldout++; continue; }
     if (!train.has(r.problemId)) { notTrain++; continue; }
     const list = byProblem.get(r.problemId) ?? [];
-    if (list.length >= maxPerProblem || list.some((x) => normalise(x.code) === normalise(r.code))) continue;
-    list.push({ problemId: r.problemId, code: r.code, variant: r.variant, ts: r.ts });
+    const cap = hard.has(r.problemId) ? maxPerProblem : easyMaxPerProblem;
+    if (list.length >= cap || list.some((x) => normalise(x.code) === normalise(r.code))) continue;
+    list.push({ problemId: r.problemId, code: r.code, variant: r.variant, ts: r.ts, hard: hard.has(r.problemId) });
     byProblem.set(r.problemId, list);
   }
   let picked = [...byProblem.keys()].sort().flatMap((id) => byProblem.get(id));
   if (picked.length > maxExamples) picked = seededShuffle(picked, seed).slice(0, maxExamples);
-  return { picked, excludedHoldout, notTrain };
+  // weighting = repetition (the trainer shuffles), so a hard win is seen hardWeight times per epoch
+  const weighted = picked.flatMap((p) => Array(p.hard ? hardWeight : 1).fill(p));
+  return { picked, weighted, excludedHoldout, notTrain, hardProblems: new Set(picked.filter((p) => p.hard).map((p) => p.problemId)).size };
 }
 
 export function completionFor(code, fence) {
@@ -59,11 +65,12 @@ export async function prepare(cfg, { variant, outDir, baseDir }) {
   const rows = cfg.variants.filter((v) => v.track === TRACK)
     // always the committed state (finetune.sourceStateDir), so a smoke run trains on real data too
     .flatMap((v) => readJsonl(path.join(rootPath(cfg, ft.sourceStateDir), cfg.paths.variantsDir, v.name, cfg.paths.traces)).map((r) => ({ ...r, variant: r.variant ?? v.name })));
-  const { picked, excludedHoldout, notTrain } = selectSolutions(rows, {
+  const { picked, weighted, excludedHoldout, notTrain, hardProblems } = selectSolutions(rows, {
     train: new Set(track.train), holdout: new Set(track.holdout), maxPerProblem: ft.maxSolutionsPerProblem, maxExamples: ft.maxExamples, seed: ft.seed,
+    easyMaxPerProblem: ft.easyMaxSolutionsPerProblem, hardWeight: ft.hardWeight,
   });
   const systemPrompt = fs.readFileSync(rootPath(cfg, cfg.paths.seedPrompt), 'utf8');
-  const lines = picked.map((p) => JSON.stringify({
+  const lines = weighted.map((p) => JSON.stringify({
     problemId: p.problemId,
     messages: buildMessages({ systemPrompt, userTemplate: track.templates.solveUser, problem: track.tasks.get(p.problemId), lessons: [], skills: [], cfg: vc }),
     completion: completionFor(p.code, ft.completionFence),
@@ -74,7 +81,7 @@ export async function prepare(cfg, { variant, outDir, baseDir }) {
   const sources = {};
   for (const p of picked) sources[p.variant] = (sources[p.variant] ?? 0) + 1;
   const manifest = {
-    variant, examples: picked.length, problems: new Set(picked.map((p) => p.problemId)).size, sources, excludedHoldout, notTrain,
+    variant, examples: picked.length, weightedExamples: weighted.length, problems: new Set(picked.map((p) => p.problemId)).size, hardProblems, sources, excludedHoldout, notTrain,
     datasetHash: hash32(lines.join('\n')), baseModel: ft.baseModel, baseRevision: ft.baseRevision,
   };
   const t = ft.train;
@@ -94,6 +101,6 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const baseDir = argValue(process.argv, 'base-dir');
   if (!variant || !outDir || !baseDir) throw new Error('usage: prepare.js --variant=<name> --out=<dir> --base-dir=<dir>');
   const m = await prepare(cfg, { variant, outDir, baseDir });
-  log(`fine-tuning set: ${m.examples} verified solutions for ${m.problems} train problems (${JSON.stringify(m.sources)}); ${m.excludedHoldout} holdout rows excluded`);
+  log(`fine-tuning set: ${m.examples} verified solutions (${m.weightedExamples} after weighting ${m.hardProblems} hard wins) for ${m.problems} train problems (${JSON.stringify(m.sources)}); ${m.excludedHoldout} holdout rows excluded`);
   if (m.excludedHoldout) log('note: holdout rows found in traces were excluded (traces are train-only, so this should be 0)');
 }

@@ -145,3 +145,16 @@ test('gate false-accept rate under no effect is small, and re-tests can only rai
   assert.ok(once <= 0.05, `single test false accepts ${once}`);
   assert.ok(thrice >= once, 're-testing never lowers the chance of a lucky accept');
 });
+
+test('adding a variant does not change another variant\'s confidence intervals (seeds come from names)', async () => {
+  const { analyze } = await import('../src/analysis.js');
+  const { loadConfig } = await import('../src/config.js');
+  const cfg = loadConfig({ env: {} });
+  const a = analyze(cfg);
+  const extra = { ...cfg, variants: [{ name: 'zz-extra', label: 'x', track: 'multipl-e', levers: {}, budgetShare: 1, color: '#000' }, ...cfg.variants] };
+  const b = analyze(extra);
+  for (const c of a.tracks['multipl-e'].comparisons) {
+    const d = b.tracks['multipl-e'].comparisons.find((x) => x.variant === c.variant);
+    assert.deepEqual([d.low, d.high], [c.low, c.high], c.variant);
+  }
+});

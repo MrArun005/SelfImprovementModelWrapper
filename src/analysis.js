@@ -5,7 +5,7 @@ import path from 'node:path';
 import { variantStateDir } from './variants.js';
 import { readJsonl } from './recorder.js';
 import { readScores } from './metrics.js';
-import { readJson, isoDay } from './util.js';
+import { readJson, isoDay, hash32 } from './util.js';
 import { mean, pairedGroupCI, groupCI, didCI, pairedBootstrapP, holm } from './stats.js';
 
 const byStr = (f) => (a, b) => String(f(a)).localeCompare(String(f(b)));
@@ -255,9 +255,10 @@ export function analyze(cfg) {
   const variants = cfg.variants.map((v) => loadVariantState(cfg, v));
   const tracks = [...new Set(variants.map((v) => v.track))];
   const result = { tracks: {}, variants: {}, generatedFrom: { runs: 0, lastTs: null } };
-  let salt = 0;
+  // Bootstrap seeds are derived from the variant's name, not its position, so adding or reordering variants never
+  // changes another variant's confidence intervals.
   for (const vs of variants) {
-    salt++;
+    const salt = hash32(`variant:${vs.name}`);
     const runs = runBatches(vs);
     const latest = runs.at(-1) ?? null;
     const base = baselineGroups(runs);
@@ -297,7 +298,7 @@ export function analyze(cfg) {
     const comparisons = [];
     for (const v of vs) {
       if (!control || v === control || !v._runs.length || !control._runs.length) continue;
-      salt++;
+      const salt = hash32(`comparison:${v.name}`);
       // same-day comparison only: the control run from the same UTC day as this variant's latest run
       const vDay = isoDay(v._runs.at(-1).ts);
       const cRun = [...control._runs].reverse().find((r) => isoDay(r.ts) === vDay);

@@ -179,8 +179,8 @@
     "warmupTokens": 4
   },
   "budget": {
-    "totalRequestsPerRun": 5040,
-    "totalRequestsPerDay": 5760,
+    "totalRequestsPerRun": 5670,
+    "totalRequestsPerDay": 6480,
     "holdoutFraction": 0.72,
     "maxRunMinutes": 125,
     "reserveMinutesForHoldout": 70
@@ -613,6 +613,21 @@
       "color": "#a16207"
     },
     {
+      "name": "full-finetuned",
+      "label": "Full + fine-tuned weights (every lever stacked)",
+      "track": "multipl-e",
+      "levers": {
+        "finetune": true,
+        "lessons": true,
+        "skills": false,
+        "promptOptimizer": true,
+        "selfRepair": true,
+        "sampleFilter": true
+      },
+      "budgetShare": 1.5,
+      "color": "#be123c"
+    },
+    {
       "name": "mutation-baseline",
       "label": "Mutation: no memory",
       "track": "mutation",
@@ -938,7 +953,9 @@
     }
   },
   "product": {
-    "variant": "full",
+    "variant": "auto",
+    "fallbackVariant": "full",
+    "track": "multipl-e",
     "maxAttemptsWithoutExamples": 1
   },
   "finetune": {
@@ -984,6 +1001,8 @@
     "seed": 1234,
     "sourceStateDir": "state",
     "maxSolutionsPerProblem": 2,
+    "easyMaxSolutionsPerProblem": 1,
+    "hardWeight": 2,
     "maxExamples": 1500,
     "completionFence": "```javascript",
     "datasetFile": "sft.jsonl",
@@ -1013,7 +1032,7 @@
       "weightDecay": 0.0,
       "warmupFraction": 0.05,
       "maxGradNorm": 1.0,
-      "epochs": 2,
+      "epochs": 1,
       "gradAccumSteps": 8,
       "maxSeqTokens": 1024,
       "dtype": "float32",

@@ -84,3 +84,28 @@ test('base model files are pinned by SHA-256 and fetched through the mirror scri
   assert.match(yml, /run: bash tools\/finetune\/fetch-base\.sh/);
   assert.match(fs.readFileSync(path.join(ROOT, 'tools/finetune/fetch-base.sh'), 'utf8'), /sha256sum -c/);
 });
+
+test('hard wins (failed somewhere or solved on a retry) keep more solutions and are repeated hardWeight times', () => {
+  const rows = [
+    row('easy', 'e1', '1'), row('easy', 'e2', '2'),
+    row('hard', 'h1', '1'), { ...row('hard', 'x', '0'), result: 'fail', code: null }, row('hard', 'h2', '3'),
+    { ...row('retry', 'r1', '1'), attempt: 2 },
+  ];
+  const { picked, weighted, hardProblems } = selectSolutions(rows, opts({ train: new Set(['easy', 'hard', 'retry']), easyMaxPerProblem: 1, maxPerProblem: 2, hardWeight: 3 }));
+  assert.deepEqual(picked.map((p) => `${p.problemId}:${p.code}`), ['easy:e1', 'hard:h1', 'hard:h2', 'retry:r1']);
+  assert.equal(hardProblems, 2);
+  assert.equal(weighted.length, 1 + 3 * 3);
+});
+
+test('product auto-pick: most reliable gain among stock-model variants; fallback without data', async () => {
+  const { pickProductVariant } = await import('../src/solve-cli.js');
+  const comp = (variant, estimate, low) => ({ variant, estimate, low, high: estimate + 0.05 });
+  const a = {
+    variants: Object.fromEntries(cfg.variants.map((v) => [v.name, { label: v.label, control: !!v.control, latest: { passRate: 0.5 } }])),
+    tracks: { 'multipl-e': { control: 'baseline', variants: cfg.variants.filter((v) => v.track === 'multipl-e').map((v) => v.name),
+      comparisons: [comp('sample-filter', 0.05, -0.02), comp('full', 0.03, 0.01), comp('full-finetuned', 0.09, 0.04)] } },
+  };
+  assert.equal(pickProductVariant(cfg, a).variant, 'full', 'fine-tuned variants are not runnable locally');
+  a.tracks['multipl-e'].comparisons = [];
+  assert.equal(pickProductVariant(cfg, a).variant, cfg.product.fallbackVariant);
+});
