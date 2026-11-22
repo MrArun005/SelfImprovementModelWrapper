@@ -137,7 +137,7 @@ jobs:
           git init -q "$RUNNER_TEMP/lora-converter"
           cd "$RUNNER_TEMP/lora-converter"
           git remote add origin "$LLAMA_REPO"
-          git sparse-checkout set --no-cone /convert_lora_to_gguf.py /convert_hf_to_gguf.py /gguf-py/
+          git sparse-checkout set --no-cone /convert_lora_to_gguf.py /convert_hf_to_gguf.py /conversion/ /gguf-py/
           git fetch -q --depth=1 --filter=blob:none origin "$LLAMA_COMMIT"
           git checkout -q FETCH_HEAD
       - name: Build the training set from verified solutions (holdout excluded)
