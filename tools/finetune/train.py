@@ -49,9 +49,10 @@ def main():
     torch.set_num_threads(s.get("threads") or os.cpu_count())
 
     tok = AutoTokenizer.from_pretrained(s["baseDir"])
-    model = AutoModelForCausalLM.from_pretrained(s["baseDir"], torch_dtype=getattr(torch, s["dtype"]))
+    model = AutoModelForCausalLM.from_pretrained(s["baseDir"], dtype=getattr(torch, s["dtype"]))
     if s.get("gradientCheckpointing"):
-        model.gradient_checkpointing_enable()
+        # recompute activations in the backward pass: long examples otherwise exceed the runner's memory
+        model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
         model.enable_input_require_grads()
     model = get_peft_model(model, LoraConfig(r=s["loraRank"], lora_alpha=s["loraAlpha"], lora_dropout=s["loraDropout"],
                                              target_modules=s["targetModules"], task_type="CAUSAL_LM"))

@@ -998,7 +998,7 @@
       "gradAccumSteps": 8,
       "maxSeqTokens": 1024,
       "dtype": "float32",
-      "gradientCheckpointing": false,
+      "gradientCheckpointing": true,
       "threads": 0,
       "maxTrainSeconds": 7200,
       "logEverySteps": 5
