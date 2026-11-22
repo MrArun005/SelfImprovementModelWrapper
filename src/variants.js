@@ -31,17 +31,25 @@ export function variantBudget(cfg, name) {
   };
 }
 
+/** Model this variant serves from the fine-tuning job's artifacts, or null for the stock Ollama model. */
+export function servedModel(cfg, levers) {
+  if (levers.finetune) return { model: cfg.finetune.ollamaModel, artifact: cfg.finetune.artifactName };
+  if (levers.requantizedBase) return { model: cfg.finetune.baseOllamaModel, artifact: cfg.finetune.baseArtifactName };
+  return null;
+}
+
 export function variantConfig(cfg, name) {
   const v = getVariant(cfg, name);
-  const levers = { lessons: false, skills: false, promptOptimizer: false, selfRepair: false, sampleFilter: false, finetune: false, ...v.levers };
+  const levers = { lessons: false, skills: false, promptOptimizer: false, selfRepair: false, sampleFilter: false, finetune: false, requantizedBase: false, ...v.levers };
   return {
     ...cfg,
     variant: { ...v, levers },
     track: v.track,
     paths: { ...cfg.paths, stateDir: variantStateDir(cfg, name) },
     budget: variantBudget(cfg, name),
-    // finetune: the same base model plus a LoRA adapter trained on verified solutions, served under its own name
-    llm: levers.finetune ? { ...cfg.llm, model: cfg.finetune.ollamaModel } : cfg.llm,
+    // finetune: base weights + merged LoRA trained on verified solutions; requantizedBase: the untrained base through
+    // the same convert + quantize pipeline (the reference that isolates the effect of training)
+    llm: servedModel(cfg, levers) ? { ...cfg.llm, model: servedModel(cfg, levers).model } : cfg.llm,
     features: { ...cfg.features, promptOptimizer: Boolean(cfg.features.promptOptimizer && levers.promptOptimizer) },
   };
 }

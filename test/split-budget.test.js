@@ -71,6 +71,6 @@ test('daily budget is split across variants by budgetShare; each variant has its
   assert.deepEqual([variantBudget(cfg, 'a').requestsPerRun, variantBudget(cfg, 'b').requestsPerRun], [100, 300]);
   assert.deepEqual([variantBudget(cfg, 'a').requestsPerDay, variantBudget(cfg, 'b').reserveForHoldout], [200, 150]);
   assert.notEqual(variantConfig(cfg, 'a').paths.stateDir, variantConfig(cfg, 'b').paths.stateDir);
-  assert.deepEqual(variantConfig(cfg, 'b').variant.levers, { lessons: true, skills: false, promptOptimizer: false, selfRepair: false, sampleFilter: false, finetune: false });
+  assert.deepEqual(variantConfig(cfg, 'b').variant.levers, { lessons: true, skills: false, promptOptimizer: false, selfRepair: false, sampleFilter: false, finetune: false, requantizedBase: false });
   assert.throws(() => variantConfig(cfg, 'zzz'), /unknown variant/);
 });

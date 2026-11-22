@@ -45,6 +45,16 @@ test('finetune variant: same track and budget unit as the others, served under t
   assert.equal(vc.llm.model, cfg.finetune.ollamaModel);
   assert.equal(variantConfig(cfg, 'baseline').llm.model, cfg.llm.model);
   assert.equal(variantBudget(cfg, 'finetune').requestsPerRun, variantBudget(cfg, 'baseline').requestsPerRun);
+  assert.equal(variantConfig(cfg, 'finetune-base').llm.model, cfg.finetune.baseOllamaModel);
+  assert.notEqual(cfg.finetune.baseOllamaModel, cfg.finetune.ollamaModel);
+});
+
+test('fine-tuned and reference models go through the same convert + quantize steps', () => {
+  const yml = fs.readFileSync(path.join(ROOT, '.github/workflows/improve.yml'), 'utf8');
+  assert.match(yml, /conv "\$RUNNER_TEMP\/ft\/\$MERGED_DIR"/);
+  assert.match(yml, /conv "\$HOME\/\.sic-hf\/\$BASE_REVISION"/);
+  assert.match(yml, /create --quantize "\$QUANT" "\$SERVED_MODEL"/);
+  assert.doesNotMatch(yml, /^\s*ADAPTER /m);
 });
 
 test('record row keeps the manifest and the training metrics', () => {

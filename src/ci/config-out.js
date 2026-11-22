@@ -3,7 +3,7 @@
 //   node src/ci/config-out.js                    -> global values + matrix (JSON list of variant names)
 //   node src/ci/config-out.js --variant=<name>   -> also that variant's track and state dir
 import { loadConfig } from '../config.js';
-import { variantConfig } from '../variants.js';
+import { variantConfig, servedModel } from '../variants.js';
 
 const cfg = loadConfig();
 const rt = cfg.runtime;
@@ -49,11 +49,14 @@ Object.assign(out, {
   ft_python_packages: ft.pythonPackages.join(' '),
   ft_llama_repo: ft.llamaCppRepo,
   ft_llama_commit: ft.llamaCppCommit,
-  ft_out_type: ft.adapterOutType,
+  ft_out_type: ft.ggufOutType,
+  ft_quantize: ft.quantize,
   ft_artifact: ft.artifactName,
+  ft_base_artifact: ft.baseArtifactName,
+  ft_merged_dir: ft.mergedDir,
+  ft_model_gguf: ft.modelGguf,
   ft_settings_file: ft.settingsFile,
   ft_adapter_dir: ft.adapterDir,
-  ft_adapter_gguf: ft.adapterGguf,
   ft_manifest_file: ft.manifestFile,
   ft_metrics_file: ft.metricsFile,
 });
@@ -62,6 +65,9 @@ if (variant) {
   out.track = vc.track;
   out.variant_state_dir = vc.paths.stateDir;
   out.finetune = String(Boolean(vc.variant.levers.finetune));
+  const served = servedModel(cfg, vc.variant.levers);
+  out.served = String(Boolean(served));
+  out.served_artifact = served?.artifact ?? '';
   out.variant_model = vc.llm.model;
 }
 for (const [k, v] of Object.entries(out)) {

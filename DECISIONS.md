@@ -73,7 +73,8 @@ Hugging Face `nuprl/MultiPL-E` Parquet files pinned to revision `28441b60…` (5
 Variants are data (`config.variants`; this list is checked against the config by `test/docs.test.js`):
 `baseline` (**control**: no memory, no inference-time levers), `lessons`, `skills`, `lessons-skills`, `self-repair`
 (§4b), `sample-filter` (§4c), `full` (lessons + self-repair + sample-filter + prompt optimizer; skills removed after
-day 2, §4e), `finetune` (the model's weights trained on its own verified solutions, §4g), `mutation-baseline`
+day 2, §4e), `finetune` (the model's weights trained on its own verified solutions, §4g), `finetune-base` (its untrained
+reference, §4g), `mutation-baseline`
 (control) and `mutation-lessons`. Each has its own `state/variants/<name>/`, its own
 budget share, and its own job in the matrix.
 The workflow's matrix is read from config by the `plan` job, so adding a variant is a config change only.
@@ -181,20 +182,24 @@ fixed 1.5B model can do with better notes. Variant `finetune` (lever `finetune`)
 - **Recursion.** The `finetune` variant's own train attempts use the fine-tuned model, and its passes join the next
   day's data: a better model finds more verified solutions, which train the next model. That is the loop the user
   asked for; it is still bounded by the base model's capacity and the train set's size.
-- **Training.** LoRA (rank 16, all attention and MLP projections, lr 1e-4, 2 epochs, loss on the completion only)
+- **Training.** LoRA (rank 16, all attention and MLP projections, lr 1e-4, 2 epochs, loss on the completion only,
+  gradient checkpointing: without it a full local run was OOM-killed at ~14 GB)
   on CPU in a separate `finetune` job, retrained **from scratch each cycle** on the whole dataset (deterministic in
   the data; no adapter binaries in git). Measured in a runner-sized container: about 5 s per example, so 340
   examples x 2 epochs is about an hour; `finetune.train.maxTrainSeconds` (2 h) caps it as the data grows. Base model
   and every package are pinned (`finetune.baseRevision`, `pythonPackages`, `llamaCppCommit`).
-- **Serving and fairness.** The adapter is converted to GGUF and served by Ollama as `FROM <same base model>` +
-  `ADAPTER`, so the fine-tuned variant runs on the *same quantized base weights* as the control: the comparison
-  measures training, not a different quantization. (The adapter was trained against the full-precision weights and
-  applied to the quantized ones; that mismatch can only cost the fine-tuned variant, not flatter it.)
+- **Serving and fairness.** Ollama 0.40 refuses LoRA adapters ("LoRA adapters are no longer supported", found in
+  the smoke run), so the adapter is merged into the base weights (`tools/finetune/merge.py`), converted to GGUF with
+  the pinned upstream converter, and quantized by Ollama (`finetune.quantize`) with the stock model's own Modelfile
+  (template, stop tokens, parameters). That is not the stock model's file, so a comparison with the control would mix
+  training with re-quantization. Variant `finetune-base` therefore serves the **untrained** base weights through the
+  exact same convert + quantize pipeline, built in the same job: `finetune` vs `finetune-base` isolates the effect of
+  training, `finetune-base` vs the control shows what the pipeline alone does.
 - **No gate on the weights.** The adapter is not accepted or rejected by the champion/candidate gate (that would
   need two models evaluated per day); its effect is the daily paired comparison with the control, with the same CIs
   and Holm correction as every other lever. If it is significantly worse, the report says so.
 - **Budget.** Adding a variant would have shrunk every other variant's requests; `budget.totalRequestsPerRun` was
-  raised to 4,620 so a unit share stays 420 requests and the running experiment is unchanged.
+  raised to 5,040 (two new variants) so a unit share stays 420 requests and the running experiment is unchanged.
 - **Mock / dry run.** The mock ignores model names, so in tests `finetune` behaves like the control; the training
   path is exercised by the smoke run (`smoke.finetune`: 40 examples, 5 minutes).
 
@@ -246,7 +251,7 @@ small real gains.
 
 `budget.totalRequestsPerRun` is split across variants by `budgetShare`: 420 requests per unit of share (the
 sample-based `sample-filter` and `full` have share 1.5, i.e. 630, because their evaluation costs more), so the total
-grows with the number of variants (it started at 2,940 for 7 equal variants; 4,620 since `finetune` was added). `holdoutFraction` 0.72 of each
+grows with the number of variants (it started at 2,940 for 7 equal variants; 5,040 since `finetune` and `finetune-base` were added). `holdoutFraction` 0.72 of each
 variant's share is reserved for evaluation (50 problems x 3 repeats x champion + candidate = 300 at share 1).
 Variant jobs run on separate runners in parallel, so the split is about fairness and run time, not a shared quota.
 The counter is checked **before** every model call; a time limit (`maxRunMinutes`, with `reserveMinutesForHoldout`)

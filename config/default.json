@@ -179,8 +179,8 @@
     "warmupTokens": 4
   },
   "budget": {
-    "totalRequestsPerRun": 4620,
-    "totalRequestsPerDay": 5280,
+    "totalRequestsPerRun": 5040,
+    "totalRequestsPerDay": 5760,
     "holdoutFraction": 0.72,
     "maxRunMinutes": 125,
     "reserveMinutesForHoldout": 70
@@ -603,6 +603,16 @@
       "color": "#ea580c"
     },
     {
+      "name": "finetune-base",
+      "label": "Untrained base, same convert + quantize pipeline (fine-tuning's reference)",
+      "track": "multipl-e",
+      "levers": {
+        "requantizedBase": true
+      },
+      "budgetShare": 1,
+      "color": "#a16207"
+    },
+    {
       "name": "mutation-baseline",
       "label": "Mutation: no memory",
       "track": "mutation",
@@ -931,7 +941,7 @@
     "maxAttemptsWithoutExamples": 1
   },
   "finetune": {
-    "about": "Expert iteration: LoRA fine-tune of the base model on every verified train solution (all MultiPL-E variants), retrained from scratch each cycle, served by Ollama as base model + adapter.",
+    "about": "Expert iteration: LoRA fine-tune of the base model on every verified train solution (all MultiPL-E variants), retrained from scratch each cycle, merged into the base weights, converted to GGUF and quantized by Ollama exactly like the untrained base served to variant finetune-base.",
     "baseModel": "Qwen/Qwen2.5-Coder-1.5B-Instruct",
     "baseRevision": "2e1fd397ee46e1388853d2af2c993145b0f1098a",
     "baseMirrors": [
@@ -951,6 +961,10 @@
     "downloadMaxSeconds": 900,
     "downloadStepMinutes": 20,
     "ollamaModel": "sic-finetuned",
+    "baseOllamaModel": "sic-requantized-base",
+    "quantize": "q4_K_M",
+    "ggufOutType": "f16",
+    "mergedDtype": "bfloat16",
     "pythonIndexUrl": "https://download.pytorch.org/whl/cpu",
     "torchPackage": "torch==2.9.0",
     "pythonPackages": [
@@ -963,7 +977,6 @@
     ],
     "llamaCppRepo": "https://github.com/ggml-org/llama.cpp",
     "llamaCppCommit": "afe77e18fadc2e673c6a6299495a443e17378ce4",
-    "adapterOutType": "f16",
     "seed": 1234,
     "sourceStateDir": "state",
     "maxSolutionsPerProblem": 2,
@@ -974,9 +987,11 @@
     "manifestFile": "manifest.json",
     "metricsFile": "train-metrics.json",
     "adapterDir": "adapter",
-    "adapterGguf": "adapter.gguf",
+    "mergedDir": "merged",
+    "modelGguf": "model-f16.gguf",
     "logFile": "finetune-log.jsonl",
     "artifactName": "sic-finetune",
+    "baseArtifactName": "sic-finetune-base",
     "train": {
       "loraRank": 16,
       "loraAlpha": 32,
