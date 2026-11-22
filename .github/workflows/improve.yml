@@ -108,12 +108,26 @@ jobs:
           "$HOME/.sic-venv/bin/pip" install -q --index-url "$TORCH_INDEX" "$TORCH_PACKAGE"
           read -ra pkgs <<< "$PACKAGES"
           "$HOME/.sic-venv/bin/pip" install -q "${pkgs[@]}"
-      - name: Base model snapshot (pinned revision)
+      - name: Base model files (pinned revision; plain downloads with retries and a time limit)
+        timeout-minutes: ${{ fromJSON(steps.cfg.outputs.ft_download_step_minutes) }}
         env:
-          BASE_MODEL: ${{ steps.cfg.outputs.ft_base_model }}
           BASE_REVISION: ${{ steps.cfg.outputs.ft_base_revision }}
+          URLS: ${{ steps.cfg.outputs.ft_base_urls }}
+          RETRIES: ${{ steps.cfg.outputs.ft_download_retries }}
+          MAX_SECONDS: ${{ steps.cfg.outputs.ft_download_max_seconds }}
         run: |
-          "$HOME/.sic-venv/bin/python" -c 'import os; from huggingface_hub import snapshot_download as d; d(os.environ["BASE_MODEL"], revision=os.environ["BASE_REVISION"], local_dir=os.path.expanduser("~/.sic-hf/" + os.environ["BASE_REVISION"]))'
+          set -euo pipefail
+          dir="$HOME/.sic-hf/$BASE_REVISION"
+          mkdir -p "$dir"
+          read -ra urls <<< "$URLS"
+          for u in "${urls[@]}"; do
+            f="$dir/${u##*/}"
+            if [ -s "$f" ]; then echo "cached: ${u##*/}"; continue; fi
+            echo "downloading ${u##*/}"
+            curl -fL --retry "$RETRIES" --retry-all-errors --max-time "$MAX_SECONDS" -sS -o "$f.part" "$u"
+            mv "$f.part" "$f"
+          done
+          ls -la "$dir"
       - name: Adapter converter (pinned commit of the upstream conversion scripts)
         env:
           LLAMA_REPO: ${{ steps.cfg.outputs.ft_llama_repo }}
