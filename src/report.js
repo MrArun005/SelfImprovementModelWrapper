@@ -157,7 +157,7 @@ export function buildReport(cfg, a) {
   });
   if (!ftRows.length) L.push('No fine-tuning cycles yet.');
   else {
-    L.push('Each cycle retrains a LoRA adapter from scratch on every verified train solution so far (holdout problems excluded) and serves it on the same base weights as the control. Its effect is the variant\'s comparison with the control above.');
+    L.push('Each cycle retrains a LoRA adapter from scratch on every verified train solution so far (holdout problems excluded), merges it into the base weights and serves them through the same import + quantize step as the untrained reference variant (finetune-base). The effect of training is finetune vs finetune-base; finetune-base vs the control is the pipeline alone.');
     L.push('');
     L.push(table(['day', 'variant', 'solutions', 'problems', 'holdout rows excluded', 'examples trained (epochs)', 'loss first -> last', 'minutes', 'stopped'],
       ftRows.map((r) => [day(r.ts), r.variant, r.examples, r.problems, r.excludedHoldout, `${r.train?.examplesSeen ?? 'n/a'} (${r.train?.epochsPlanned ?? 'n/a'})`,

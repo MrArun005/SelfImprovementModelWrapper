@@ -187,14 +187,16 @@ fixed 1.5B model can do with better notes. Variant `finetune` (lever `finetune`)
   on CPU in a separate `finetune` job, retrained **from scratch each cycle** on the whole dataset (deterministic in
   the data; no adapter binaries in git). Measured in a runner-sized container: about 5 s per example, so 340
   examples x 2 epochs is about an hour; `finetune.train.maxTrainSeconds` (2 h) caps it as the data grows. Base model
-  and every package are pinned (`finetune.baseRevision`, `pythonPackages`, `llamaCppCommit`).
-- **Serving and fairness.** Ollama 0.40 refuses LoRA adapters ("LoRA adapters are no longer supported", found in
-  the smoke run), so the adapter is merged into the base weights (`tools/finetune/merge.py`), converted to GGUF with
-  the pinned upstream converter, and quantized by Ollama (`finetune.quantize`) with the stock model's own Modelfile
-  (template, stop tokens, parameters). That is not the stock model's file, so a comparison with the control would mix
-  training with re-quantization. Variant `finetune-base` therefore serves the **untrained** base weights through the
-  exact same convert + quantize pipeline, built in the same job: `finetune` vs `finetune-base` isolates the effect of
-  training, `finetune-base` vs the control shows what the pipeline alone does.
+  and every package are pinned (`finetune.baseRevision` + a SHA-256 per file, `pythonPackages`). On the runner, with
+  gradient checkpointing, expect ~8-10 s per example; `maxTrainSeconds` stops training cleanly if the data outgrows it.
+- **Serving and fairness.** Ollama 0.40 refuses LoRA adapters ("LoRA adapters are no longer supported") and only
+  quantizes safetensors imports (both found in smoke runs), so the adapter is merged into the base weights
+  (`tools/finetune/merge.py`, saved in the base's bf16) and Ollama imports and quantizes that directory
+  (`finetune.quantize`) with the stock model's own Modelfile (template, stop tokens, parameters). That is not the
+  stock model's file, so a comparison with the control would mix training with Ollama's own re-quantization.
+  Variant `finetune-base` therefore serves the **untrained** base files through the exact same import + quantize
+  step: `finetune` vs `finetune-base` isolates the effect of training, `finetune-base` vs the control shows what the
+  pipeline alone does.
 - **No gate on the weights.** The adapter is not accepted or rejected by the champion/candidate gate (that would
   need two models evaluated per day); its effect is the daily paired comparison with the control, with the same CIs
   and Holm correction as every other lever. If it is significantly worse, the report says so.
