@@ -185,3 +185,12 @@ test('leaderboard: learning variants ranked by points vs control, shown in READM
   const { html } = buildSite(cfg);
   assert.match(stripScripts(html), /<table class="board">/);
 });
+
+test('gate log rows link to the replays of the lessons they proposed', async () => {
+  const { gateReplayLinks } = await import('../site/build.js');
+  const v = { replays: [{ id: 'lessons:r1:p1:1', lessonId: 'L-1', problemId: 'p1' }, { id: 'lessons:r1:p2:1', lessonId: 'L-2', problemId: 'p2' }] };
+  const html = gateReplayLinks(v, { added: { lessonIds: ['L-2', 'L-9'] } });
+  assert.match(html, /href="#replay-lessons-r1-p2-1"/);
+  assert.doesNotMatch(html, /L-1|L-9/);
+  assert.equal(gateReplayLinks(v, { added: null }), '');
+});

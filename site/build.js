@@ -67,6 +67,13 @@ function replayHtml(r, i) {
 <ol class="steps">${steps.map((s, i) => s(i + 1)).join('')}</ol></article>`;
 }
 
+/** Links from a gate decision to the replays of the lessons it proposed (failure -> reflection -> retry). */
+export function gateReplayLinks(v, g) {
+  const ids = new Set(g.added?.lessonIds ?? []);
+  return v.replays.filter((r) => ids.has(r.lessonId))
+    .map((r) => `<a href="#replay-${slug(r.id)}" class="replay-link" title="${esc(r.problemId)}">${esc(r.lessonId)}</a>`).join(' ');
+}
+
 export function buildSite(cfg) {
   const a = analyze(cfg);
   const sc = cfg.site;
@@ -125,8 +132,9 @@ ${replays.length ? `<div class="replay-controls" hidden><label>Problem <select i
   // 4. gate log
   const gateRows = variants.flatMap((v) => v.gateLog.map((g) => ({ v, g }))).sort((x, y) => (x.g.ts < y.g.ts ? 1 : x.g.ts > y.g.ts ? -1 : x.v.name.localeCompare(y.v.name)));
   parts.push(`<section id="gate"><h2>Gate log</h2><p class="lede">Every decision with the numbers behind it. Accept needs ≥ ${pts(cfg.gate.minImprovement)} pts${cfg.gate.method === 'ci' ? ' and a CI above zero' : ''}; reject if below −${(cfg.gate.tolerance * 100).toFixed(1)} pts${cfg.gate.method === 'ci' ? ' or a CI entirely below zero' : ''}.</p>
-${tableHtml(['date', 'variant', 'decision', 'champion', 'candidate', 'difference [95% CI]', 'proposed'], gateRows.map(({ v, g }) => [day(g.ts), esc(v.label), decisionBadge(g.decision), pct(g.champion?.passRate), pct(g.candidate?.passRate),
-  g.diff ? `${pts(g.diff.estimate)} <span class="muted">[${pts(g.diff.low)}, ${pts(g.diff.high)}]</span>` : '', g.added && (g.added.lessons || g.added.skills || g.added.promptVersion) ? esc(`${g.added.lessons} lessons, ${g.added.skills} skills${g.added.promptVersion ? `, ${g.added.promptVersion}` : ''}`) : '']), 'gate-log')}</section>`);
+${tableHtml(['date', 'variant', 'decision', 'champion', 'candidate', 'difference [95% CI]', 'proposed', 'how its lessons were learned'], gateRows.map(({ v, g }) => [day(g.ts), `<a href="#variant-${slug(v.name)}">${esc(v.label)}</a>`, decisionBadge(g.decision), pct(g.champion?.passRate), pct(g.candidate?.passRate),
+  g.diff ? `${pts(g.diff.estimate)} <span class="muted">[${pts(g.diff.low)}, ${pts(g.diff.high)}]</span>` : '', g.added && (g.added.lessons || g.added.skills || g.added.promptVersion) ? esc(`${g.added.lessons} lessons, ${g.added.skills} skills${g.added.promptVersion ? `, ${g.added.promptVersion}` : ''}`) : '',
+  gateReplayLinks(v, g)]), 'gate-log')}</section>`);
 
   // 5. taxonomy
   const legend = classes.map((c) => `<span class="leg"><i style="background:${sc.classColors[c]}"></i>${esc(c)}</span>`).join('');

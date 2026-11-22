@@ -76,7 +76,8 @@ DECISIONS.md updated for any non-obvious choice, README claims backed by generat
    was retrieved vs comparable attempts without it.
 6. ~~**Gate re-test inflation.**~~ DONE. Make the pending re-test rule explicit in numbers: simulate the false-accept rate
    of "keep up to N runs" with the power simulator and report it in docs/power.md.
-7. **Dashboard:** curriculum level timeline, gate-log rows linked to their replays. (Per-variant anchors DONE with the leaderboard.)
+7. **Dashboard:** curriculum level timeline. (Per-variant anchors DONE with the leaderboard; gate-log rows now link to the
+   replays of the lessons they proposed and to the variant's card.)
 8. ~~**Independent review**~~ DONE. (a fresh reviewer, not anchored on my reading) of the sandbox, workflow permissions and the
    statistics; fix what it finds.
 9. ~~**Docs:**~~ DONE (consistency pass + test). "how to read the dashboard" section; final pass on README/DECISIONS consistency.
