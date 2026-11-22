@@ -130,6 +130,38 @@ jobs:
             ~/.sic-hf
           key: finetune-${{ steps.cfg.outputs.ft_base_revision }}-${{ steps.cfg.outputs.ft_torch_package }}
 
+      - name: Restore the cached converter + quantizer build (pinned commit)
+        id: llamacache
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.sic-llama
+          key: quantizer-${{ steps.cfg.outputs.ft_llama_commit }}
+      - name: Build the quantizer and fetch the converter (pinned commit; static CPU build)
+        if: steps.llamacache.outputs.cache-hit != 'true'
+        env:
+          TOOL: ${{ steps.cfg.outputs.ft_quantize_tool }}
+          LLAMA_REPO: ${{ steps.cfg.outputs.ft_llama_repo }}
+          LLAMA_COMMIT: ${{ steps.cfg.outputs.ft_llama_commit }}
+        run: |
+          set -euo pipefail
+          src="$RUNNER_TEMP/quantizer-src"
+          git init -q "$src"
+          cd "$src"
+          git remote add origin "$LLAMA_REPO"
+          git fetch -q --depth=1 origin "$LLAMA_COMMIT"
+          git checkout -q FETCH_HEAD
+          cmake -S . -B build -DBUILD_SHARED_LIBS=OFF -DGGML_NATIVE=OFF -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_SERVER=OFF > /dev/null
+          cmake --build build --target "$TOOL" -j "$(nproc)" > /dev/null
+          mkdir -p "$HOME/.sic-llama/bin"
+          cp "build/bin/$TOOL" "$HOME/.sic-llama/bin/"
+          cp -R convert_hf_to_gguf.py conversion gguf-py "$HOME/.sic-llama/"
+          ls -la "$HOME/.sic-llama" "$HOME/.sic-llama/bin"
+      - name: Save the converter + quantizer build
+        if: steps.llamacache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.sic-llama
+          key: quantizer-${{ steps.cfg.outputs.ft_llama_commit }}
       - name: Build the training set from verified solutions (holdout excluded)
         env:
           VARIANT: ${{ steps.cfg.outputs.finetune_variant }}
@@ -147,22 +179,43 @@ jobs:
         run: |
           set -o pipefail
           "$HOME/.sic-venv/bin/python" tools/finetune/merge.py --settings "$RUNNER_TEMP/ft/$SETTINGS" 2>&1 | grep -v -i 'warn'
-      - name: Upload the fine-tuned model (merged safetensors) for its evaluation job
+      - name: Convert and quantize the fine-tuned and the untrained base model (same tools, same settings)
+        env:
+          BASE_REVISION: ${{ steps.cfg.outputs.ft_base_revision }}
+          OUT_TYPE: ${{ steps.cfg.outputs.ft_out_type }}
+          QUANT: ${{ steps.cfg.outputs.ft_quantize }}
+          TOOL: ${{ steps.cfg.outputs.ft_quantize_tool }}
+          MERGED_DIR: ${{ steps.cfg.outputs.ft_merged_dir }}
+          MODEL_GGUF: ${{ steps.cfg.outputs.ft_model_gguf }}
+        run: |
+          set -euo pipefail
+          L="$HOME/.sic-llama"
+          build() { # <hf dir> <out gguf>
+            PYTHONPATH="$L/gguf-py" "$HOME/.sic-venv/bin/python" "$L/convert_hf_to_gguf.py" --outtype "$OUT_TYPE" --outfile "$2.full" "$1"
+            "$L/bin/$TOOL" "$2.full" "$2" "$QUANT"
+            rm -f "$2.full"
+          }
+          build "$RUNNER_TEMP/ft/$MERGED_DIR" "$RUNNER_TEMP/ft/$MODEL_GGUF"
+          rm -rf "$RUNNER_TEMP/ft/$MERGED_DIR"
+          mkdir -p "$RUNNER_TEMP/ftbase"
+          build "$HOME/.sic-hf/$BASE_REVISION" "$RUNNER_TEMP/ftbase/$MODEL_GGUF"
+          ls -la "$RUNNER_TEMP/ft" "$RUNNER_TEMP/ftbase"
+      - name: Upload the fine-tuned model for its evaluation job
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: ${{ steps.cfg.outputs.ft_artifact }}
           path: |
-            ${{ runner.temp }}/ft/${{ steps.cfg.outputs.ft_merged_dir }}/
+            ${{ runner.temp }}/ft/${{ steps.cfg.outputs.ft_model_gguf }}
             ${{ runner.temp }}/ft/${{ steps.cfg.outputs.ft_manifest_file }}
             ${{ runner.temp }}/ft/${{ steps.cfg.outputs.ft_metrics_file }}
           retention-days: ${{ steps.cfg.outputs.artifact_retention_days }}
           compression-level: 1
           if-no-files-found: error
-      - name: Upload the untrained reference model (the same base files, no training)
+      - name: Upload the untrained reference model (same pipeline, no training)
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: ${{ steps.cfg.outputs.ft_base_artifact }}
-          path: ~/.sic-hf/${{ steps.cfg.outputs.ft_base_revision }}/
+          path: ${{ runner.temp }}/ftbase/${{ steps.cfg.outputs.ft_model_gguf }}
           retention-days: ${{ steps.cfg.outputs.artifact_retention_days }}
           compression-level: 1
           if-no-files-found: error
@@ -281,26 +334,24 @@ jobs:
           name: ${{ steps.cfg.outputs.served_artifact }}
           path: ${{ runner.temp }}/ft
 
-      - name: Import, quantize and serve it like the stock model (same template and parameters)
+      - name: Serve it like the stock model (same template and parameters)
         if: steps.cfg.outputs.served == 'true' && steps.cfg.outputs.provider == 'openai-compatible'
         env:
           OLLAMA_HOST: ${{ steps.cfg.outputs.ollama_host }}
           BASE: ${{ steps.cfg.outputs.model }}
           SERVED_MODEL: ${{ steps.cfg.outputs.variant_model }}
-          MERGED_DIR: ${{ steps.cfg.outputs.ft_merged_dir }}
-          QUANT: ${{ steps.cfg.outputs.ft_quantize }}
+          MODEL_GGUF: ${{ steps.cfg.outputs.ft_model_gguf }}
           WARMUP_TIMEOUT: ${{ steps.cfg.outputs.warmup_timeout }}
           WARMUP_TOKENS: ${{ steps.cfg.outputs.warmup_tokens }}
         run: |
           set -euo pipefail
           ollama="$HOME/.sic-ollama/bin/ollama"
-          # safetensors directory: merged weights (fine-tuned) or the original base files (reference)
-          dir="$RUNNER_TEMP/ft/$MERGED_DIR"
-          [ -d "$dir" ] || dir="$RUNNER_TEMP/ft"
-          # the stock model's Modelfile minus its weights: same chat template, stop tokens and parameters
-          { echo "FROM $dir"; "$ollama" show --modelfile "$BASE" | grep -v '^FROM '; } > "$RUNNER_TEMP/Modelfile"
-          "$ollama" create --quantize "$QUANT" "$SERVED_MODEL" -f "$RUNNER_TEMP/Modelfile"
-          rm -rf "$dir"
+          # already quantized by the pinned quantizer (same type as the stock model); the stock model's Modelfile minus its
+          # weights gives the same chat template, stop tokens and parameters
+          { echo "FROM $RUNNER_TEMP/ft/$MODEL_GGUF"; "$ollama" show --modelfile "$BASE" | grep -v '^FROM '; } > "$RUNNER_TEMP/Modelfile"
+          "$ollama" create "$SERVED_MODEL" -f "$RUNNER_TEMP/Modelfile"
+          rm -f "$RUNNER_TEMP/ft/$MODEL_GGUF"
+          "$ollama" show "$BASE" | grep -i -E 'quantization|parameters' || true
           "$ollama" show "$SERVED_MODEL"
           body=$(printf '{"model":"%s","prompt":"Reply OK","stream":false,"options":{"num_predict":%s}}' "$SERVED_MODEL" "$WARMUP_TOKENS")
           curl -fsS --max-time "$WARMUP_TIMEOUT" "http://$OLLAMA_HOST/api/generate" -d "$body" -o /dev/null ||

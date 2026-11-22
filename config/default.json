@@ -941,7 +941,7 @@
     "maxAttemptsWithoutExamples": 1
   },
   "finetune": {
-    "about": "Expert iteration: LoRA fine-tune of the base model on every verified train solution (all MultiPL-E variants), retrained from scratch each cycle, merged into the base weights and imported + quantized by Ollama exactly like the untrained base served to variant finetune-base.",
+    "about": "Expert iteration: LoRA fine-tune of the base model on every verified train solution (all MultiPL-E variants), retrained from scratch each cycle, merged into the base weights, converted to GGUF and quantized with llama.cpp exactly like the untrained base served to variant finetune-base.",
     "baseModel": "Qwen/Qwen2.5-Coder-1.5B-Instruct",
     "baseRevision": "2e1fd397ee46e1388853d2af2c993145b0f1098a",
     "baseMirrors": [
@@ -962,7 +962,12 @@
     "downloadStepMinutes": 20,
     "ollamaModel": "sic-finetuned",
     "baseOllamaModel": "sic-requantized-base",
-    "quantize": "q4_K_M",
+    "quantize": "Q4_K_M",
+    "ggufOutType": "f16",
+    "llamaCppRepo": "https://github.com/ggml-org/llama.cpp",
+    "llamaCppCommit": "afe77e18fadc2e673c6a6299495a443e17378ce4",
+    "llamaCppRelease": "b12624",
+    "quantizeTool": "llama-quantize",
     "mergedDtype": "bfloat16",
     "pythonIndexUrl": "https://download.pytorch.org/whl/cpu",
     "torchPackage": "torch==2.9.0",
@@ -972,7 +977,8 @@
       "safetensors==0.6.2",
       "accelerate==1.10.1",
       "numpy==2.3.3",
-      "huggingface_hub==0.35.3"
+      "huggingface_hub==0.35.3",
+      "sentencepiece==0.2.1"
     ],
     "seed": 1234,
     "sourceStateDir": "state",
@@ -985,6 +991,7 @@
     "metricsFile": "train-metrics.json",
     "adapterDir": "adapter",
     "mergedDir": "merged",
+    "modelGguf": "model.gguf",
     "logFile": "finetune-log.jsonl",
     "artifactName": "sic-finetune",
     "baseArtifactName": "sic-finetune-base",
