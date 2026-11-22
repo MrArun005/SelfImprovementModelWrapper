@@ -88,14 +88,14 @@ jobs:
       - name: Read fine-tuning settings
         id: cfg
         run: node src/ci/config-out.js >> "$GITHUB_OUTPUT"
-      - name: Cache Python packages and the base model snapshot
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      - name: Restore cached Python packages and base model files
+        id: ftcache
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: |
             ~/.cache/pip
             ~/.sic-hf
-          key: finetune-${{ steps.cfg.outputs.ft_base_revision }}-${{ steps.cfg.outputs.ft_torch_package }}-${{ hashFiles('config/default.json') }}
-          restore-keys: finetune-${{ steps.cfg.outputs.ft_base_revision }}-
+          key: finetune-${{ steps.cfg.outputs.ft_base_revision }}-${{ steps.cfg.outputs.ft_torch_package }}
       - name: Python environment (pinned versions)
         env:
           TORCH_INDEX: ${{ steps.cfg.outputs.ft_torch_index }}
@@ -124,10 +124,26 @@ jobs:
             f="$dir/${u##*/}"
             if [ -s "$f" ]; then echo "cached: ${u##*/}"; continue; fi
             echo "downloading ${u##*/}"
-            curl -fL --retry "$RETRIES" --retry-all-errors --max-time "$MAX_SECONDS" -sS -o "$f.part" "$u"
+            # resumable: a retry continues the partial file instead of starting over
+            ok=0
+            for i in $(seq "$RETRIES"); do
+              if curl -fL -C - --max-time "$MAX_SECONDS" -sS -o "$f.part" "$u"; then ok=1; break; fi
+              echo "attempt $i interrupted, resuming"
+              sleep $((i * 5))
+            done
+            [ "$ok" = 1 ] || { echo "::error::could not download ${u##*/}"; exit 1; }
             mv "$f.part" "$f"
           done
           ls -la "$dir"
+      - name: Save the cache now (so a later failure doesn't force a full re-download)
+        if: steps.ftcache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.sic-hf
+          key: finetune-${{ steps.cfg.outputs.ft_base_revision }}-${{ steps.cfg.outputs.ft_torch_package }}
+
       - name: Adapter converter (pinned commit of the upstream conversion scripts)
         env:
           LLAMA_REPO: ${{ steps.cfg.outputs.ft_llama_repo }}
