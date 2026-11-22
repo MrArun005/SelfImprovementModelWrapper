@@ -5,3 +5,4 @@ data/
 .claude/
 site/dist/
 .reproduce/
+__pycache__/
