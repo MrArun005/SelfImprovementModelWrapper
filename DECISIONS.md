@@ -213,7 +213,11 @@ fixed 1.5B model can do with better notes. Variant `finetune` (lever `finetune`)
   the data focuses on what the system learned the hard way: problems that failed at least once somewhere or were only
   solved on a retry keep up to `finetune.maxSolutionsPerProblem` distinct solutions and are repeated `hardWeight`
   times; easy problems keep `easyMaxSolutionsPerProblem`. One epoch over the weighted set (389 solutions, 94 hard
-  problems, 539 examples) fits the 3 h cap at the runner's ~16 s/example.
+  problems, 539 examples) fits the 3 h cap at the runner's ~16 s/example. Local probe before day 4 (60 train problems
+  no variant has solved, so none in the training data; greedy, full precision, judged by the repo's sandbox): base 14,
+  hard-win fine-tuned 19 (+8.3 pts; 6 problems only the fine-tuned model solved, 1 only the base; exact McNemar
+  p = 0.125). Promising, not significant; the day-4 holdout comparison is the evidence. The day-3 all-solutions model
+  on a comparable probe: 31 vs 32 (+1.7 pts, 3 vs 2).
 - **`full-finetuned`.** The fine-tuned weights with every inference lever (lessons, self-repair, sample+filter, prompt
   optimizer), share 1.5. If fine-tuning and the levers are complementary, this is the best system; if not, the
   comparison with `full` shows it. Budget raised so every unit share stays 420 requests.
