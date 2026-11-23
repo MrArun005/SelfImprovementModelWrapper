@@ -1,4 +1,45 @@
 {
-  "nextId": 152,
-  "items": []
+  "nextId": 201,
+  "items": [
+    {
+      "id": "L0180",
+      "text": "When encountering unexpected results in a split operation, it's crucial to consider the possibility of leading or trailing spaces or multiple separators. In this case, the split method might have returned an extra empty string at the end of the…",
+      "tags": [
+        "split",
+        "splitting",
+        "leading spaces",
+        "trailing spaces",
+        "multiple separators",
+        "regular expression"
+      ],
+      "sourceProblem": "HumanEval_101_words_string",
+      "sourceResult": "fail",
+      "sourceClass": "wrong-output",
+      "sourceAttempt": 1,
+      "createdRun": 6,
+      "uses": 1,
+      "helped": 1,
+      "verified": true
+    },
+    {
+      "id": "L0194",
+      "text": "When encountering unexpected results like `NaN` in a function that should return a number, it's often due to non-numeric values being included in the array. Ensure that the function only processes numeric values before applying the `Math.max` function. This can…",
+      "tags": [
+        "filter",
+        "numeric",
+        "array",
+        "nan",
+        "deep-equal",
+        "maximum"
+      ],
+      "sourceProblem": "mbpp_294_max_val",
+      "sourceResult": "fail",
+      "sourceClass": "wrong-output",
+      "sourceAttempt": 1,
+      "createdRun": 6,
+      "uses": 1,
+      "helped": 1,
+      "verified": true
+    }
+  ]
 }

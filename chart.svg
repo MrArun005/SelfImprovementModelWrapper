@@ -14,63 +14,70 @@
 <line x1="52" x2="736" y1="100" y2="100" stroke="#e5e7eb"/>
 <text x="46" y="103" text-anchor="end" fill="#6b7280">100%</text>
 <text x="52" y="330" text-anchor="middle" fill="#6b7280">11-19</text>
-<text x="280" y="330" text-anchor="middle" fill="#6b7280">11-20</text>
-<text x="508" y="330" text-anchor="middle" fill="#6b7280">11-21</text>
-<text x="736" y="330" text-anchor="middle" fill="#6b7280">11-22</text>
+<text x="223" y="330" text-anchor="middle" fill="#6b7280">11-20</text>
+<text x="394" y="330" text-anchor="middle" fill="#6b7280">11-21</text>
+<text x="565" y="330" text-anchor="middle" fill="#6b7280">11-22</text>
+<text x="736" y="330" text-anchor="middle" fill="#6b7280">11-23</text>
 <text x="394" y="354" text-anchor="middle" fill="#6b7280">run date (MM-DD) · bands = 95% bootstrap CI over holdout problems</text>
-<line x1="52" x2="736" y1="193.1116470588235" y2="193.1116470588235" stroke="#f59e0b" stroke-dasharray="6 4" stroke-width="1.5"/>
-<text x="58" y="208.1116470588235" fill="#f59e0b">starting baseline 56.1%</text>
-<polygon class="band" data-variant="baseline" points="52,169.2604 280,169.2604 508,172.07999999999998 736,169.2604 736,222.96 508,227.2424 280,224.3804 52,225.77960000000002" fill="#6b7280" fill-opacity="0.15" stroke="none"/>
-<polyline data-variant="baseline" fill="none" stroke="#6b7280" stroke-width="2" points="52,196.0996 280,197.51999999999998 508,200.33960000000002 736,196.0996"/>
+<line x1="52" x2="736" y1="192.07583999999997" y2="192.07583999999997" stroke="#f59e0b" stroke-dasharray="6 4" stroke-width="1.5"/>
+<text x="58" y="207.07583999999997" fill="#f59e0b">starting baseline 56.6%</text>
+<polygon class="band" data-variant="baseline" points="52,169.2604 223,169.2604 394,172.07999999999998 565,169.2604 736,162.1796 736,215.9004 565,222.96 394,227.2424 223,224.3804 52,225.77960000000002" fill="#6b7280" fill-opacity="0.15" stroke="none"/>
+<polyline data-variant="baseline" fill="none" stroke="#6b7280" stroke-width="2" points="52,196.0996 223,197.51999999999998 394,200.33960000000002 565,196.0996 736,189.04000000000002"/>
 <circle cx="52" cy="196.0996" r="4" fill="#6b7280" stroke="#ffffff"><title>No memory (control) 2026-11-19: 54.7% [40.7–67.3] n=50×3, gate baseline</title></circle>
-<circle cx="280" cy="197.51999999999998" r="4" fill="#6b7280" stroke="#ffffff"><title>No memory (control) 2026-11-20: 54.0% [41.3–67.3] n=50×3, gate no-change</title></circle>
-<circle cx="508" cy="200.33960000000002" r="4" fill="#6b7280" stroke="#ffffff"><title>No memory (control) 2026-11-21: 52.7% [40.0–66.0] n=50×3, gate no-change</title></circle>
-<circle cx="736" cy="196.0996" r="4" fill="#6b7280" stroke="#ffffff"><title>No memory (control) 2026-11-22: 54.7% [42.0–67.3] n=50×3, gate no-change</title></circle>
-<polygon class="band" data-variant="lessons" points="52,167.84 280,167.84 508,173.5004 736,166.4196 736,218.72 508,228.62040000000002 280,221.5396 52,221.5396" fill="#2563eb" fill-opacity="0.15" stroke="none"/>
-<polyline data-variant="lessons" fill="none" stroke="#2563eb" stroke-width="2" points="52,193.27999999999997 280,194.7004 508,200.33960000000002 736,193.27999999999997"/>
+<circle cx="223" cy="197.51999999999998" r="4" fill="#6b7280" stroke="#ffffff"><title>No memory (control) 2026-11-20: 54.0% [41.3–67.3] n=50×3, gate no-change</title></circle>
+<circle cx="394" cy="200.33960000000002" r="4" fill="#6b7280" stroke="#ffffff"><title>No memory (control) 2026-11-21: 52.7% [40.0–66.0] n=50×3, gate no-change</title></circle>
+<circle cx="565" cy="196.0996" r="4" fill="#6b7280" stroke="#ffffff"><title>No memory (control) 2026-11-22: 54.7% [42.0–67.3] n=50×3, gate no-change</title></circle>
+<circle cx="736" cy="189.04000000000002" r="4" fill="#6b7280" stroke="#ffffff"><title>No memory (control) 2026-11-23: 58.0% [45.3–70.7] n=50×3, gate no-change</title></circle>
+<polygon class="band" data-variant="lessons" points="52,167.84 223,167.84 394,173.5004 565,166.4196 565,218.72 394,228.62040000000002 223,221.5396 52,221.5396" fill="#2563eb" fill-opacity="0.15" stroke="none"/>
+<polyline data-variant="lessons" fill="none" stroke="#2563eb" stroke-width="2" points="52,193.27999999999997 223,194.7004 394,200.33960000000002 565,193.27999999999997"/>
 <circle cx="52" cy="193.27999999999997" r="4" fill="#2563eb" stroke="#ffffff"><title>Lessons 2026-11-19: 56.0% [42.7–68.0] n=50×3, gate baseline</title></circle>
-<circle cx="280" cy="194.7004" r="4" fill="#dc2626" stroke="#ffffff"><title>Lessons 2026-11-20: 55.3% [42.7–68.0] n=50×3, gate reject</title></circle>
-<circle cx="508" cy="200.33960000000002" r="4" fill="#2563eb" stroke="#ffffff"><title>Lessons 2026-11-21: 52.7% [39.3–65.3] n=50×3, gate keep</title></circle>
-<circle cx="736" cy="193.27999999999997" r="4" fill="#dc2626" stroke="#ffffff"><title>Lessons 2026-11-22: 56.0% [44.0–68.7] n=50×3, gate reject</title></circle>
-<polygon class="band" data-variant="skills" points="52,169.2604 280,162.1584 508,169.2604 736,169.218 736,222.96 508,224.3804 280,217.2996 52,225.77960000000002" fill="#d97706" fill-opacity="0.15" stroke="none"/>
-<polyline data-variant="skills" fill="none" stroke="#d97706" stroke-width="2" points="52,196.0996 280,189.04000000000002 508,196.0996 736,196.0996"/>
+<circle cx="223" cy="194.7004" r="4" fill="#dc2626" stroke="#ffffff"><title>Lessons 2026-11-20: 55.3% [42.7–68.0] n=50×3, gate reject</title></circle>
+<circle cx="394" cy="200.33960000000002" r="4" fill="#2563eb" stroke="#ffffff"><title>Lessons 2026-11-21: 52.7% [39.3–65.3] n=50×3, gate keep</title></circle>
+<circle cx="565" cy="193.27999999999997" r="4" fill="#dc2626" stroke="#ffffff"><title>Lessons 2026-11-22: 56.0% [44.0–68.7] n=50×3, gate reject</title></circle>
+<polygon class="band" data-variant="skills" points="52,169.2604 223,162.1584 394,169.2604 565,169.218 565,222.96 394,224.3804 223,217.2996 52,225.77960000000002" fill="#d97706" fill-opacity="0.15" stroke="none"/>
+<polyline data-variant="skills" fill="none" stroke="#d97706" stroke-width="2" points="52,196.0996 223,189.04000000000002 394,196.0996 565,196.0996"/>
 <circle cx="52" cy="196.0996" r="4" fill="#d97706" stroke="#ffffff"><title>Skills 2026-11-19: 54.7% [40.7–67.3] n=50×3, gate baseline</title></circle>
-<circle cx="280" cy="189.04000000000002" r="4" fill="#dc2626" stroke="#ffffff"><title>Skills 2026-11-20: 58.0% [44.7–70.7] n=50×3, gate reject</title></circle>
-<circle cx="508" cy="196.0996" r="4" fill="#dc2626" stroke="#ffffff"><title>Skills 2026-11-21: 54.7% [41.3–67.3] n=50×3, gate reject</title></circle>
-<circle cx="736" cy="196.0996" r="4" fill="#dc2626" stroke="#ffffff"><title>Skills 2026-11-22: 54.7% [42.0–67.3] n=50×3, gate reject</title></circle>
-<polygon class="band" data-variant="lessons-skills" points="52,167.84 280,165.0204 508,169.2604 736,169.2604 736,222.96 508,224.3804 280,220.1404 52,221.5396" fill="#16a34a" fill-opacity="0.15" stroke="none"/>
-<polyline data-variant="lessons-skills" fill="none" stroke="#16a34a" stroke-width="2" points="52,193.27999999999997 280,193.27999999999997 508,196.0996 736,196.0996"/>
+<circle cx="223" cy="189.04000000000002" r="4" fill="#dc2626" stroke="#ffffff"><title>Skills 2026-11-20: 58.0% [44.7–70.7] n=50×3, gate reject</title></circle>
+<circle cx="394" cy="196.0996" r="4" fill="#dc2626" stroke="#ffffff"><title>Skills 2026-11-21: 54.7% [41.3–67.3] n=50×3, gate reject</title></circle>
+<circle cx="565" cy="196.0996" r="4" fill="#dc2626" stroke="#ffffff"><title>Skills 2026-11-22: 54.7% [42.0–67.3] n=50×3, gate reject</title></circle>
+<polygon class="band" data-variant="lessons-skills" points="52,167.84 223,165.0204 394,169.2604 565,169.2604 565,222.96 394,224.3804 223,220.1404 52,221.5396" fill="#16a34a" fill-opacity="0.15" stroke="none"/>
+<polyline data-variant="lessons-skills" fill="none" stroke="#16a34a" stroke-width="2" points="52,193.27999999999997 223,193.27999999999997 394,196.0996 565,196.0996"/>
 <circle cx="52" cy="193.27999999999997" r="4" fill="#16a34a" stroke="#ffffff"><title>Lessons + skills 2026-11-19: 56.0% [42.7–68.0] n=50×3, gate baseline</title></circle>
-<circle cx="280" cy="193.27999999999997" r="4" fill="#dc2626" stroke="#ffffff"><title>Lessons + skills 2026-11-20: 56.0% [43.3–69.3] n=50×3, gate reject</title></circle>
-<circle cx="508" cy="196.0996" r="4" fill="#dc2626" stroke="#ffffff"><title>Lessons + skills 2026-11-21: 54.7% [41.3–67.3] n=50×3, gate reject</title></circle>
-<circle cx="736" cy="196.0996" r="4" fill="#dc2626" stroke="#ffffff"><title>Lessons + skills 2026-11-22: 54.7% [42.0–67.3] n=50×3, gate reject</title></circle>
-<polygon class="band" data-variant="self-repair" points="52,167.84 280,162.1584 508,173.5004 736,167.84 736,221.5396 508,227.2 280,217.2996 52,221.5396" fill="#0891b2" fill-opacity="0.15" stroke="none"/>
-<polyline data-variant="self-repair" fill="none" stroke="#0891b2" stroke-width="2" points="52,193.27999999999997 280,189.04000000000002 508,200.33960000000002 736,194.7004"/>
+<circle cx="223" cy="193.27999999999997" r="4" fill="#dc2626" stroke="#ffffff"><title>Lessons + skills 2026-11-20: 56.0% [43.3–69.3] n=50×3, gate reject</title></circle>
+<circle cx="394" cy="196.0996" r="4" fill="#dc2626" stroke="#ffffff"><title>Lessons + skills 2026-11-21: 54.7% [41.3–67.3] n=50×3, gate reject</title></circle>
+<circle cx="565" cy="196.0996" r="4" fill="#dc2626" stroke="#ffffff"><title>Lessons + skills 2026-11-22: 54.7% [42.0–67.3] n=50×3, gate reject</title></circle>
+<polygon class="band" data-variant="self-repair" points="52,167.84 223,162.1584 394,173.5004 565,167.84 565,221.5396 394,227.2 223,217.2996 52,221.5396" fill="#0891b2" fill-opacity="0.15" stroke="none"/>
+<polyline data-variant="self-repair" fill="none" stroke="#0891b2" stroke-width="2" points="52,193.27999999999997 223,189.04000000000002 394,200.33960000000002 565,194.7004"/>
 <circle cx="52" cy="193.27999999999997" r="4" fill="#0891b2" stroke="#ffffff"><title>Self-repair 2026-11-19: 56.0% [42.7–68.0] n=50×3, gate baseline</title></circle>
-<circle cx="280" cy="189.04000000000002" r="4" fill="#0891b2" stroke="#ffffff"><title>Self-repair 2026-11-20: 58.0% [44.7–70.7] n=50×3, gate no-change</title></circle>
-<circle cx="508" cy="200.33960000000002" r="4" fill="#0891b2" stroke="#ffffff"><title>Self-repair 2026-11-21: 52.7% [40.0–65.3] n=50×3, gate no-change</title></circle>
-<circle cx="736" cy="194.7004" r="4" fill="#0891b2" stroke="#ffffff"><title>Self-repair 2026-11-22: 55.3% [42.7–68.0] n=50×3, gate no-change</title></circle>
-<polygon class="band" data-variant="sample-filter" points="52,162.1796 280,167.84 508,163.60000000000002 736,163.60000000000002 736,217.34199999999998 508,217.2996 280,221.5396 52,215.9004" fill="#db2777" fill-opacity="0.15" stroke="none"/>
-<polyline data-variant="sample-filter" fill="none" stroke="#db2777" stroke-width="2" points="52,187.6196 280,194.7004 508,190.4604 736,190.4604"/>
+<circle cx="223" cy="189.04000000000002" r="4" fill="#0891b2" stroke="#ffffff"><title>Self-repair 2026-11-20: 58.0% [44.7–70.7] n=50×3, gate no-change</title></circle>
+<circle cx="394" cy="200.33960000000002" r="4" fill="#0891b2" stroke="#ffffff"><title>Self-repair 2026-11-21: 52.7% [40.0–65.3] n=50×3, gate no-change</title></circle>
+<circle cx="565" cy="194.7004" r="4" fill="#0891b2" stroke="#ffffff"><title>Self-repair 2026-11-22: 55.3% [42.7–68.0] n=50×3, gate no-change</title></circle>
+<polygon class="band" data-variant="sample-filter" points="52,162.1796 223,167.84 394,163.60000000000002 565,163.60000000000002 736,169.218 736,221.5396 565,217.34199999999998 394,217.2996 223,221.5396 52,215.9004" fill="#db2777" fill-opacity="0.15" stroke="none"/>
+<polyline data-variant="sample-filter" fill="none" stroke="#db2777" stroke-width="2" points="52,187.6196 223,194.7004 394,190.4604 565,190.4604 736,194.7004"/>
 <circle cx="52" cy="187.6196" r="4" fill="#db2777" stroke="#ffffff"><title>Sample + filter 2026-11-19: 58.7% [45.3–70.7] n=50×3, gate baseline</title></circle>
-<circle cx="280" cy="194.7004" r="4" fill="#db2777" stroke="#ffffff"><title>Sample + filter 2026-11-20: 55.3% [42.7–68.0] n=50×3, gate baseline</title></circle>
-<circle cx="508" cy="190.4604" r="4" fill="#db2777" stroke="#ffffff"><title>Sample + filter 2026-11-21: 57.3% [44.7–70.0] n=50×3, gate no-change</title></circle>
-<circle cx="736" cy="190.4604" r="4" fill="#db2777" stroke="#ffffff"><title>Sample + filter 2026-11-22: 57.3% [44.6–70.0] n=50×3, gate no-change</title></circle>
-<polygon class="band" data-variant="full" points="52,169.2604 280,155.4804 508,162.2644 736,163.60000000000002 736,217.2996 508,221.1368 280,214.4164 52,222.96" fill="#9333ea" fill-opacity="0.15" stroke="none"/>
-<polyline data-variant="full" fill="none" stroke="#9333ea" stroke-width="2" points="52,194.7004 280,184.1216 508,190.8632 736,190.4604"/>
+<circle cx="223" cy="194.7004" r="4" fill="#db2777" stroke="#ffffff"><title>Sample + filter 2026-11-20: 55.3% [42.7–68.0] n=50×3, gate baseline</title></circle>
+<circle cx="394" cy="190.4604" r="4" fill="#db2777" stroke="#ffffff"><title>Sample + filter 2026-11-21: 57.3% [44.7–70.0] n=50×3, gate no-change</title></circle>
+<circle cx="565" cy="190.4604" r="4" fill="#db2777" stroke="#ffffff"><title>Sample + filter 2026-11-22: 57.3% [44.6–70.0] n=50×3, gate no-change</title></circle>
+<circle cx="736" cy="194.7004" r="4" fill="#db2777" stroke="#ffffff"><title>Sample + filter 2026-11-23: 55.3% [42.7–67.3] n=50×3, gate no-change</title></circle>
+<polygon class="band" data-variant="full" points="52,169.2604 223,155.4804 394,162.2644 565,163.60000000000002 736,153.848 736,214.4164 565,217.2996 394,221.1368 223,214.4164 52,222.96" fill="#9333ea" fill-opacity="0.15" stroke="none"/>
+<polyline data-variant="full" fill="none" stroke="#9333ea" stroke-width="2" points="52,194.7004 223,184.1216 394,190.8632 565,190.4604 736,184.1216"/>
 <circle cx="52" cy="194.7004" r="4" fill="#9333ea" stroke="#ffffff"><title>Full (lessons, self-repair, sample+filter, optimizer) 2026-11-19: 55.3% [42.0–67.3] n=50×3, gate baseline</title></circle>
-<circle cx="280" cy="184.1216" r="4" fill="#dc2626" stroke="#ffffff"><title>Full (lessons, self-repair, sample+filter, optimizer) 2026-11-20: 60.3% [46.0–73.8] n=42×3, gate reject</title></circle>
-<circle cx="508" cy="190.8632" r="4" fill="#dc2626" stroke="#ffffff"><title>Full (lessons, self-repair, sample+filter, optimizer) 2026-11-21: 57.1% [42.9–70.6] n=42×3, gate reject</title></circle>
-<circle cx="736" cy="190.4604" r="4" fill="#9333ea" stroke="#ffffff"><title>Full (lessons, self-repair, sample+filter, optimizer) 2026-11-22: 57.3% [44.7–70.0] n=50×3, gate no-change</title></circle>
-<line class="band" data-variant="finetune" x1="736" x2="736" y1="227.2" y2="169.2604" stroke="#ea580c" stroke-opacity="0.44999999999999996" stroke-width="8"/>
-<polyline data-variant="finetune" fill="none" stroke="#ea580c" stroke-width="2" points="736,197.51999999999998"/>
-<circle cx="736" cy="197.51999999999998" r="4" fill="#ea580c" stroke="#ffffff"><title>Fine-tuned on its own verified solutions 2026-11-22: 54.0% [40.0–67.3] n=50×3, gate baseline</title></circle>
-<line class="band" data-variant="finetune-base" x1="736" x2="736" y1="224.3804" y2="169.2604" stroke="#a16207" stroke-opacity="0.44999999999999996" stroke-width="8"/>
-<polyline data-variant="finetune-base" fill="none" stroke="#a16207" stroke-width="2" points="736,196.0996"/>
-<circle cx="736" cy="196.0996" r="4" fill="#a16207" stroke="#ffffff"><title>Untrained base, same convert + quantize pipeline (fine-tuning&#39;s reference) 2026-11-22: 54.7% [41.3–67.3] n=50×3, gate baseline</title></circle>
-<line class="band" data-variant="full-finetuned" x1="736" x2="736" y1="211.66039999999998" y2="156.5404" stroke="#be123c" stroke-opacity="0.44999999999999996" stroke-width="8"/>
-<polyline data-variant="full-finetuned" fill="none" stroke="#be123c" stroke-width="2" points="736,183.37959999999998"/>
-<circle cx="736" cy="183.37959999999998" r="4" fill="#be123c" stroke="#ffffff"><title>Full + fine-tuned weights (every lever stacked) 2026-11-22: 60.7% [47.3–73.3] n=50×3, gate baseline</title></circle>
+<circle cx="223" cy="184.1216" r="4" fill="#dc2626" stroke="#ffffff"><title>Full (lessons, self-repair, sample+filter, optimizer) 2026-11-20: 60.3% [46.0–73.8] n=42×3, gate reject</title></circle>
+<circle cx="394" cy="190.8632" r="4" fill="#dc2626" stroke="#ffffff"><title>Full (lessons, self-repair, sample+filter, optimizer) 2026-11-21: 57.1% [42.9–70.6] n=42×3, gate reject</title></circle>
+<circle cx="565" cy="190.4604" r="4" fill="#9333ea" stroke="#ffffff"><title>Full (lessons, self-repair, sample+filter, optimizer) 2026-11-22: 57.3% [44.7–70.0] n=50×3, gate no-change</title></circle>
+<circle cx="736" cy="184.1216" r="4" fill="#9333ea" stroke="#ffffff"><title>Full (lessons, self-repair, sample+filter, optimizer) 2026-11-23: 60.3% [46.0–74.6] n=42×3, gate keep</title></circle>
+<polygon class="band" data-variant="finetune" points="565,169.2604 736,160.738 736,215.9004 565,227.2" fill="#ea580c" fill-opacity="0.15" stroke="none"/>
+<polyline data-variant="finetune" fill="none" stroke="#ea580c" stroke-width="2" points="565,197.51999999999998 736,187.6196"/>
+<circle cx="565" cy="197.51999999999998" r="4" fill="#ea580c" stroke="#ffffff"><title>Fine-tuned on its own verified solutions 2026-11-22: 54.0% [40.0–67.3] n=50×3, gate baseline</title></circle>
+<circle cx="736" cy="187.6196" r="4" fill="#ea580c" stroke="#ffffff"><title>Fine-tuned on its own verified solutions 2026-11-23: 58.7% [45.3–71.4] n=50×3, gate baseline</title></circle>
+<polygon class="band" data-variant="finetune-base" points="565,169.2604 736,160.7804 736,217.2996 565,224.3804" fill="#a16207" fill-opacity="0.15" stroke="none"/>
+<polyline data-variant="finetune-base" fill="none" stroke="#a16207" stroke-width="2" points="565,196.0996 736,187.6196"/>
+<circle cx="565" cy="196.0996" r="4" fill="#a16207" stroke="#ffffff"><title>Untrained base, same convert + quantize pipeline (fine-tuning&#39;s reference) 2026-11-22: 54.7% [41.3–67.3] n=50×3, gate baseline</title></circle>
+<circle cx="736" cy="187.6196" r="4" fill="#a16207" stroke="#ffffff"><title>Untrained base, same convert + quantize pipeline (fine-tuning&#39;s reference) 2026-11-23: 58.7% [44.7–71.3] n=50×3, gate baseline</title></circle>
+<polygon class="band" data-variant="full-finetuned" points="565,156.5404 736,156.5404 736,211.66039999999998 565,211.66039999999998" fill="#be123c" fill-opacity="0.15" stroke="none"/>
+<polyline data-variant="full-finetuned" fill="none" stroke="#be123c" stroke-width="2" points="565,183.37959999999998 736,183.37959999999998"/>
+<circle cx="565" cy="183.37959999999998" r="4" fill="#be123c" stroke="#ffffff"><title>Full + fine-tuned weights (every lever stacked) 2026-11-22: 60.7% [47.3–73.3] n=50×3, gate baseline</title></circle>
+<circle cx="736" cy="183.37959999999998" r="4" fill="#be123c" stroke="#ffffff"><title>Full + fine-tuned weights (every lever stacked) 2026-11-23: 60.7% [47.3–73.3] n=50×3, gate baseline</title></circle>
 <rect x="52" y="32" width="12" height="12" rx="2" fill="#6b7280"/><text x="70" y="44" fill="#111827">No memory (control)</text>
 <rect x="202" y="32" width="12" height="12" rx="2" fill="#2563eb"/><text x="220" y="44" fill="#111827">Lessons</text>
 <rect x="352" y="32" width="12" height="12" rx="2" fill="#d97706"/><text x="370" y="44" fill="#111827">Skills</text>

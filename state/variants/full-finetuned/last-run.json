@@ -1,7 +1,7 @@
 {
-  "runId": "gh45023025815-20261122T135955",
-  "runIndex": 1,
-  "timestamp": "2026-11-22T13:59:55.372Z",
+  "runId": "gh45074613792-20261123T003344",
+  "runIndex": 2,
+  "timestamp": "2026-11-23T00:33:44.227Z",
   "variant": "full-finetuned",
   "decision": "baseline",
   "baselineMode": true,
@@ -19,16 +19,16 @@
     "ciHigh": 0.7333333333333333,
     "n": 50,
     "repeats": 3,
-    "sdAcrossRepeats": 0.02309401076758505
+    "sdAcrossRepeats": 0.011547005383792525
   },
   "candidate": null,
   "diff": null,
   "pruned": [],
-  "requestsUsed": 189,
-  "requestsToday": 189,
-  "tokensIn": 34999,
-  "tokensOut": 13928,
-  "llmMs": 525478,
+  "requestsUsed": 192,
+  "requestsToday": 192,
+  "tokensIn": 36339,
+  "tokensOut": 14035,
+  "llmMs": 846996,
   "budgetPerRun": 630,
   "maxRunMinutes": 125
 }

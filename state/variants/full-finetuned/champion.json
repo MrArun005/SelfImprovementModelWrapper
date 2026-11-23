@@ -8,8 +8,8 @@
     "ciHigh": 0.7333333333333333,
     "n": 50,
     "repeats": 3,
-    "sdAcrossRepeats": 0.02309401076758505,
-    "runId": "gh45023025815-20261122T135955"
+    "sdAcrossRepeats": 0.011547005383792525,
+    "runId": "gh45074613792-20261123T003344"
   },
   "pending": {
     "lessonIds": [],
