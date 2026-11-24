@@ -41,10 +41,13 @@ export function stubToTask(stub) {
  */
 export function pickProductVariant(cfg, a) {
   const runnable = (name) => !servedModel(cfg, variantConfig(cfg, name).variant.levers);
-  const rows = leaderboard(a, cfg.product.track).filter((r) => r.vsControl && runnable(r.variant));
+  // the multi-day pooled estimate when there is one (less noisy than a single day), else today's comparison
+  const evidence = (r) => (r.pooled ? { ...r.pooled, kind: `pooled over ${r.pooled.days} days` } : r.vsControl ? { ...r.vsControl, kind: 'today' } : null);
+  const rows = leaderboard(a, cfg.product.track).filter((r) => r.active !== false && evidence(r) && runnable(r.variant));
   if (!rows.length) return { variant: cfg.product.fallbackVariant, why: 'no comparisons with the control yet' };
-  const best = rows.reduce((b, r) => (r.vsControl.low > b.vsControl.low ? r : b));
-  return { variant: best.variant, why: `highest lower bound of the gain over the control (${(best.vsControl.estimate * 100).toFixed(1)} pts, 95% CI from ${(best.vsControl.low * 100).toFixed(1)})` };
+  const best = rows.reduce((b, r) => (evidence(r).low > evidence(b).low ? r : b));
+  const e = evidence(best);
+  return { variant: best.variant, why: `highest lower bound of the gain over the control (${(e.estimate * 100).toFixed(1)} pts ${e.kind}, 95% CI from ${(e.low * 100).toFixed(1)})` };
 }
 
 export async function solveStub({ cfg: baseCfg, stub, variant, llm }) {

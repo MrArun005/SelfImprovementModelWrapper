@@ -180,8 +180,8 @@
     "improveJobMinutes": 170
   },
   "budget": {
-    "totalRequestsPerRun": 4200,
-    "totalRequestsPerDay": 4800,
+    "totalRequestsPerRun": 5250,
+    "totalRequestsPerDay": 6000,
     "holdoutFraction": 0.72,
     "maxRunMinutes": 125,
     "reserveMinutesForHoldout": 70
@@ -586,6 +586,21 @@
       },
       "budgetShare": 1.5,
       "color": "#db2777"
+    },
+    {
+      "name": "sample-filter-5",
+      "label": "Sample + filter, 5 candidates",
+      "track": "multipl-e",
+      "levers": {
+        "sampleFilter": true
+      },
+      "budgetShare": 2.5,
+      "color": "#f472b6",
+      "overrides": {
+        "agent": {
+          "samples": 5
+        }
+      }
     },
     {
       "name": "full",
