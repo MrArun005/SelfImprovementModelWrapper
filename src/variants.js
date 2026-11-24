@@ -53,7 +53,7 @@ export function variantConfig(baseCfg, name) {
   const v = getVariant(baseCfg, name);
   // per-variant config overrides (e.g. a larger model with fewer eval repeats and a longer time budget)
   const cfg = v.overrides ? deepMerge(baseCfg, v.overrides) : baseCfg;
-  const levers = { lessons: false, skills: false, promptOptimizer: false, selfRepair: false, sampleFilter: false, finetune: false, requantizedBase: false, ...v.levers };
+  const levers = { lessons: false, skills: false, promptOptimizer: false, selfRepair: false, sampleFilter: false, finetune: false, requantizedBase: false, selfTests: false, ...v.levers };
   return {
     ...cfg,
     variant: { ...v, levers },

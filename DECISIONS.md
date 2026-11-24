@@ -74,7 +74,7 @@ Variants are data (`config.variants`; this list is checked against the config by
 `baseline` (**control**: no memory, no inference-time levers), `lessons`, `skills`, `lessons-skills`, `self-repair`
 (§4b), `sample-filter` (§4c), `full` (lessons + self-repair + sample-filter + prompt optimizer; skills removed after
 day 2, §4e), `finetune` (the model's weights trained on its own verified solutions, §4g), `finetune-base` (its untrained
-reference, §4g), `full-finetuned` (every lever stacked on the fine-tuned weights, §4h), `baseline-7b` and `full-7b` (§4i), `sample-filter-5` (§4j), `mutation-baseline`
+reference, §4g), `full-finetuned` (every lever stacked on the fine-tuned weights, §4h), `baseline-7b` and `full-7b` (§4i), `sample-filter-5` and `sample-filter-tests` (§4j), `mutation-baseline`
 (control) and `mutation-lessons`. Each has its own `state/variants/<name>/`, its own
 budget share, and its own job in the matrix.
 The workflow's matrix is read from config by the `plan` job, so adding a variant is a config change only.
@@ -263,6 +263,14 @@ fixed 1.5B model can do with better notes. Variant `finetune` (lever `finetune`)
 - **Push the most promising lever.** `sample-filter-5`: sample+filter with 5 candidates instead of 3 (`overrides.agent.
   samples`), share 2.5 so all 50 problems fit. More candidates give the example filter more chances to find a
   passing one; whether that beats 3 is measured against the same control.
+- **Self-written tests** (lever `selfTests`, variant `sample-filter-tests`). Sample+filter only checks candidates
+  against the statement's own examples, and stops at the first that passes them. With self-tests the model also
+  writes `agent.selfTests.count` extra examples from the statement (one extra request, `prompts/self-tests.md`, same
+  `// >>> call` format, statement examples removed); every candidate is drawn and run on them in the sandbox, and the
+  one that passes the statement's examples and then the most self-written ones is kept (a simplified CodeT-style
+  ranking). The self-written examples can be wrong, so they only rank candidates, never decide pass or fail, and they
+  come from the statement alone, so using them on holdout problems is honest. Its real cost equals its worst case
+  (every sample + 1), so it gets share 3, 2 eval repeats and 220 job minutes to keep all 50 problems.
 - **The product uses the pooled evidence.** `npm run solve` (`product.variant` = `auto`) now picks the active
   stock-model variant with the highest lower bound of its pooled multi-day gain (single-day only when no pooled
   estimate exists). Day 5: sample+filter (+2.3 pts pooled over 6 days, CI from +0.4).

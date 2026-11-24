@@ -47,3 +47,30 @@ if (failures.length) throw new assert.AssertionError({ message: 'Examples from t
   try { acorn.parse(src, { ecmaVersion, sourceType: 'script' }); } catch { return null; }
   return src;
 }
+
+/**
+ * Model-written examples (same "// >>> call" + "// expected" format) as a script that never throws: it prints how
+ * many examples a candidate passes, so candidates can be ranked by it. The examples may themselves be wrong, which is
+ * why they only rank candidates and never decide pass/fail.
+ */
+export const SELF_TESTS_TAG = 'SELF_TESTS_PASSED';
+export function selfTestSource(examples, ecmaVersion) {
+  if (!examples.length) return null;
+  const cases = examples.map((e) => `  [() => (${e.call}), () => (${e.expected})]`).join(',\n');
+  const src = `const assert = require('node:assert');
+let passed = 0;
+for (const [actual, expected] of [
+${cases}
+]) {
+  try { assert.deepEqual(actual(), expected()); passed++; } catch {}
+}
+console.log('${SELF_TESTS_TAG} ' + passed);
+`;
+  try { acorn.parse(src, { ecmaVersion, sourceType: 'script' }); } catch { return null; }
+  return src;
+}
+
+export function selfTestsPassed(output) {
+  const m = String(output ?? '').match(new RegExp(`${SELF_TESTS_TAG} (\\d+)`));
+  return m ? Number(m[1]) : 0;
+}

@@ -31,6 +31,7 @@ export function loadSharedTemplates(cfg) {
   return {
     reflectSystem: fs.readFileSync(path.join(dir, cfg.paths.reflectSystemTemplate), 'utf8'),
     repair: fs.readFileSync(path.join(dir, cfg.paths.repairTemplate), 'utf8'),
+    selfTests: fs.readFileSync(path.join(dir, cfg.paths.selfTestsTemplate), 'utf8'),
   };
 }
 
@@ -72,7 +73,7 @@ async function trainPhase({ llm, cfg, mem, track, templates, runIndex, working, 
         const feedback = lv.selfRepair && previous ? { code: previous.code, output: previous.output, label: cfg.agent.feedbackLabels.train } : null;
         const publicTests = lv.sampleFilter ? track.publicTests?.(task) : null;
         const a = await attemptWithChecks({ llm, problem: task, memory, templates, cfg, temperature: cfg.llm.temperature, seed: trainSeed(cfg, runIndex, id, attempt), reserve,
-          extract: track.extractCode, publicTests, samples: cfg.agent.samples, repairs: 0, feedback, feedbackLabel: cfg.agent.feedbackLabels.eval });
+          extract: track.extractCode, publicTests, samples: cfg.agent.samples, repairs: 0, feedback, feedbackLabel: cfg.agent.feedbackLabels.eval, selfTests: lv.selfTests });
         res = a.res;
         res.repair = Boolean(feedback);
         res.cost = a;
@@ -172,7 +173,7 @@ export async function evaluate({ llm, cfg, mem, track, ids, state, templates, re
       const lv = cfg.variant.levers;
       const publicTests = lv.selfRepair || lv.sampleFilter ? track.publicTests?.(task) : null;
       const a = await attemptWithChecks({ llm, problem: task, memory, templates, cfg, temperature: cfg.eval.temperature, seed, reserve: 0, extract: track.extractCode,
-        publicTests, samples: lv.sampleFilter ? cfg.agent.samples : 1, repairs: lv.selfRepair ? cfg.eval.selfRepairAttempts : 0, feedbackLabel: cfg.agent.feedbackLabels.eval });
+        publicTests, samples: lv.sampleFilter ? cfg.agent.samples : 1, repairs: lv.selfRepair ? cfg.eval.selfRepairAttempts : 0, feedbackLabel: cfg.agent.feedbackLabels.eval, selfTests: lv.selfTests });
       const res = a.res;
       const { requests, tokensIn, tokensOut, llmMs } = a;
       const repairs = a.repairsDone;

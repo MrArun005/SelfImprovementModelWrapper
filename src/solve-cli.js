@@ -68,7 +68,7 @@ export async function solveStub({ cfg: baseCfg, stub, variant, llm }) {
   const publicTests = publicTestSource(task.prompt, task.entryPoint, cfg.curriculum.ecmaVersion);
   const a = await attemptWithChecks({ llm, problem: task, memory, templates, cfg, temperature: cfg.eval.temperature, seed: cfg.llm.seed, reserve: 0,
     extract: extractCode, publicTests, samples: lv.sampleFilter ? cfg.agent.samples : cfg.product.maxAttemptsWithoutExamples,
-    repairs: lv.selfRepair ? cfg.eval.selfRepairAttempts : 0, feedbackLabel: cfg.agent.feedbackLabels.eval });
+    repairs: lv.selfRepair ? cfg.eval.selfRepairAttempts : 0, feedbackLabel: cfg.agent.feedbackLabels.eval, selfTests: lv.selfTests });
   const check = publicTests ? await runTests(a.res.code, publicTests, cfg.judge) : null;
   return {
     code: a.res.code,

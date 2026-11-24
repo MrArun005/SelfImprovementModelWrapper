@@ -180,8 +180,8 @@
     "improveJobMinutes": 170
   },
   "budget": {
-    "totalRequestsPerRun": 5250,
-    "totalRequestsPerDay": 6000,
+    "totalRequestsPerRun": 6510,
+    "totalRequestsPerDay": 7440,
     "holdoutFraction": 0.72,
     "maxRunMinutes": 125,
     "reserveMinutesForHoldout": 70
@@ -221,7 +221,11 @@
     "sampleSeedStride": 1000,
     "verifyLessons": true,
     "skillStatementChars": 400,
-    "sampleTemperature": 0.8
+    "sampleTemperature": 0.8,
+    "selfTests": {
+      "count": 6,
+      "temperature": 0.2
+    }
   },
   "retrieve": {
     "minTokenLength": 3,
@@ -340,7 +344,8 @@
     "chartsDir": ".",
     "reportFile": "REPORT.md",
     "readme": "README.md",
-    "repairTemplate": "repair.md"
+    "repairTemplate": "repair.md",
+    "selfTestsTemplate": "self-tests.md"
   },
   "chart": {
     "width": 760,
@@ -601,6 +606,27 @@
           "samples": 5
         }
       }
+    },
+    {
+      "name": "sample-filter-tests",
+      "label": "Sample + filter, ranked by self-written tests",
+      "track": "multipl-e",
+      "levers": {
+        "sampleFilter": true,
+        "selfTests": true
+      },
+      "budgetShare": 3,
+      "color": "#0ea5e9",
+      "overrides": {
+        "eval": {
+          "repeats": 2
+        },
+        "budget": {
+          "maxRunMinutes": 190,
+          "reserveMinutesForHoldout": 120
+        }
+      },
+      "jobMinutes": 220
     },
     {
       "name": "full",
