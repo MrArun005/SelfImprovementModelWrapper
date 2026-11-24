@@ -1,5 +1,5 @@
 {
-  "nextId": 201,
+  "nextId": 256,
   "items": [
     {
       "id": "L0180",
@@ -37,6 +37,46 @@
       "sourceClass": "wrong-output",
       "sourceAttempt": 1,
       "createdRun": 6,
+      "uses": 3,
+      "helped": 1,
+      "verified": true
+    },
+    {
+      "id": "L0231",
+      "text": "When adding an array to another array, ensure that the original array is not modified. The `push` method creates a new array and adds the elements of the original array to the new array. If you want to add the…",
+      "tags": [
+        "arrays",
+        "functions",
+        "error-handling",
+        "edge-cases",
+        "add",
+        "tuple"
+      ],
+      "sourceProblem": "mbpp_750_add_tuple",
+      "sourceResult": "fail",
+      "sourceClass": "wrong-output",
+      "sourceAttempt": 1,
+      "createdRun": 7,
+      "uses": 1,
+      "helped": 1,
+      "verified": true
+    },
+    {
+      "id": "L0242",
+      "text": "When the gap becomes 1, the comb sort algorithm should be halted. This is because the gap is too small to be effective in further sorting the array, and it could cause the algorithm to behave unpredictably.",
+      "tags": [
+        "gap",
+        "combinatorial",
+        "sorting",
+        "algorithm",
+        "performance",
+        "sort"
+      ],
+      "sourceProblem": "mbpp_71_comb_sort",
+      "sourceResult": "fail",
+      "sourceClass": "wrong-output",
+      "sourceAttempt": 1,
+      "createdRun": 7,
       "uses": 1,
       "helped": 1,
       "verified": true

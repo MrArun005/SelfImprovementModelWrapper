@@ -14,7 +14,9 @@
   "pending": {
     "lessonIds": [
       "L0180",
-      "L0194"
+      "L0194",
+      "L0231",
+      "L0242"
     ],
     "skillIds": [],
     "promptVersion": null,

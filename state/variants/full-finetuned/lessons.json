@@ -1,4 +1,22 @@
 {
-  "nextId": 1,
-  "items": []
+  "nextId": 42,
+  "items": [
+    {
+      "id": "L0005",
+      "text": "When checking if a number is undulating, ensure that each digit pair differs by exactly one. If any pair does not differ by one, the number is not undulating.",
+      "tags": [
+        "undulating",
+        "digit pairs",
+        "difference"
+      ],
+      "sourceProblem": "mbpp_92_is_undulating",
+      "sourceResult": "fail",
+      "sourceClass": "wrong-output",
+      "sourceAttempt": 1,
+      "createdRun": 3,
+      "uses": 3,
+      "helped": 1,
+      "verified": true
+    }
+  ]
 }
