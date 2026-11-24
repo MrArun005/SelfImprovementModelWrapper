@@ -1,4 +1,25 @@
 {
-  "nextId": 1,
-  "items": []
+  "nextId": 26,
+  "items": [
+    {
+      "id": "L0021",
+      "text": "When comparing indices, ensure the order is correct to avoid returning unexpected elements.",
+      "tags": [
+        "array",
+        "indexing",
+        "comparison",
+        "sorting",
+        "there",
+        "eight"
+      ],
+      "sourceProblem": "HumanEval_148_bf",
+      "sourceResult": "fail",
+      "sourceClass": "wrong-output",
+      "sourceAttempt": 1,
+      "createdRun": 3,
+      "uses": 1,
+      "helped": 1,
+      "verified": true
+    }
+  ]
 }

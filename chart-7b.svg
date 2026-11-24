@@ -18,14 +18,14 @@
 <text x="394" y="354" text-anchor="middle" fill="#6b7280">run date (MM-DD) · bands = 95% bootstrap CI over holdout problems</text>
 <line x1="52" x2="736" y1="133.44" y2="133.44" stroke="#f59e0b" stroke-dasharray="6 4" stroke-width="1.5"/>
 <text x="58" y="148.44" fill="#f59e0b">starting baseline 72.0%</text>
-<polygon class="band" data-variant="baseline-7b" points="52,103.68 736,103.68 736,168.16 52,163.32399999999998" fill="#374151" fill-opacity="0.15" stroke="none"/>
-<polyline data-variant="baseline-7b" fill="none" stroke="#374151" stroke-width="2" points="52,133.44 736,133.44"/>
+<polygon class="band" data-variant="baseline-7b" points="52,103.68 736,108.64000000000001 736,178.07999999999998 52,163.32399999999998" fill="#374151" fill-opacity="0.15" stroke="none"/>
+<polyline data-variant="baseline-7b" fill="none" stroke="#374151" stroke-width="2" points="52,133.44 736,143.35999999999999"/>
 <circle cx="52" cy="133.44" r="4" fill="#374151" stroke="#ffffff"><title>7B: no memory (control) 2026-11-23: 72.0% [60.0–84.0] n=50×1, gate baseline</title></circle>
-<circle cx="736" cy="133.44" r="4" fill="#374151" stroke="#ffffff"><title>7B: no memory (control) 2026-11-24: 72.0% [58.0–84.0] n=50×1, gate baseline</title></circle>
-<polygon class="band" data-variant="full-7b" points="52,98.72 736,108.64000000000001 736,173.11999999999998 52,158.24" fill="#7c3aed" fill-opacity="0.15" stroke="none"/>
-<polyline data-variant="full-7b" fill="none" stroke="#7c3aed" stroke-width="2" points="52,128.48 736,138.4"/>
+<circle cx="736" cy="143.35999999999999" r="4" fill="#374151" stroke="#ffffff"><title>7B: no memory (control) 2026-11-24: 68.0% [54.0–82.0] n=50×1, gate no-change</title></circle>
+<polygon class="band" data-variant="full-7b" points="52,98.72 736,103.68 736,163.20000000000002 52,158.24" fill="#7c3aed" fill-opacity="0.15" stroke="none"/>
+<polyline data-variant="full-7b" fill="none" stroke="#7c3aed" stroke-width="2" points="52,128.48 736,133.44"/>
 <circle cx="52" cy="128.48" r="4" fill="#7c3aed" stroke="#ffffff"><title>7B: full (lessons, self-repair, sample+filter, optimizer) 2026-11-23: 74.0% [62.0–86.0] n=50×1, gate baseline</title></circle>
-<circle cx="736" cy="138.4" r="4" fill="#7c3aed" stroke="#ffffff"><title>7B: full (lessons, self-repair, sample+filter, optimizer) 2026-11-24: 70.0% [56.0–82.0] n=50×1, gate baseline</title></circle>
+<circle cx="736" cy="133.44" r="4" fill="#7c3aed" stroke="#ffffff"><title>7B: full (lessons, self-repair, sample+filter, optimizer) 2026-11-24: 72.0% [60.0–84.0] n=50×1, gate keep</title></circle>
 <rect x="52" y="32" width="12" height="12" rx="2" fill="#374151"/><text x="70" y="44" fill="#111827">7B: no memory (control)</text>
 <rect x="202" y="32" width="12" height="12" rx="2" fill="#7c3aed"/><text x="220" y="44" fill="#111827">7B: full (lessons, self-repair, sample+filter, optimizer)</text>
 </svg>
