@@ -1111,6 +1111,9 @@
     ],
     "seed": 1234,
     "sourceStateDir": "state",
+    "extraTraceFiles": [
+      "state/exploration/traces.jsonl"
+    ],
     "maxSolutionsPerProblem": 2,
     "easyMaxSolutionsPerProblem": 1,
     "hardWeight": 2,

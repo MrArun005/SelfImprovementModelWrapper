@@ -65,6 +65,9 @@ export async function prepare(cfg, { variant, outDir, baseDir }) {
   const rows = cfg.variants.filter((v) => v.track === TRACK)
     // always the committed state (finetune.sourceStateDir), so a smoke run trains on real data too
     .flatMap((v) => readJsonl(path.join(rootPath(cfg, ft.sourceStateDir), cfg.paths.variantsDir, v.name, cfg.paths.traces)).map((r) => ({ ...r, variant: r.variant ?? v.name })));
+  // plus verified solutions found by exploration sampling outside the daily runs (train problems only; checked below
+  // like every other row, so a holdout problem in these files is excluded and counted)
+  for (const f of ft.extraTraceFiles ?? []) rows.push(...readJsonl(rootPath(cfg, f)).filter((r) => r.track === TRACK));
   const { picked, weighted, excludedHoldout, notTrain, hardProblems } = selectSolutions(rows, {
     train: new Set(track.train), holdout: new Set(track.holdout), maxPerProblem: ft.maxSolutionsPerProblem, maxExamples: ft.maxExamples, seed: ft.seed,
     easyMaxPerProblem: ft.easyMaxSolutionsPerProblem, hardWeight: ft.hardWeight,
