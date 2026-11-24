@@ -180,8 +180,8 @@
     "improveJobMinutes": 170
   },
   "budget": {
-    "totalRequestsPerRun": 3780,
-    "totalRequestsPerDay": 4320,
+    "totalRequestsPerRun": 4200,
+    "totalRequestsPerDay": 4800,
     "holdoutFraction": 0.72,
     "maxRunMinutes": 125,
     "reserveMinutesForHoldout": 70
@@ -598,7 +598,7 @@
         "selfRepair": true,
         "sampleFilter": true
       },
-      "budgetShare": 1.5,
+      "budgetShare": 2,
       "color": "#9333ea"
     },
     {
@@ -633,7 +633,7 @@
         "selfRepair": true,
         "sampleFilter": true
       },
-      "budgetShare": 1.5,
+      "budgetShare": 2,
       "color": "#be123c"
     },
     {
@@ -873,7 +873,8 @@
         "tooEasy": "raise curriculum.maxFunctionChars or the weight of harder operators (drop-branch, swap-arguments)"
       }
     },
-    "lessonEffectMinUses": 5
+    "lessonEffectMinUses": 5,
+    "poolDays": 7
   },
   "reproduce": {
     "days": 7,

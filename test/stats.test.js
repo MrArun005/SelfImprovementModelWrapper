@@ -158,3 +158,16 @@ test('adding a variant does not change another variant\'s confidence intervals (
     assert.deepEqual([d.low, d.high], [c.low, c.high], c.variant);
   }
 });
+
+test('pooledComparison: same-day pairs only, averages per problem across days, window limited to the last N days', async () => {
+  const { pooledComparison } = await import('../src/analysis.js');
+  const run = (ts, results) => ({ ts, batch: { ids: ['a', 'b', 'c', 'd'], results: results.map((x) => [x]) } });
+  const v = [run('2026-01-01T05:00Z', [1, 1, 0, 1]), run('2026-01-02T05:00Z', [1, 0, 1, 1]), run('2026-01-03T05:00Z', [1, 1, 1, 1])];
+  const c = [run('2026-01-01T04:00Z', [1, 0, 0, 1]), run('2026-01-02T04:00Z', [0, 0, 1, 1]), run('2026-01-04T04:00Z', [0, 0, 0, 0])];
+  const opts = { resamples: 200, confidence: 0.95, seed: 1 };
+  const p = pooledComparison(v, c, 7, opts);
+  assert.equal(p.days, 2, 'day 3 has no control run, day 4 no variant run');
+  assert.ok(Math.abs(p.estimate - 0.25) < 1e-9, 'per problem: a (0+1)/2, b (1+0)/2, c 0, d 0 -> mean 0.25');
+  assert.equal(pooledComparison(v, c, 1, opts).days, 1);
+  assert.equal(pooledComparison(v, [], 7, opts), null);
+});

@@ -6,7 +6,7 @@ import { variantStateDir, groupOf } from './variants.js';
 import { readJsonl } from './recorder.js';
 import { readScores } from './metrics.js';
 import { readJson, isoDay, hash32 } from './util.js';
-import { mean, pairedGroupCI, groupCI, didCI, pairedBootstrapP, holm } from './stats.js';
+import { mean, pairedGroupCI, groupCI, didCI, pairedBootstrapP, holm, bootstrapCI } from './stats.js';
 
 const byStr = (f) => (a, b) => String(f(a)).localeCompare(String(f(b)));
 
@@ -47,6 +47,41 @@ const pairedCI = (cfg, salt, a, b) => {
 
 function statOpts(cfg, salt) {
   return { resamples: cfg.stats.bootstrapResamples, confidence: cfg.stats.confidence, seed: cfg.stats.seed + salt };
+}
+
+/**
+ * Pooled comparison over the last `days` days on which both the variant and the control were evaluated (same-day
+ * pairs only). Per problem, the variant-minus-control difference is averaged over those days, then the bootstrap
+ * resamples problems (the same problems recur every day, so days are not independent samples). Day-to-day noise
+ * averages out, so a steady small gain becomes visible sooner than in any single day. It measures the average gain
+ * over the window, including days before later improvements were accepted.
+ */
+export function pooledComparison(vRuns, cRuns, days, opts) {
+  const cByDay = new Map(cRuns.map((r) => [isoDay(r.ts), r]));
+  const pairs = [];
+  for (const r of [...vRuns].reverse()) {
+    const c = cByDay.get(isoDay(r.ts));
+    if (c && !pairs.some((p) => p.day === isoDay(r.ts))) pairs.push({ day: isoDay(r.ts), v: problemGroups(r.batch), c: problemGroups(c.batch) });
+    if (pairs.length >= days) break;
+  }
+  if (!pairs.length) return null;
+  const acc = new Map(); // problem -> {d: sum of daily differences, vs, cs, k}
+  for (const { v, c } of pairs) {
+    for (const [id, xs] of v) {
+      if (!c.has(id)) continue;
+      const a = acc.get(id) ?? { d: 0, v: 0, c: 0, k: 0 };
+      const vm = mean(xs);
+      const cm = mean(c.get(id));
+      a.d += vm - cm; a.v += vm; a.c += cm; a.k += 1;
+      acc.set(id, a);
+    }
+  }
+  const ids = [...acc.keys()].sort();
+  if (!ids.length) return null;
+  const diffs = ids.map((id) => acc.get(id).d / acc.get(id).k);
+  const ci = bootstrapCI(diffs, opts);
+  const pValue = pairedBootstrapP(ids.map((id) => acc.get(id).c / acc.get(id).k), ids.map((id) => acc.get(id).v / acc.get(id).k), opts);
+  return { estimate: ci.estimate, low: ci.low, high: ci.high, days: pairs.length, daysList: pairs.map((p) => p.day).reverse(), n: ids.length, pValue, significant: ci.low > 0 || ci.high < 0 };
 }
 
 /** Champion eval batch that represents each run (the accepted candidate's batch if the gate accepted). */
@@ -320,6 +355,7 @@ export function analyze(cfg) {
           v.vsBaselineAdjusted = { estimate: dd.estimate, low: dd.low, high: dd.high, n: ids.length, significant: dd.low > 0 || dd.high < 0 };
         }
       }
+      cmp.pooled = pooledComparison(v._runs, control._runs, cfg.analysis.poolDays, statOpts(cfg, hash32(`pooled:${v.name}`)));
       comparisons.push(cmp);
     }
     // failure types: share at the start (first run) vs latest, learning variants vs control
@@ -336,6 +372,10 @@ export function analyze(cfg) {
     const tested = comparisons.filter((c) => !c.missing);
     const adjusted = holm(tested.map((c) => c.pValue));
     tested.forEach((c, i) => { c.pHolm = adjusted[i]; c.significantHolm = adjusted[i] < 1 - cfg.stats.confidence; });
+    // the same correction for the pooled estimates (a separate family: one pooled test per variant)
+    const pooled = tested.filter((c) => c.pooled);
+    const adjPooled = holm(pooled.map((c) => c.pooled.pValue));
+    pooled.forEach((c, i) => { c.pooled.pHolm = adjPooled[i]; c.pooled.significantHolm = adjPooled[i] < 1 - cfg.stats.confidence; });
     result.tracks[track] = { control: control?.name ?? null, variants: vs.map((v) => v.name), comparisons, taxonomyChange, difficulty: difficultyCheck(vs, vs[0]?.track ?? track, cfg) };
   }
   for (const v of Object.values(result.variants)) { delete v._runs; delete v._base; }
@@ -354,6 +394,6 @@ export function leaderboard(a, track) {
     const v = a.variants[n];
     const c = comp.get(n) ?? null;
     return { variant: n, label: v.label, active: v.active !== false, passRate: v.latest?.passRate ?? null, vsControl: c, vsStart: v.vsBaselineAdjusted ?? null,
-      pValue: c?.pValue ?? null, pHolm: c?.pHolm ?? null, significant: !!c?.significant, significantHolm: !!c?.significantHolm };
+      pValue: c?.pValue ?? null, pHolm: c?.pHolm ?? null, significant: !!c?.significant, significantHolm: !!c?.significantHolm, pooled: c?.pooled ?? null };
   }).sort((x, y) => (y.vsControl?.estimate ?? -Infinity) - (x.vsControl?.estimate ?? -Infinity) || x.variant.localeCompare(y.variant));
 }

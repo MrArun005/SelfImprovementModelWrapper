@@ -246,6 +246,21 @@ fixed 1.5B model can do with better notes. Variant `finetune` (lever `finetune`)
 - Budget: every active variant keeps 420 requests per unit share (total = 420 x active shares = 3,780).
 - Results are grouped by `group` (default: track): each group has its own control, leaderboard and chart.
 
+## 4j. Day 5: pooled estimates, and full evaluation coverage
+
+- **Pooled over days.** One 50-problem day only detects gains of roughly 5-10 pts (the CI half-width plus the Holm
+  margin), while the levers' gains look like 2-4 pts. `analysis.pooledComparison` averages each problem's
+  variant-minus-control difference over the last `analysis.poolDays` (7) same-day pairs and bootstraps over
+  problems (the same problems recur every day, so days are not treated as independent). It gets its own Holm
+  correction (one pooled test per variant) and sits next to the single-day numbers in the README and dashboard. It
+  estimates the average gain over the window, including days before later improvements were accepted. First reading
+  (day 5): sample+filter +2.3 pts [+0.4, +4.6] over 6 days, the first CI above zero; Holm p 0.16, so not yet
+  significant after the correction.
+- **All 50 holdout problems for every variant.** `planEval` budgets the worst case (every sample plus a repair on every
+  problem with examples); at budget share 1.5, `full` and `full-finetuned` only fit 42 of 50 problems, always dropping
+  the same expensive ones, which both widened their CIs and biased them toward cheap problems. Their share is now 2
+  (a unit share stays 420 requests); with the evaluation reserve alone all 50 problems fit for every active variant.
+
 ## 5. Evaluation and statistics
 
 - **Repeats:** every holdout evaluation runs `eval.repeats` = 3 times at `eval.temperature` 0.2. Repeat `r` of

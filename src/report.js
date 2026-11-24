@@ -276,11 +276,13 @@ export function readmeBlock(cfg, a) {
     const rows = leaderboard(a, track);
     if (rows.length) {
       L.push(`**${cfg.groupTitles?.[track] ?? track}**: points vs the control on the same day, best first (control at ${pct(a.variants[t.control]?.latest?.passRate)}).`, '');
-      L.push(table(['Variant', 'Pass rate', 'vs control', '95% CI', 'p (Holm)', 'vs own start, net of control'],
+      L.push(table(['Variant', 'Pass rate', 'vs control (today)', '95% CI', 'p (Holm)', `pooled vs control (last ${cfg.analysis.poolDays} days)`, 'pooled 95% CI', 'pooled p (Holm)'],
         rows.map((r) => [`${r.label}${r.active ? '' : ' (stopped)'}`, pct(r.passRate), r.vsControl ? pts(r.vsControl.estimate) : 'n/a',
           r.vsControl ? `${pts(r.vsControl.low)} to ${pts(r.vsControl.high)}` : 'n/a',
           r.pHolm === null ? 'n/a' : `${fmtNum(r.pHolm, PVAL_DIGITS)}${r.significantHolm ? ' (significant)' : ''}`,
-          r.vsStart ? pts(r.vsStart.estimate) : 'n/a'])), '');
+          r.pooled ? `${pts(r.pooled.estimate)} (${r.pooled.days} d)` : 'n/a',
+          r.pooled ? `${pts(r.pooled.low)} to ${pts(r.pooled.high)}` : 'n/a',
+          r.pooled?.pHolm == null ? 'n/a' : `${fmtNum(r.pooled.pHolm, PVAL_DIGITS)}${r.pooled.significantHolm ? ' (significant)' : ''}`])), '');
     }
     const reduced = t.taxonomyChange.filter((x) => x.verdict === 'reduced').map((x) => x.class);
     const not = t.taxonomyChange.filter((x) => x.verdict === 'not-reduced').map((x) => x.class);

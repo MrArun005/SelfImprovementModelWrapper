@@ -181,7 +181,7 @@ test('leaderboard: learning variants ranked by points vs control, shown in READM
     assert.deepEqual(est, [...est].sort((x, y) => y - x), 'sorted best first');
   }
   const block = readmeBlock(cfg, a);
-  assert.match(block, /\| Variant \| Pass rate \| vs control \|/);
+  assert.match(block, /\| Variant \| Pass rate \| vs control \(today\) \|.*\| pooled vs control/);
   const { html } = buildSite(cfg);
   assert.match(stripScripts(html), /<table class="board">/);
 });

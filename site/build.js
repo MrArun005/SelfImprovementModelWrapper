@@ -96,9 +96,10 @@ ${v.control ? '' : `<div class="small">vs control: <strong>${c ? `${pts(c.estima
 <div class="small" title="change since its own start minus the control's change over the same period">vs own start, net of control drift: <strong>${v.vsBaselineAdjusted ? `${pts(v.vsBaselineAdjusted.estimate)} pts` : 'n/a'}</strong> ${badge(v.vsBaselineAdjusted)}</div>`}${v.control && v.vsBaseline ? `<div class="small muted">drift since start (no learning): ${pts(v.vsBaseline.estimate)} pts [${pts(v.vsBaseline.low)}, ${pts(v.vsBaseline.high)}]</div>` : ''}</div>`;
     }).join('');
     const lb = leaderboard(a, track);
-    const board = lb.length ? `<div class="leaderboard">${tableHtml(['#', 'Variant', 'vs control (pts)', '95% CI', 'p after Holm', 'vs own start, net of control (pts)'],
+    const board = lb.length ? `<div class="leaderboard">${tableHtml(['#', 'Variant', 'vs control today (pts)', '95% CI', 'p after Holm', `pooled, last ${cfg.analysis.poolDays} days (pts)`, 'vs own start, net of control (pts)'],
       lb.map((r, i) => [String(i + 1), `<a href="#variant-${slug(r.variant)}">${esc(r.label)}</a>${r.active ? '' : ' <span class="badge muted" title="no longer run daily; latest result shown">stopped</span>'}`, `<strong>${r.vsControl ? pts(r.vsControl.estimate) : 'n/a'}</strong> ${badge(r.vsControl)}`,
         r.vsControl ? `[${pts(r.vsControl.low)}, ${pts(r.vsControl.high)}]` : 'n/a', r.pHolm === null ? 'n/a' : `${r.pHolm.toFixed(PVAL_DIGITS)}${r.significantHolm ? ' ✓' : ''}`,
+        r.pooled ? `<strong>${pts(r.pooled.estimate)}</strong> <span class="muted">[${pts(r.pooled.low)}, ${pts(r.pooled.high)}], ${r.pooled.days} d, Holm p ${r.pooled.pHolm.toFixed(PVAL_DIGITS)}${r.pooled.significantHolm ? ' ✓' : ''}</span>` : 'n/a',
         r.vsStart ? pts(r.vsStart.estimate) : 'n/a']), 'board')}</div>` : '';
     const title = cfg.charts.find((c) => c.track === track)?.title ?? track;
     return `<section class="track"><h3>${esc(cfg.groupTitles?.[track] ?? track)}</h3>
