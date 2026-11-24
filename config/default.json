@@ -1180,13 +1180,16 @@
     "about": "Daily exploration on spare runners: hot samples on train problems no variant has solved, verified by the train problems' tests; passing solutions feed the next day's fine-tuning. The 7B shards are distillation (a larger model teaching the 1.5B one).",
     "promptVariant": "baseline",
     "temperature": 0.8,
+    "temperatureStep": 0.1,
+    "maxTemperature": 1.1,
+    "maxRounds": 20,
     "keepPerProblem": 2,
     "models": {
       "1.5b": {
         "model": "qwen2.5-coder:1.5b",
         "samples": 16,
         "maxProblems": 400,
-        "maxMinutes": 140,
+        "maxMinutes": 150,
         "jobMinutes": 170
       },
       "7b": {
@@ -1247,7 +1250,7 @@
     "outFile": "state/exploration/traces.jsonl"
   },
   "cycle": {
-    "about": "How often a cycle may run. With stock-model variants starting at once and fine-tuning in parallel, a cycle takes ~5 h; cron fires every 6 h and a cycle starts only if the last one began at least minHoursBetween hours ago (cycles never overlap: the workflow's concurrency group queues the next one).",
-    "minHoursBetween": 5
+    "about": "How often a cycle may run. Cron fires every hour; a cycle starts when the last one began at least minHoursBetween hours ago, and the workflow's concurrency group queues it until the previous one finishes, so cycles run back-to-back all day. Raise minHoursBetween to use the runners less (e.g. 6 for ~4 cycles a day).",
+    "minHoursBetween": 1
   }
 }

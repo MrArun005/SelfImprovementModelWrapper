@@ -43,3 +43,25 @@ test('exploreShard: samples only its unsolved train problems, keeps passing dist
   assert.ok(rows.every((r) => r.result === 'pass' && r.variant === 'explore-m' && r.problemId !== 'h1'));
   assert.equal(rows.length, 2, 'one distinct passing solution per problem');
 });
+
+test('exploreShard keeps working in rounds: unsolved problems are retried with new seeds until solved or out of rounds', async () => {
+  const stateDir = tmpDir();
+  const c = { ...cfg, finetune: { ...cfg.finetune, sourceStateDir: stateDir, extraTraceFiles: [] },
+    explore: { ...cfg.explore, maxRounds: 3, models: { m: { model: 'mock', samples: 2, maxProblems: 50, maxMinutes: 5 } }, shards: [{ shard: 0, model: 'm' }] } };
+  const tasks = new Map(['easy', 'hard'].map((id) => [id, { id, entryPoint: 'f', prompt: 'function f() {\n', vars: { prompt: 'function f() {' } }]));
+  const track = { train: ['easy', 'hard'], holdout: [], tasks, templates: { solveUser: '{{prompt}}' },
+    extractCode: (r) => r, judge: async (code) => ({ type: code.includes('good') ? 'pass' : 'fail' }) };
+  const calls = { easy: 0, hard: 0 };
+  const seeds = new Set();
+  const llm = { chat: async (_m, o) => {
+    const id = o.meta.problemId; calls[id]++; seeds.add(o.seed);
+    // easy passes at once; hard only on its 5th sample (round 3)
+    return id === 'easy' || calls.hard === 5 ? `function f(){ return "good ${calls[id]}"; }` : 'function f(){ return "bad"; }';
+  } };
+  const s = await exploreShard(c, { shard: 0, modelKey: 'm', out: path.join(tmpDir(), 'x.jsonl'), deps: { track, llm, runId: 'r' } });
+  assert.equal(s.rounds, 3);
+  assert.equal(calls.easy, 2, 'easy is not retried once solved');
+  assert.equal(calls.hard, 6);
+  assert.equal(s.newlySolved, 2);
+  assert.equal(seeds.size, 8, 'every sample gets a fresh seed');
+});

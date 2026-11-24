@@ -313,6 +313,14 @@ Now `runtime.maxParallel` is 12 and a new `explore` job uses the rest:
   `improve-finetuned` (the 3 variants serving the fine-tuned model or its reference) waits for `finetune`. Their
   steps are identical (a test compares them). With 11 exploration shards (5 x 1.5B, 16 samples; 6 x 7B, 6 samples)
   the peak is ~19 concurrent jobs.
+- **Run all day, each job by itself.** Cron fires hourly and `cycle.minHoursBetween` is 1, so a new cycle is queued
+  behind the running one and starts the moment it finishes: cycles run back-to-back all day. Exploration jobs no longer
+  stop after one pass: they work in rounds until their time limit (`explore.maxRounds`), retrying the problems still
+  unsolved with fresh seeds and a slightly higher temperature each round (`temperatureStep`, capped at
+  `maxTemperature`), writing what they found after every problem. A GitHub job is capped at 6 h and parallel jobs
+  cannot share what they learn mid-run, so learning moves between cycles (each fine-tunes on everything the previous
+  ones verified). Risk, stated plainly: 20 runners busy around the clock is far above typical use of free public-repo
+  Actions and could be throttled; `cycle.minHoursBetween` (e.g. 6) turns it down.
 
 ## 5. Evaluation and statistics
 

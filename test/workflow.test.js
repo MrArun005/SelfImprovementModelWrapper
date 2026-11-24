@@ -59,7 +59,8 @@ test('model setup retries, fails fast with a clear error, and proves the model a
 });
 
 test('several cron times exist and the due guard (minimum gap between cycles) gates every job that trains or publishes', () => {
-  assert.ok((yml.match(/^ {4}- cron: '/gm) ?? []).length >= 2, 'at least one backup schedule');
+  const crons = yml.match(/^ {4}- cron: '([^']+)'/gm) ?? [];
+  assert.ok(crons.length >= 2 || crons.some((c) => /- cron: '\d+ \* \* \* \*'/.test(c)), 'several scheduled times a day (hourly or more than one cron)');
   assert.match(J.plan, /node src\/ci\/due\.js >> "\$GITHUB_OUTPUT"/);
   for (const j of ['improve', 'improve-finetuned', 'explore']) assert.match(J[j], /needs\.plan\.outputs\.due == 'true'/, j);
   assert.match(J.finetune, /needs\.plan\.outputs\.due == 'true'/);

@@ -27,8 +27,8 @@ test('a corrupt run-state counts as due (never silently skip training)', () => {
   assert.equal(isDue(cfg).due, true);
 });
 
-test('state written before lastRunDay existed: last-run.json timestamp counts', () => {
-  const cfg = testConfig();
+test('state written before lastRunAt existed: last-run.json timestamp counts', () => {
+  const cfg = testConfig({ cycle: { minHoursBetween: 10 } });
   fs.mkdirSync(vdir(cfg), { recursive: true });
   fs.writeFileSync(path.join(vdir(cfg), cfg.paths.runState), JSON.stringify({ runCount: 3, baselineRunsDone: 2 }));
   fs.writeFileSync(path.join(vdir(cfg), cfg.paths.lastRun), JSON.stringify({ timestamp: '2026-11-20T07:56:00.000Z' }));

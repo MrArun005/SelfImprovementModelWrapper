@@ -2,13 +2,11 @@ name: improve
 
 on:
   schedule:
-    # GitHub cannot read the cron string from a variable; edit it here. Every 6 hours, off the top of the hour (when
+    # GitHub cannot read the cron string from a variable; edit it here. Hourly, off the top of the hour (when
     # scheduled runs are most often delayed or dropped). src/ci/due.js starts a cycle only if the last one began at
-    # least cycle.minHoursBetween hours ago, so a ~6-8 h cycle runs 2-3 times a day without overlapping.
-    - cron: '17 4 * * *'
-    - cron: '17 10 * * *'
-    - cron: '17 16 * * *'
-    - cron: '17 22 * * *'
+    # least cycle.minHoursBetween hours ago, and the concurrency group queues it behind a running cycle, so cycles
+    # run back-to-back all day.
+    - cron: '17 * * * *'
   workflow_dispatch:
     inputs:
       smoke:

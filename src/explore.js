@@ -45,37 +45,47 @@ export async function exploreShard(cfg, { shard, modelKey, out, deps = {} }) {
   const llm = deps.llm ?? createLLM(runCfg, deps);
   const sys = fs.readFileSync(rootPath(cfg, cfg.paths.seedPrompt), 'utf8');
   const deadline = Date.now() + m.maxMinutes * MS_PER_MINUTE;
-  // seeds differ per day, so a problem that stays unsolved gets fresh samples every day
-  const day = today(deps.now?.() ?? new Date());
+  // seeds differ per cycle and round, so a problem that stays unsolved gets fresh samples every time
+  const salt = `${deps.runId ?? today(deps.now?.() ?? new Date())}`;
   const rows = [];
-  let tried = 0, samples = 0, passing = 0, solved = 0;
-  for (const id of ids) {
-    if (Date.now() > deadline) break;
-    if (holdout.has(id)) throw new Error(`holdout problem ${id} selected for exploration`);
-    const task = track.tasks.get(id);
-    const messages = buildMessages({ systemPrompt: sys, userTemplate: track.templates.solveUser, problem: task, lessons: [], skills: [], cfg: vc });
-    const seen = new Set();
-    tried++;
-    let any = false;
-    for (let k = 0; k < m.samples; k++) {
-      const reply = await llm.chat(messages, { temperature: ex.temperature, seed: cfg.llm.seed + hash32(`${id}|${modelKey}|${k}|${day}`) % cfg.llm.trainSeedRange, meta: { kind: 'explore', problemId: id } });
-      samples++;
-      const code = track.extractCode(reply, task);
-      const res = await track.judge(code, task);
-      if (res.type !== 'pass') continue;
-      passing++;
-      any = true;
-      const norm = code.replace(/\s+/g, ' ').trim();
-      if (seen.has(norm) || seen.size >= ex.keepPerProblem) continue;
-      seen.add(norm);
-      rows.push({ runId: deps.runId ?? 'explore', ts: (deps.now?.() ?? new Date()).toISOString(), variant: `explore-${modelKey}`, track: 'multipl-e', problemId: id, attempt: 1,
-        result: 'pass', failureClass: 'pass', code, source: `exploration: ${m.model}, ${m.samples} samples at temperature ${ex.temperature}, verified by the train problem's tests` });
-    }
-    if (any) solved++;
-  }
   fs.mkdirSync(path.dirname(out), { recursive: true });
-  fs.writeFileSync(out, rows.map((r) => JSON.stringify(r)).join('\n') + (rows.length ? '\n' : ''));
-  const summary = { shard, model: modelKey, unsolvedInShard: ids.length, tried, samples, passingSamples: passing, newlySolved: solved, solutionsKept: rows.length };
+  const flush = () => fs.writeFileSync(out, rows.map((r) => JSON.stringify(r)).join('\n') + (rows.length ? '\n' : ''));
+  flush();
+  let tried = 0, samples = 0, passing = 0, round = 0;
+  const solvedHere = new Set();
+  // Rounds: the job keeps working until its time is up. Round 1 tries every unsolved problem of the shard; each later
+  // round retries the ones still unsolved with new seeds and a slightly higher temperature (more diverse samples).
+  while (Date.now() < deadline && round < ex.maxRounds) {
+    const todo = ids.filter((id) => !solvedHere.has(id));
+    if (!todo.length) break;
+    round++;
+    const temperature = Math.min(ex.temperature + (round - 1) * ex.temperatureStep, ex.maxTemperature);
+    for (const id of todo) {
+      if (Date.now() > deadline) break;
+      if (holdout.has(id)) throw new Error(`holdout problem ${id} selected for exploration`);
+      const task = track.tasks.get(id);
+      const messages = buildMessages({ systemPrompt: sys, userTemplate: track.templates.solveUser, problem: task, lessons: [], skills: [], cfg: vc });
+      const seen = new Set(rows.filter((r) => r.problemId === id).map((r) => r.code.replace(/\s+/g, ' ').trim()));
+      tried++;
+      for (let k = 0; k < m.samples; k++) {
+        const reply = await llm.chat(messages, { temperature, seed: cfg.llm.seed + hash32(`${id}|${modelKey}|${k}|${salt}|${round}`) % cfg.llm.trainSeedRange, meta: { kind: 'explore', problemId: id } });
+        samples++;
+        const code = track.extractCode(reply, task);
+        const res = await track.judge(code, task);
+        if (res.type !== 'pass') continue;
+        passing++;
+        solvedHere.add(id);
+        const norm = code.replace(/\s+/g, ' ').trim();
+        if (seen.has(norm) || seen.size >= ex.keepPerProblem) continue;
+        seen.add(norm);
+        rows.push({ runId: deps.runId ?? 'explore', ts: (deps.now?.() ?? new Date()).toISOString(), variant: `explore-${modelKey}`, track: 'multipl-e', problemId: id, attempt: 1,
+          result: 'pass', failureClass: 'pass', code, round, source: `exploration: ${m.model}, round ${round}, temperature ${temperature}, verified by the train problem's tests` });
+      }
+      flush(); // after every problem: a job that hits its time limit keeps what it found
+    }
+  }
+  const solved = solvedHere.size;
+  const summary = { shard, model: modelKey, unsolvedInShard: ids.length, rounds: round, tried, samples, passingSamples: passing, newlySolved: solved, solutionsKept: rows.length };
   log(`explore ${JSON.stringify(summary)}`);
   return summary;
 }
