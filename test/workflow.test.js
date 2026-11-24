@@ -21,7 +21,7 @@ function jobs(text) {
 const J = jobs(yml);
 
 test('jobs exist', () => {
-  assert.deepEqual(Object.keys(J), ['plan', 'finetune', 'improve', 'aggregate', 'commit', 'pages']);
+  assert.deepEqual(Object.keys(J), ['plan', 'finetune', 'explore', 'improve', 'aggregate', 'commit', 'pages']);
 });
 
 test('only the commit job can write to the repo; jobs that run model-written code are read-only', () => {
@@ -50,10 +50,12 @@ test('the optional Pages deploy cannot fail a successful run, and says why it di
 });
 
 test('model setup retries, fails fast with a clear error, and proves the model answers', () => {
-  assert.match(J.improve, /retry download \|\| fail/);
-  assert.match(J.improve, /retry "\$HOME\/\.sic-ollama\/bin\/ollama" pull "\$MODEL" \|\| fail/);
-  assert.match(J.improve, /\[ "\$ready" = 1 \] \|\| fail/);
-  assert.match(J.improve, /api\/generate[\s\S]*fail "model \$MODEL did not answer a warm-up request"/);
+  const setup = fs.readFileSync(path.join(ROOT, 'tools/ci/ollama-setup.sh'), 'utf8');
+  assert.match(J.improve, /run: bash tools\/ci\/ollama-setup\.sh/);
+  assert.match(setup, /retry download \|\| fail/);
+  assert.match(setup, /retry "\$HOME\/\.sic-ollama\/bin\/ollama" pull "\$MODEL" \|\| fail/);
+  assert.match(setup, /\[ "\$ready" = 1 \] \|\| fail/);
+  assert.match(setup, /api\/generate[\s\S]*fail "model \$MODEL did not answer a warm-up request"/);
 });
 
 test('backup cron times exist and a once-per-day guard gates training and publishing', () => {

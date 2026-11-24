@@ -280,6 +280,26 @@ fixed 1.5B model can do with better notes. Variant `finetune` (lever `finetune`)
   stock-model variant with the highest lower bound of its pooled multi-day gain (single-day only when no pooled
   estimate exists). Day 5: sample+filter (+2.3 pts pooled over 6 days, CI from +0.4).
 
+## 4k. Use the spare runners every day: exploration and distillation
+
+A free account runs about 20 jobs at once (all of its repos share them, so more repos would not add capacity, and
+extra accounts to get around it would break GitHub's terms). The daily cycle used ~11 with at most 7 in parallel.
+Now `runtime.maxParallel` is 12 and a new `explore` job uses the rest:
+
+- **6 shards** (`explore.shards`), started right after `plan` (they do not wait for fine-tuning): 3 with the 1.5B
+  model (8 samples per problem) and 3 with the 7B model (4 samples). Each shard takes the train problems no variant
+  or earlier exploration has solved (a stable hash splits them), samples at `explore.temperature` with seeds that
+  change daily, judges every sample with that train problem's own tests in the sandbox and keeps up to
+  `keepPerProblem` distinct passing solutions. Holdout problems are never sampled (asserted) and rejected again when
+  the aggregate job merges the shards into `state/exploration/traces.jsonl`.
+- The fine-tuning set reads that file (`finetune.extraTraceFiles`), so each day's discoveries train the next day's
+  model: the loop runs on all 20 slots.
+- **The 7B shards are distillation**, not self-improvement in the strict sense: a larger open model's verified
+  solutions teach the 1.5B model what it cannot do yet. Every row records which model found it, so the report can
+  separate the two sources.
+- Same sandbox and permissions as the variant jobs (read-only token, no credentials, model-written code only run in
+  the judge). The Ollama install step moved to `tools/ci/ollama-setup.sh` so both jobs share it.
+
 ## 5. Evaluation and statistics
 
 - **Repeats:** every holdout evaluation runs `eval.repeats` = 3 times at `eval.temperature` 0.2. Repeat `r` of

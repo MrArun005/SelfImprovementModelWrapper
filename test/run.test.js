@@ -100,6 +100,14 @@ test('promptOptimizer flag off: optimizer never called, output identical to a ru
   for (const snap of [off, plain]) for (const k of Object.keys(snap.files)) snap.files[k] = snap.files[k].replace(/sic-test-\w+/g, 'TMP').replace(/"(durationMs|llmMs)":\d+/g, '"$1":0');
   assert.equal(called, 0);
   assert.deepEqual(off.calls, plain.calls);
+  // name the first differing file and line, so a rare flake can be diagnosed from CI output
+  for (const k of new Set([...Object.keys(off.files), ...Object.keys(plain.files)])) {
+    if (off.files[k] === plain.files[k]) continue;
+    const a = String(off.files[k] ?? '').split('\n');
+    const b = String(plain.files[k] ?? '').split('\n');
+    const i = a.findIndex((line, j) => line !== b[j]);
+    assert.fail(`${k} differs at line ${i + 1}:\n  off:   ${String(a[i]).slice(0, 300)}\n  plain: ${String(b[i]).slice(0, 300)}`);
+  }
   assert.deepEqual(off.files, plain.files);
   assert.deepEqual(off.summary, plain.summary);
   assert.ok(!off.calls.some((c) => c.meta.kind === 'evolve'));

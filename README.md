@@ -153,7 +153,7 @@ Optional repo **variables** (Settings → Secrets and variables → Actions → 
 | `SIC_CONFIG_OVERRIDES` | JSON merged over `config/default.json`, e.g. `{"llm":{"model":"qwen2.5-coder:3b"},"eval":{"repeats":5}}` |
 | (config) `variants[].jobMinutes` | per-variant job time limit (default `runtime.improveJobMinutes`, 170; the 7B variants 330) |
 | `SIC_FINETUNE_TIMEOUT_MINUTES` | timeout of the fine-tuning job (default 240) |
-| `SIC_MAX_PARALLEL` | how many variant jobs run at once (default 7) |
+| (config) `runtime.maxParallel` | how many variant jobs run at once (12; the account allows about 20 concurrent jobs, exploration shards use the rest) |
 | `SIC_PAGES` | `off` to skip the Pages deploy |
 
 Every tunable (model, URLs, budgets, thresholds, seeds, variants, mutation operators and weights, taxonomy

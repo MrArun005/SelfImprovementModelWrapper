@@ -30,6 +30,10 @@ const out = {
   dataset_cache: cfg.dataset.cacheDir,
   matrix: JSON.stringify(activeVariants(cfg).map((v) => v.name)),
   // per-variant job time limits (a larger model needs longer); default runtime.improveJobMinutes
+  max_parallel: rt.maxParallel,
+  // exploration shards: one matrix entry per shard, with the model it pulls and its job time limit
+  explore_matrix: JSON.stringify(cfg.explore.shards.map((x) => ({ shard: x.shard, model: x.model, pull_model: cfg.explore.models[x.model].model, minutes: cfg.explore.models[x.model].jobMinutes }))),
+  explore_artifact: cfg.explore.artifactPrefix,
   timeouts: JSON.stringify(Object.fromEntries(activeVariants(cfg).map((v) => [v.name, v.jobMinutes ?? rt.improveJobMinutes]))),
 };
 // fine-tuning (expert iteration): the first variant with the finetune lever, and everything its job needs

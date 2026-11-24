@@ -177,7 +177,8 @@
     "setupRetryDelaySec": 15,
     "warmupTimeoutSec": 300,
     "warmupTokens": 4,
-    "improveJobMinutes": 170
+    "improveJobMinutes": 170,
+    "maxParallel": 12
   },
   "budget": {
     "totalRequestsPerRun": 6510,
@@ -1061,6 +1062,18 @@
         "epochs": 1
       },
       "maxExamples": 40
+    },
+    "explore": {
+      "models": {
+        "1.5b": {
+          "maxProblems": 2,
+          "maxMinutes": 5
+        },
+        "7b": {
+          "maxProblems": 2,
+          "maxMinutes": 5
+        }
+      }
     }
   },
   "product": {
@@ -1162,5 +1175,55 @@
     "multipl-e": "MultiPL-E (HumanEval + MBPP, JavaScript), 1.5B model",
     "multipl-e-7b": "MultiPL-E (HumanEval + MBPP, JavaScript), 7B model",
     "mutation": "Mutation repair (contamination-free)"
+  },
+  "explore": {
+    "about": "Daily exploration on spare runners: hot samples on train problems no variant has solved, verified by the train problems' tests; passing solutions feed the next day's fine-tuning. The 7B shards are distillation (a larger model teaching the 1.5B one).",
+    "promptVariant": "baseline",
+    "temperature": 0.8,
+    "keepPerProblem": 2,
+    "models": {
+      "1.5b": {
+        "model": "qwen2.5-coder:1.5b",
+        "samples": 8,
+        "maxProblems": 400,
+        "maxMinutes": 140,
+        "jobMinutes": 170
+      },
+      "7b": {
+        "model": "qwen2.5-coder:7b",
+        "samples": 4,
+        "maxProblems": 400,
+        "maxMinutes": 290,
+        "jobMinutes": 330
+      }
+    },
+    "shards": [
+      {
+        "shard": 0,
+        "model": "1.5b"
+      },
+      {
+        "shard": 1,
+        "model": "1.5b"
+      },
+      {
+        "shard": 2,
+        "model": "1.5b"
+      },
+      {
+        "shard": 3,
+        "model": "7b"
+      },
+      {
+        "shard": 4,
+        "model": "7b"
+      },
+      {
+        "shard": 5,
+        "model": "7b"
+      }
+    ],
+    "artifactPrefix": "sic-explore",
+    "outFile": "state/exploration/traces.jsonl"
   }
 }
