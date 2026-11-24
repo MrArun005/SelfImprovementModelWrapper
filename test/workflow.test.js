@@ -21,7 +21,7 @@ function jobs(text) {
 const J = jobs(yml);
 
 test('jobs exist', () => {
-  assert.deepEqual(Object.keys(J), ['plan', 'finetune', 'explore', 'improve', 'aggregate', 'commit', 'pages']);
+  assert.deepEqual(Object.keys(J), ['plan', 'finetune', 'explore', 'improve', 'improve-finetuned', 'aggregate', 'commit', 'pages']);
 });
 
 test('only the commit job can write to the repo; jobs that run model-written code are read-only', () => {
@@ -58,10 +58,17 @@ test('model setup retries, fails fast with a clear error, and proves the model a
   assert.match(setup, /api\/generate[\s\S]*fail "model \$MODEL did not answer a warm-up request"/);
 });
 
-test('backup cron times exist and a once-per-day guard gates training and publishing', () => {
+test('several cron times exist and the due guard (minimum gap between cycles) gates every job that trains or publishes', () => {
   assert.ok((yml.match(/^ {4}- cron: '/gm) ?? []).length >= 2, 'at least one backup schedule');
   assert.match(J.plan, /node src\/ci\/due\.js >> "\$GITHUB_OUTPUT"/);
-  assert.match(J.improve, /if: \$\{\{ !cancelled\(\) && needs\.plan\.outputs\.due == 'true' \}\}/);
+  for (const j of ['improve', 'improve-finetuned', 'explore']) assert.match(J[j], /needs\.plan\.outputs\.due == 'true'/, j);
   assert.match(J.finetune, /needs\.plan\.outputs\.due == 'true'/);
   assert.match(J.aggregate, /needs\.plan\.outputs\.due == 'true'/);
+});
+
+test('improve and improve-finetuned run identical steps (only their trigger and matrix differ)', () => {
+  const steps = (text) => text.slice(text.indexOf('    runs-on:')).replace(/matrix_(stock|served)/g, 'matrix_X');
+  assert.equal(steps(J.improve), steps(J['improve-finetuned']));
+  assert.match(J.improve, /needs: plan\n/);
+  assert.match(J['improve-finetuned'], /needs: \[plan, finetune\]/);
 });

@@ -64,11 +64,12 @@ test('record row keeps the manifest and the training metrics', () => {
 
 test('workflow: the fine-tuning job is read-only, never runs a model server, and other variants do not depend on it succeeding', () => {
   const yml = fs.readFileSync(path.join(ROOT, '.github/workflows/improve.yml'), 'utf8');
-  const job = yml.split(/\n  finetune:\n/)[1].split(/\n  improve:\n/)[0];
+  const job = yml.split(/\n  finetune:\n/)[1].split(/\n  explore:\n/)[0];
   assert.match(job, /contents: read/);
   assert.match(job, /persist-credentials: false/);
   assert.doesNotMatch(job, /contents: write|ollama serve|src\/run\.js/);
   assert.match(yml, /needs: \[plan, finetune\]\n {4}if: \$\{\{ !cancelled\(\)/);
+  assert.match(yml, /\n  improve:\n(?:.*\n){3}    needs: plan\n/);
 });
 
 test('trainer reads every setting from the generated settings file (no literals)', () => {

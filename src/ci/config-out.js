@@ -29,6 +29,9 @@ const out = {
   curriculum_cache: cfg.curriculum.cacheDir,
   dataset_cache: cfg.dataset.cacheDir,
   matrix: JSON.stringify(activeVariants(cfg).map((v) => v.name)),
+  // stock-model variants start right away; only variants serving the fine-tuned (or reference) model wait for it
+  matrix_stock: JSON.stringify(activeVariants(cfg).filter((v) => !servedModel(cfg, variantConfig(cfg, v.name).variant.levers)).map((v) => v.name)),
+  matrix_served: JSON.stringify(activeVariants(cfg).filter((v) => servedModel(cfg, variantConfig(cfg, v.name).variant.levers)).map((v) => v.name)),
   // per-variant job time limits (a larger model needs longer); default runtime.improveJobMinutes
   max_parallel: rt.maxParallel,
   // exploration shards: one matrix entry per shard, with the model it pulls and its job time limit

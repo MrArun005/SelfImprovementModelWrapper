@@ -49,6 +49,9 @@ function statOpts(cfg, salt) {
   return { resamples: cfg.stats.bootstrapResamples, confidence: cfg.stats.confidence, seed: cfg.stats.seed + salt };
 }
 
+/** The cycle a run belongs to: the GitHub workflow run (variant and control jobs share it), else its UTC day. */
+export const cycleKey = (r) => String(r.runId ?? '').match(/^gh(\d+)-/)?.[1] ?? isoDay(r.ts);
+
 /**
  * Pooled comparison over the last `days` days on which both the variant and the control were evaluated (same-day
  * pairs only). Per problem, the variant-minus-control difference is averaged over those days, then the bootstrap
@@ -57,11 +60,11 @@ function statOpts(cfg, salt) {
  * over the window, including days before later improvements were accepted.
  */
 export function pooledComparison(vRuns, cRuns, days, opts) {
-  const cByDay = new Map(cRuns.map((r) => [isoDay(r.ts), r]));
+  const cByCycle = new Map(cRuns.map((r) => [cycleKey(r), r]));
   const pairs = [];
   for (const r of [...vRuns].reverse()) {
-    const c = cByDay.get(isoDay(r.ts));
-    if (c && !pairs.some((p) => p.day === isoDay(r.ts))) pairs.push({ day: isoDay(r.ts), v: problemGroups(r.batch), c: problemGroups(c.batch) });
+    const c = cByCycle.get(cycleKey(r));
+    if (c && !pairs.some((p) => p.key === cycleKey(r))) pairs.push({ key: cycleKey(r), day: isoDay(r.ts), v: problemGroups(r.batch), c: problemGroups(c.batch) });
     if (pairs.length >= days) break;
   }
   if (!pairs.length) return null;
@@ -337,9 +340,10 @@ export function analyze(cfg) {
     for (const v of vs) {
       if (!control || v === control || !v._runs.length || !control._runs.length) continue;
       const salt = hash32(`comparison:${v.name}`);
-      // same-day comparison only: the control run from the same UTC day as this variant's latest run
+      // same-cycle comparison only: the control run from the same workflow run as this variant's latest run
+      const vKey = cycleKey(v._runs.at(-1));
       const vDay = isoDay(v._runs.at(-1).ts);
-      const cRun = [...control._runs].reverse().find((r) => isoDay(r.ts) === vDay);
+      const cRun = [...control._runs].reverse().find((r) => cycleKey(r) === vKey);
       if (!cRun) { comparisons.push({ variant: v.name, control: control.name, missing: `no control run on ${vDay}` }); continue; }
       const p = pairedCI(cfg, salt, problemGroups(cRun.batch), problemGroups(v._runs.at(-1).batch));
       if (!p.ids.length) continue;

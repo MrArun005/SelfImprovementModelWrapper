@@ -24,7 +24,8 @@ import { createTrack } from './tracks/index.js';
 import { classify } from './taxonomy.js';
 import { summarizeEval, pairedGroupCI } from './stats.js';
 import { variantConfig, listVariants } from './variants.js';
-import { seededShuffle, writeJson, log, argValue, hash32, ISO_DATE_LEN, today } from './util.js';
+import { seededShuffle, writeJson, log, argValue, hash32, ISO_DATE_LEN, today, MS_PER_HOUR } from './util.js';
+import { lastRunAt } from './ci/due.js';
 
 export function loadSharedTemplates(cfg) {
   const dir = rootPath(cfg, cfg.paths.templatesDir);
@@ -337,7 +338,8 @@ export async function runCycle({ cfg: baseCfg, variant, deps = {} }) {
     thresholds: { minImprovement: cfg.gate.minImprovement, tolerance: cfg.gate.tolerance }, optimizer, levelEvents: train.levelEvents });
   const pruned = pruneLessons(mem, cfg.agent.maxLessons);
   mem.runState.runCount = runIndex;
-  mem.runState.lastRunDay = timestamp.slice(0, ISO_DATE_LEN); // used by src/ci/due.js: one cycle per UTC day
+  mem.runState.lastRunDay = timestamp.slice(0, ISO_DATE_LEN);
+  mem.runState.lastRunAt = timestamp; // used by src/ci/due.js and main(): cycles at least cycle.minHoursBetween apart
 
   // 4. Persist state, raw logs, scores.
   saveMemory(cfg, mem);
@@ -365,10 +367,10 @@ async function main() {
   const names = args.variant ? [args.variant] : listVariants(cfg);
   const force = process.env.SIC_FORCE === '1' || args.dryRun;
   for (const variant of names) {
-    // one cycle per UTC day per variant: if this variant already ran today (e.g. a backup cron re-ran the matrix
-    // because another variant failed), skip it; SIC_FORCE=1 overrides
-    const vrs = loadMemory(variantConfig(cfg, variant)).runState;
-    if (!force && vrs.lastRunDay === today()) { log(`[${variant}] already ran today (${vrs.lastRunDay}); skipping`); continue; }
+    // cycles at least cycle.minHoursBetween apart per variant: if this variant's last cycle is more recent (e.g. a
+    // backup cron re-ran the matrix because another variant failed), skip it; SIC_FORCE=1 overrides
+    const last = lastRunAt(cfg, variant);
+    if (!force && last && (Date.now() - last) / MS_PER_HOUR < cfg.cycle.minHoursBetween) { log(`[${variant}] last cycle ${last.toISOString()} is under ${cfg.cycle.minHoursBetween} h ago; skipping`); continue; }
     const s = await runCycle({ cfg, variant });
     log(`[${variant}] done: ${s.decision}, ${s.requestsUsed} requests, ${s.tokensIn}+${s.tokensOut} tokens`);
   }

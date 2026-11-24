@@ -300,6 +300,20 @@ Now `runtime.maxParallel` is 12 and a new `explore` job uses the rest:
 - Same sandbox and permissions as the variant jobs (read-only token, no credentials, model-written code only run in
   the judge). The Ollama install step moved to `tools/ci/ollama-setup.sh` so both jobs share it.
 
+## 4l. Several cycles a day, and no runner waits for one it does not need
+
+- **Cadence.** One cycle per UTC day was a self-imposed rule; a cycle takes ~5 h, so it left the account's ~20 runner
+  slots idle most of the day. Cron now fires every 6 h and `src/ci/due.js` starts a cycle when some active variant's
+  last cycle began at least `cycle.minHoursBetween` (5) hours ago (run-state `lastRunAt`; the workflow's
+  concurrency group still prevents overlap). Up to ~4 cycles a day.
+- **Pairing by cycle, not by day.** Comparisons and pooled estimates pair a variant's run with the control run from
+  the same workflow run (`cycleKey`: the GitHub run id; the UTC day for local runs), so several cycles a day each
+  count once. `analysis.poolDays` therefore now means the last 7 cycles.
+- **Nobody waits needlessly.** The variant job is split: `improve` (stock-model variants) starts right after `plan`;
+  `improve-finetuned` (the 3 variants serving the fine-tuned model or its reference) waits for `finetune`. Their
+  steps are identical (a test compares them). With 11 exploration shards (5 x 1.5B, 16 samples; 6 x 7B, 6 samples)
+  the peak is ~19 concurrent jobs.
+
 ## 5. Evaluation and statistics
 
 - **Repeats:** every holdout evaluation runs `eval.repeats` = 3 times at `eval.temperature` 0.2. Repeat `r` of

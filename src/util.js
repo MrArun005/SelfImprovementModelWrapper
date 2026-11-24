@@ -61,6 +61,7 @@ export function fill(template, vars) {
 export const ISO_DATE_LEN = 10; // allow-number: date format, not a tunable
 export const MS_PER_MINUTE = 60000; // allow-number: unit conversion
 export const MS_PER_SECOND = 1000; // allow-number: unit conversion
+export const MS_PER_HOUR = 3600000; // allow-number: unit conversion
 export const isoDay = (ts) => (ts ? String(ts).slice(0, ISO_DATE_LEN) : 'n/a');
 
 export function today(now = new Date()) {
