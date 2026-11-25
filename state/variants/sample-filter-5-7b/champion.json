@@ -3,13 +3,13 @@
   "lessonIds": [],
   "skillIds": [],
   "holdout": {
-    "passRate": 0.76,
-    "ciLow": 0.64,
-    "ciHigh": 0.86,
+    "passRate": 0.7,
+    "ciLow": 0.56,
+    "ciHigh": 0.82,
     "n": 50,
     "repeats": 1,
     "sdAcrossRepeats": null,
-    "runId": "gh45633110704-20261125T142255"
+    "runId": "gh45666760308-20261125T173913"
   },
   "pending": {
     "lessonIds": [],

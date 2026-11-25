@@ -1,4 +1,45 @@
 {
-  "nextId": 98,
-  "items": []
+  "nextId": 153,
+  "items": [
+    {
+      "id": "L0121",
+      "text": "When solving linear Diophantine equations like `ax + by = n`, it's important to check if there is a solution first. If no solution exists, you can return undefined immediately without trying further iterations. This approach ensures that your function…",
+      "tags": [
+        "linear-diophantine",
+        "solving-equations",
+        "error-handling",
+        "integers",
+        "satisfy",
+        "solution"
+      ],
+      "sourceProblem": "mbpp_160_find_solution",
+      "sourceResult": "fail",
+      "sourceClass": "wrong-output",
+      "sourceAttempt": 1,
+      "createdRun": 8,
+      "uses": 1,
+      "helped": 1,
+      "verified": true
+    },
+    {
+      "id": "L0145",
+      "text": "When iterating over an array of arrays and calculating the cumulative sum for each sub-array, it's important to ensure that you are correctly adding up the values. The error message indicates that the expected result is 30, but the actual…",
+      "tags": [
+        "iteration",
+        "cumulative-sum",
+        "sub-array",
+        "deep-equal",
+        "cumulative",
+        "sum"
+      ],
+      "sourceProblem": "mbpp_614_cummulative_sum",
+      "sourceResult": "fail",
+      "sourceClass": "wrong-output",
+      "sourceAttempt": 1,
+      "createdRun": 8,
+      "uses": 1,
+      "helped": 1,
+      "verified": true
+    }
+  ]
 }

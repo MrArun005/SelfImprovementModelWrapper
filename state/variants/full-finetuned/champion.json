@@ -12,9 +12,12 @@
     "runId": "gh45074613792-20261123T003344"
   },
   "pending": {
-    "lessonIds": [],
+    "lessonIds": [
+      "L0121",
+      "L0145"
+    ],
     "skillIds": [],
     "promptVersion": null,
-    "sinceRun": null
+    "sinceRun": 8
   }
 }
