@@ -769,6 +769,32 @@
           "reserveMinutesForHoldout": 200
         }
       },
+      "jobMinutes": 330,
+      "active": false,
+      "stoppedReason": "25 Nov: no gain over the 7B control (+1.0 pts pooled over 4 cycles, CI -1.0 to +3.0); replaced by sample-filter-7b, the one lever with a consistent gain on 1.5B"
+    },
+    {
+      "name": "sample-filter-7b",
+      "label": "7B: sample + filter",
+      "track": "multipl-e",
+      "group": "multipl-e-7b",
+      "levers": {
+        "sampleFilter": true
+      },
+      "budgetShare": 1,
+      "color": "#db2777",
+      "overrides": {
+        "llm": {
+          "model": "qwen2.5-coder:7b"
+        },
+        "eval": {
+          "repeats": 1
+        },
+        "budget": {
+          "maxRunMinutes": 300,
+          "reserveMinutesForHoldout": 200
+        }
+      },
       "jobMinutes": 330
     }
   ],
@@ -1146,6 +1172,12 @@
     "extraTraceFiles": [
       "state/exploration/traces.jsonl"
     ],
+    "excludeSources": [
+      "explore-7b",
+      "baseline-7b",
+      "full-7b",
+      "sample-filter-7b"
+    ],
     "maxSolutionsPerProblem": 2,
     "easyMaxSolutionsPerProblem": 1,
     "hardWeight": 2,
@@ -1196,7 +1228,7 @@
     "mutation": "Mutation repair (contamination-free)"
   },
   "explore": {
-    "about": "Daily exploration on spare runners: hot samples on train problems no variant has solved, verified by the train problems' tests; passing solutions feed the next day's fine-tuning. The 7B shards are distillation (a larger model teaching the 1.5B one).",
+    "about": "Exploration on spare runners all day: hot samples from the 1.5B model itself on train problems no variant has solved, verified by the train problems' tests; passing solutions feed the next cycle's fine-tuning. (7B shards were dropped on 25 Nov: its solutions made fine-tuning worse; models.7b stays defined for experiments.)",
     "promptVariant": "baseline",
     "temperature": 0.8,
     "temperatureStep": 0.1,
@@ -1242,27 +1274,27 @@
       },
       {
         "shard": 5,
-        "model": "7b"
+        "model": "1.5b"
       },
       {
         "shard": 6,
-        "model": "7b"
+        "model": "1.5b"
       },
       {
         "shard": 7,
-        "model": "7b"
+        "model": "1.5b"
       },
       {
         "shard": 8,
-        "model": "7b"
+        "model": "1.5b"
       },
       {
         "shard": 9,
-        "model": "7b"
+        "model": "1.5b"
       },
       {
         "shard": 10,
-        "model": "7b"
+        "model": "1.5b"
       }
     ],
     "artifactPrefix": "sic-explore",

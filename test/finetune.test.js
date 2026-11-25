@@ -110,3 +110,9 @@ test('product auto-pick: most reliable gain among stock-model variants; fallback
   a.tracks['multipl-e'].comparisons = [];
   assert.equal(pickProductVariant(cfg, a).variant, cfg.product.fallbackVariant);
 });
+
+test('fine-tuning data leaves out the configured sources (a larger model\'s solutions)', () => {
+  for (const s of ['explore-7b', 'baseline-7b', 'full-7b']) assert.ok(cfg.finetune.excludeSources.includes(s), s);
+  const src = fs.readFileSync(path.join(ROOT, 'src/finetune/prepare.js'), 'utf8');
+  assert.match(src, /excludeSources/);
+});

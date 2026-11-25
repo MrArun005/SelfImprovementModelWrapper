@@ -68,6 +68,10 @@ export async function prepare(cfg, { variant, outDir, baseDir }) {
   // plus verified solutions found by exploration sampling outside the daily runs (train problems only; checked below
   // like every other row, so a holdout problem in these files is excluded and counted)
   for (const f of ft.extraTraceFiles ?? []) rows.push(...readJsonl(rootPath(cfg, f)).filter((r) => r.track === TRACK));
+  // sources left out of training (e.g. a larger model's solutions: on 25 Nov training on 7B's solutions made the 1.5B
+  // model worse, -5.3 pts vs its untrained twin); they stay in the exploration file for later experiments
+  const excluded = new Set(ft.excludeSources ?? []);
+  for (let i = rows.length - 1; i >= 0; i--) if (excluded.has(rows[i].variant)) rows.splice(i, 1);
   const { picked, weighted, excludedHoldout, notTrain, hardProblems } = selectSolutions(rows, {
     train: new Set(track.train), holdout: new Set(track.holdout), maxPerProblem: ft.maxSolutionsPerProblem, maxExamples: ft.maxExamples, seed: ft.seed,
     easyMaxPerProblem: ft.easyMaxSolutionsPerProblem, hardWeight: ft.hardWeight,

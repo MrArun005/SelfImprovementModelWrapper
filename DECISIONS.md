@@ -74,7 +74,7 @@ Variants are data (`config.variants`; this list is checked against the config by
 `baseline` (**control**: no memory, no inference-time levers), `lessons`, `skills`, `lessons-skills`, `self-repair`
 (§4b), `sample-filter` (§4c), `full` (lessons + self-repair + sample-filter + prompt optimizer; skills removed after
 day 2, §4e), `finetune` (the model's weights trained on its own verified solutions, §4g), `finetune-base` (its untrained
-reference, §4g), `full-finetuned` (every lever stacked on the fine-tuned weights, §4h), `baseline-7b` and `full-7b` (§4i), `sample-filter-5` and `sample-filter-tests` (§4j), `mutation-baseline`
+reference, §4g), `full-finetuned` (every lever stacked on the fine-tuned weights, §4h), `baseline-7b` and `full-7b` (§4i), `sample-filter-5` and `sample-filter-tests` (§4j), `sample-filter-7b` (§4m), `mutation-baseline`
 (control) and `mutation-lessons`. Each has its own `state/variants/<name>/`, its own
 budget share, and its own job in the matrix.
 The workflow's matrix is read from config by the `plan` job, so adding a variant is a config change only.
@@ -324,6 +324,24 @@ Now `runtime.maxParallel` is 12 and a new `explore` job uses the rest:
   cannot share what they learn mid-run, so learning moves between cycles (each fine-tunes on everything the previous
   ones verified). Risk, stated plainly: 20 runners busy around the clock is far above typical use of free public-repo
   Actions and could be throttled; `cycle.minHoursBetween` (e.g. 6) turns it down.
+
+## 4m. 25 Nov: what the results say, and what changed because of them
+
+- **What works:** sampling several candidates and keeping the one that passes the statement's examples
+  (`sample-filter`): +2.0 pts pooled over 7 cycles, CI +0.4 to +3.9 (Holm p 0.21). Nothing else has a consistent gain.
+- **What does not:** lessons, skills, self-repair, prompt optimisation (all ~0 for days), and fine-tuning. The first
+  fine-tuning on a large batch of hard wins (600 solutions, 209 hard problems, including the 7B exploration
+  solutions) made the model worse than its untrained twin: -5.3 pts [-11.3, 0.0], 1 problem fixed, 5 broken. The
+  likeliest cause is the 7B solutions: a small model imitating a larger model's style.
+- **Model size dominates:** the 7B control scores ~14-16 pts above the 1.5B control; `full-7b` added nothing over it
+  (+1.0 pooled, CI -1.0 to +3.0).
+
+Changes:
+1. Fine-tuning trains only on the 1.5B model's own verified solutions (`finetune.excludeSources`: every 7B source),
+   which is self-improvement in the strict sense; the 7B rows stay in the exploration file for later experiments.
+2. All 11 exploration shards sample the 1.5B model itself.
+3. `full-7b` stopped; `sample-filter-7b` added: does the one lever that works on 1.5B also help the 7B model? If so,
+   the product gets the bigger model plus that lever.
 
 ## 5. Evaluation and statistics
 
