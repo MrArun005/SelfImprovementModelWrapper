@@ -74,7 +74,7 @@ Variants are data (`config.variants`; this list is checked against the config by
 `baseline` (**control**: no memory, no inference-time levers), `lessons`, `skills`, `lessons-skills`, `self-repair`
 (§4b), `sample-filter` (§4c), `full` (lessons + self-repair + sample-filter + prompt optimizer; skills removed after
 day 2, §4e), `finetune` (the model's weights trained on its own verified solutions, §4g), `finetune-base` (its untrained
-reference, §4g), `full-finetuned` (every lever stacked on the fine-tuned weights, §4h), `baseline-7b` and `full-7b` (§4i), `sample-filter-5` and `sample-filter-tests` (§4j), `sample-filter-7b` (§4m), `mutation-baseline`
+reference, §4g), `full-finetuned` (every lever stacked on the fine-tuned weights, §4h), `baseline-7b` and `full-7b` (§4i), `sample-filter-5` and `sample-filter-tests` (§4j), `sample-filter-7b` (§4m), `sample-filter-8` and `sample-filter-5-7b` (§4n), `mutation-baseline`
 (control) and `mutation-lessons`. Each has its own `state/variants/<name>/`, its own
 budget share, and its own job in the matrix.
 The workflow's matrix is read from config by the `plan` job, so adding a variant is a config change only.
@@ -347,6 +347,19 @@ Changes:
 2. All 11 exploration shards sample the 1.5B model itself.
 3. `full-7b` stopped; `sample-filter-7b` added: does the one lever that works on 1.5B also help the 7B model? If so,
    the product gets the bigger model plus that lever.
+
+## 4n. 25 Nov evening: the first significant result, and following it
+
+- `sample-filter-5` (5 candidates, filtered by the statement's examples) beat the control by +6.0 pts [+2.7, +10.0],
+  Holm p 0.02, and +6.0 pooled over its 2 cycles [+2.0, +10.7], Holm p 0.02: the first result that survives the
+  multiple-comparison correction. With 3 candidates the pooled gain is +2.1 [0.0, +4.1]: more candidates, more gain.
+- Exploration has hit diminishing returns: 15,104 more 1.5B samples over 20 rounds solved 3 problems; 49 train
+  problems remain that resampling does not crack.
+
+Changes: `sample-filter-8` (8 candidates; share 5.5, 2 eval repeats so all 50 problems fit) tests whether the gain
+keeps growing with candidates; `sample-filter-5-7b` tests the significant setting on the 7B model; exploration is cut
+from 11 shards to 3 (its runners go to these variants). The product (`product.variant` auto) follows the pooled
+evidence and so now picks `sample-filter-5`.
 
 ## 5. Evaluation and statistics
 

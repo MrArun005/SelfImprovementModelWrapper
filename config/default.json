@@ -181,8 +181,8 @@
     "maxParallel": 12
   },
   "budget": {
-    "totalRequestsPerRun": 6510,
-    "totalRequestsPerDay": 7440,
+    "totalRequestsPerRun": 9660,
+    "totalRequestsPerDay": 11040,
     "holdoutFraction": 0.72,
     "maxRunMinutes": 125,
     "reserveMinutesForHoldout": 70
@@ -614,6 +614,29 @@
       "jobMinutes": 330
     },
     {
+      "name": "sample-filter-8",
+      "label": "Sample + filter, 8 candidates",
+      "track": "multipl-e",
+      "levers": {
+        "sampleFilter": true
+      },
+      "budgetShare": 5.5,
+      "color": "#be185d",
+      "overrides": {
+        "agent": {
+          "samples": 8
+        },
+        "eval": {
+          "repeats": 2
+        },
+        "budget": {
+          "maxRunMinutes": 300,
+          "reserveMinutesForHoldout": 220
+        }
+      },
+      "jobMinutes": 330
+    },
+    {
       "name": "sample-filter-tests",
       "label": "Sample + filter, ranked by self-written tests",
       "track": "multipl-e",
@@ -793,6 +816,33 @@
         "budget": {
           "maxRunMinutes": 300,
           "reserveMinutesForHoldout": 200
+        }
+      },
+      "jobMinutes": 330
+    },
+    {
+      "name": "sample-filter-5-7b",
+      "label": "7B: sample + filter, 5 candidates",
+      "track": "multipl-e",
+      "group": "multipl-e-7b",
+      "levers": {
+        "sampleFilter": true
+      },
+      "budgetShare": 2,
+      "color": "#9d174d",
+      "overrides": {
+        "llm": {
+          "model": "qwen2.5-coder:7b"
+        },
+        "agent": {
+          "samples": 5
+        },
+        "eval": {
+          "repeats": 1
+        },
+        "budget": {
+          "maxRunMinutes": 310,
+          "reserveMinutesForHoldout": 250
         }
       },
       "jobMinutes": 330
@@ -1262,38 +1312,6 @@
       },
       {
         "shard": 2,
-        "model": "1.5b"
-      },
-      {
-        "shard": 3,
-        "model": "1.5b"
-      },
-      {
-        "shard": 4,
-        "model": "1.5b"
-      },
-      {
-        "shard": 5,
-        "model": "1.5b"
-      },
-      {
-        "shard": 6,
-        "model": "1.5b"
-      },
-      {
-        "shard": 7,
-        "model": "1.5b"
-      },
-      {
-        "shard": 8,
-        "model": "1.5b"
-      },
-      {
-        "shard": 9,
-        "model": "1.5b"
-      },
-      {
-        "shard": 10,
         "model": "1.5b"
       }
     ],
