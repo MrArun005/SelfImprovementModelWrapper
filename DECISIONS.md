@@ -324,6 +324,11 @@ Now `runtime.maxParallel` is 12 and a new `explore` job uses the rest:
   cannot share what they learn mid-run, so learning moves between cycles (each fine-tunes on everything the previous
   ones verified). Risk, stated plainly: 20 runners busy around the clock is far above typical use of free public-repo
   Actions and could be throttled; `cycle.minHoursBetween` (e.g. 6) turns it down.
+- **Self-chaining.** GitHub's hourly cron proved unreliable (no scheduled run for hours after a cycle ended on 25 Nov).
+  A `next-cycle` job, after a successful commit, dispatches the workflow again (`gh workflow run`, the one event
+  GITHUB_TOKEN may trigger); it has only `actions: write`, no checkout and runs no code. The new run queues behind
+  the current one and its plan job still applies the due guard. `cycle.chain: false` turns it off; cron remains the
+  backup.
 
 ## 4m. 25 Nov: what the results say, and what changed because of them
 

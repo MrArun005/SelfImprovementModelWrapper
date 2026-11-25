@@ -21,7 +21,7 @@ function jobs(text) {
 const J = jobs(yml);
 
 test('jobs exist', () => {
-  assert.deepEqual(Object.keys(J), ['plan', 'finetune', 'explore', 'improve', 'improve-finetuned', 'aggregate', 'commit', 'pages']);
+  assert.deepEqual(Object.keys(J), ['plan', 'finetune', 'explore', 'improve', 'improve-finetuned', 'aggregate', 'commit', 'next-cycle', 'pages']);
 });
 
 test('only the commit job can write to the repo; jobs that run model-written code are read-only', () => {
@@ -72,4 +72,12 @@ test('improve and improve-finetuned run identical steps (only their trigger and 
   assert.equal(steps(J.improve), steps(J['improve-finetuned']));
   assert.match(J.improve, /needs: plan\n/);
   assert.match(J['improve-finetuned'], /needs: \[plan, finetune\]/);
+});
+
+test('next-cycle only dispatches the workflow after a successful commit, never on smoke runs', () => {
+  const j = J['next-cycle'];
+  assert.match(j, /needs\.commit\.result == 'success'/);
+  assert.match(j, /!inputs\.smoke/);
+  assert.match(j, /actions: write/);
+  assert.doesNotMatch(j, /contents: write|actions\/checkout|node /);
 });

@@ -34,6 +34,7 @@ const out = {
   matrix_served: JSON.stringify(activeVariants(cfg).filter((v) => servedModel(cfg, variantConfig(cfg, v.name).variant.levers)).map((v) => v.name)),
   // per-variant job time limits (a larger model needs longer); default runtime.improveJobMinutes
   max_parallel: rt.maxParallel,
+  chain: String(Boolean(cfg.cycle.chain)),
   // exploration shards: one matrix entry per shard, with the model it pulls and its job time limit
   explore_matrix: JSON.stringify(cfg.explore.shards.map((x) => ({ shard: x.shard, model: x.model, pull_model: cfg.explore.models[x.model].model, minutes: cfg.explore.models[x.model].jobMinutes }))),
   explore_artifact: cfg.explore.artifactPrefix,

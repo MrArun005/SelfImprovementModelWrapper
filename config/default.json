@@ -1302,6 +1302,7 @@
   },
   "cycle": {
     "about": "How often a cycle may run. Cron fires every hour; a cycle starts when the last one began at least minHoursBetween hours ago, and the workflow's concurrency group queues it until the previous one finishes, so cycles run back-to-back all day. Raise minHoursBetween to use the runners less (e.g. 6 for ~4 cycles a day).",
-    "minHoursBetween": 1
+    "minHoursBetween": 1,
+    "chain": true
   }
 }

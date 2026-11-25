@@ -46,6 +46,7 @@ jobs:
       matrix_stock: ${{ steps.cfg.outputs.matrix_stock }}
       matrix_served: ${{ steps.cfg.outputs.matrix_served }}
       explore_matrix: ${{ steps.cfg.outputs.explore_matrix }}
+      chain: ${{ steps.cfg.outputs.chain }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -646,6 +647,24 @@ jobs:
             git pull --rebase
           done
           exit 1
+
+  next-cycle:
+    # Starts the next cycle as soon as this one has committed (cycle.chain), so the loop does not depend on GitHub's
+    # unreliable cron; the hourly cron stays as a backup. The new run waits in the concurrency group until this one
+    # ends, and its plan job still applies the due guard. It only dispatches a workflow: no checkout, no code run.
+    needs: [plan, commit]
+    if: ${{ !cancelled() && !inputs.smoke && needs.commit.result == 'success' && needs.plan.outputs.chain == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: write
+    steps:
+      - name: Dispatch the next cycle
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          REF: ${{ github.ref_name }}
+        run: gh workflow run improve.yml --repo "$REPO" --ref "$REF" -f smoke=false
 
   pages:
     # Publishes the static dashboard. Needs Settings -> Pages -> Source: GitHub Actions.
