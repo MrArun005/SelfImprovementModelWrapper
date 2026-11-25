@@ -363,5 +363,325 @@
     "tries": 1,
     "lastRun": 3,
     "passed": true
+  },
+  "HumanEval_42_incr_list": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_450_extract_string": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": false
+  },
+  "mbpp_283_validate": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_408_k_smallest_pairs": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": false
+  },
+  "mbpp_790_even_position": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_57_find_Max_Num": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "HumanEval_89_encrypt": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "HumanEval_122_add_elements": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_437_remove_odd": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_470_add_pairwise": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_562_Find_Max_Length": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": false
+  },
+  "mbpp_477_is_lower": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "HumanEval_120_maximum": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": false
+  },
+  "mbpp_635_heap_sort": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_58_opposite_Signs": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "HumanEval_114_minSubArraySum": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_435_last_Digit": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_89_closest_num": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_801_test_three_equal": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_272_rear_extract": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_767_get_pairs_count": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_271_even_Power_Sum": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_564_count_Pairs": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_723_count_same_pair": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "HumanEval_144_simplify": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_64_subject_marks": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "HumanEval_39_prime_fib": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_783_rgb_to_hsv": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_739_find_Index": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_755_second_smallest": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_566_sum_digits": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_101_kth_element": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "HumanEval_80_is_happy": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_721_maxAverageOfPath": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": false
+  },
+  "mbpp_618_div_list": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_451_remove_whitespaces": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_66_pos_count": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_434_text_match_one": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_391_convert_list_dictionary": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "HumanEval_40_triples_sum_to_zero": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_456_reverse_string_list": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "HumanEval_14_all_prefixes": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_295_sum_div": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": false
+  },
+  "mbpp_584_find_adverbs": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": false
+  },
+  "HumanEval_70_strange_sort_list": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_735_toggle_middle_bits": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_79_word_len": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_798__sum": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_770_odd_num_sum": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "HumanEval_2_truncate_number": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_415_max_Product": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": false
+  },
+  "HumanEval_163_generate_integers": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": false
+  },
+  "mbpp_586_split_Arr": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_747_lcs_of_three": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_90_len_log": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_743_rotate_right": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "HumanEval_15_string_sequence": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_452_loss_amount": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": false
+  },
+  "mbpp_407_rearrange_bigger": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_794_text_starta_endb": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_106_add_lists": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
+  },
+  "mbpp_252_convert": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": false
+  },
+  "mbpp_640_remove_parenthesis": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": false
+  },
+  "mbpp_754_extract_index_list": {
+    "tries": 1,
+    "lastRun": 4,
+    "passed": true
   }
 }

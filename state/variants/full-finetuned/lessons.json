@@ -1,4 +1,45 @@
 {
-  "nextId": 42,
-  "items": []
+  "nextId": 98,
+  "items": [
+    {
+      "id": "L0047",
+      "text": "When comparing arrays of strings based on their total character count, it's important to ensure that both arrays are treated equally. If one array has more characters than the other, you should return the array with fewer characters. If they…",
+      "tags": [
+        "arrays",
+        "string manipulation",
+        "comparison",
+        "accepts",
+        "strings",
+        "total"
+      ],
+      "sourceProblem": "HumanEval_74_total_match",
+      "sourceResult": "fail",
+      "sourceClass": "wrong-output",
+      "sourceAttempt": 1,
+      "createdRun": 5,
+      "uses": 1,
+      "helped": 1,
+      "verified": true
+    },
+    {
+      "id": "L0064",
+      "text": "When sorting an array in JavaScript, ensure that the comparison function used by `sort()` is correctly implemented to compare the elements properly. In this case, the `sort()` function was not correctly implemented for comparing arrays of objects based on their…",
+      "tags": [
+        "arrays",
+        "sorting",
+        "comparison",
+        "minimum",
+        "records",
+        "https"
+      ],
+      "sourceProblem": "mbpp_753_min_k",
+      "sourceResult": "fail",
+      "sourceClass": "wrong-output",
+      "sourceAttempt": 1,
+      "createdRun": 5,
+      "uses": 2,
+      "helped": 2,
+      "verified": true
+    }
+  ]
 }

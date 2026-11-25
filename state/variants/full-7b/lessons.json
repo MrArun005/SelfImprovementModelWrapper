@@ -1,5 +1,5 @@
 {
-  "nextId": 26,
+  "nextId": 56,
   "items": [
     {
       "id": "L0021",
@@ -17,6 +17,125 @@
       "sourceClass": "wrong-output",
       "sourceAttempt": 1,
       "createdRun": 3,
+      "uses": 2,
+      "helped": 2,
+      "verified": true
+    },
+    {
+      "id": "L0030",
+      "text": "When working with string indices, remember that indices start at 0 and are zero-based.",
+      "tags": [
+        "strings",
+        "indexing",
+        "zero-based",
+        "remove",
+        "odd",
+        "characters"
+      ],
+      "sourceProblem": "mbpp_437_remove_odd",
+      "sourceResult": "fail",
+      "sourceClass": "wrong-output",
+      "sourceAttempt": 1,
+      "createdRun": 4,
+      "uses": 3,
+      "helped": 3,
+      "verified": true
+    },
+    {
+      "id": "L0033",
+      "text": "When converting a string to lowercase, ensure the function returns the lowercase string rather than a boolean indicating if it was already lowercase.",
+      "tags": [
+        "strings",
+        "lowercase",
+        "jsthon",
+        "convert",
+        "lower"
+      ],
+      "sourceProblem": "mbpp_477_is_lower",
+      "sourceResult": "fail",
+      "sourceClass": "wrong-output",
+      "sourceAttempt": 1,
+      "createdRun": 4,
+      "uses": 3,
+      "helped": 1,
+      "verified": true
+    },
+    {
+      "id": "L0036",
+      "text": "When converting RGB to HSV, ensure the hue value is in the range [0, 360) and the saturation and value are in the range [0, 100].",
+      "tags": [
+        "color conversion",
+        "hsv",
+        "rgb",
+        "range normalization",
+        "convert",
+        "color"
+      ],
+      "sourceProblem": "mbpp_783_rgb_to_hsv",
+      "sourceResult": "fail",
+      "sourceClass": "wrong-output",
+      "sourceAttempt": 1,
+      "createdRun": 4,
+      "uses": 1,
+      "helped": 1,
+      "verified": true
+    },
+    {
+      "id": "L0039",
+      "text": "When converting arrays to nested objects, ensure that the structure matches the expected output format.",
+      "tags": [
+        "nested-objects",
+        "array-to-object",
+        "data-structure",
+        "convert",
+        "more",
+        "nested"
+      ],
+      "sourceProblem": "mbpp_391_convert_list_dictionary",
+      "sourceResult": "fail",
+      "sourceClass": "wrong-output",
+      "sourceAttempt": 1,
+      "createdRun": 4,
+      "uses": 1,
+      "helped": 1,
+      "verified": true
+    },
+    {
+      "id": "L0050",
+      "text": "When implementing algorithms that depend on conditional logic, ensure that all possible outcomes are handled correctly, including edge cases.",
+      "tags": [
+        "conditionals",
+        "edge-cases",
+        "algorithm-design",
+        "create",
+        "next",
+        "bigger"
+      ],
+      "sourceProblem": "mbpp_407_rearrange_bigger",
+      "sourceResult": "fail",
+      "sourceClass": "wrong-output",
+      "sourceAttempt": 1,
+      "createdRun": 4,
+      "uses": 1,
+      "helped": 1,
+      "verified": true
+    },
+    {
+      "id": "L0051",
+      "text": "When concatenating arrays, ensure the order of elements is as expected to avoid assertion errors.",
+      "tags": [
+        "arrays",
+        "concatenation",
+        "order",
+        "append",
+        "add",
+        "lists"
+      ],
+      "sourceProblem": "mbpp_106_add_lists",
+      "sourceResult": "fail",
+      "sourceClass": "wrong-output",
+      "sourceAttempt": 1,
+      "createdRun": 4,
       "uses": 1,
       "helped": 1,
       "verified": true
