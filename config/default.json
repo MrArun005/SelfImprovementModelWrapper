@@ -605,8 +605,13 @@
       "overrides": {
         "agent": {
           "samples": 5
+        },
+        "budget": {
+          "maxRunMinutes": 300,
+          "reserveMinutesForHoldout": 200
         }
-      }
+      },
+      "jobMinutes": 330
     },
     {
       "name": "sample-filter-tests",
@@ -641,7 +646,14 @@
         "sampleFilter": true
       },
       "budgetShare": 2,
-      "color": "#9333ea"
+      "color": "#9333ea",
+      "overrides": {
+        "budget": {
+          "maxRunMinutes": 300,
+          "reserveMinutesForHoldout": 200
+        }
+      },
+      "jobMinutes": 330
     },
     {
       "name": "finetune",
@@ -676,7 +688,14 @@
         "sampleFilter": true
       },
       "budgetShare": 2,
-      "color": "#be123c"
+      "color": "#be123c",
+      "overrides": {
+        "budget": {
+          "maxRunMinutes": 300,
+          "reserveMinutesForHoldout": 200
+        }
+      },
+      "jobMinutes": 330
     },
     {
       "name": "mutation-baseline",

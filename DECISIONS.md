@@ -271,6 +271,9 @@ fixed 1.5B model can do with better notes. Variant `finetune` (lever `finetune`)
   ranking). The self-written examples can be wrong, so they only rank candidates, never decide pass or fail, and they
   come from the statement alone, so using them on holdout problems is honest. Its real cost equals its worst case
   (every sample + 1), so it gets share 3, 2 eval repeats and 220 job minutes to keep all 50 problems.
+- **Time to match the budget.** With all 50 problems at share 2, `full` ran past the 170-minute job limit on 24-25 Nov
+  and was cancelled (its state was not uploaded). `full`, `full-finetuned` and `sample-filter-5` now get the 7B
+  limits: `budget.maxRunMinutes` 300 / `reserveMinutesForHoldout` 200 and 330 job minutes.
 - **Exploration sampling (outside the daily runs).** While the free GPU is not available, the session's own machine
   samples the base 1.5B model 8 times (temperature 0.8) on every train problem no variant has solved, judges each
   sample with that train problem's tests, and writes the passing, distinct solutions to
