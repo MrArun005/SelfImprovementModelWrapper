@@ -356,6 +356,13 @@ Changes:
 - Exploration has hit diminishing returns: 15,104 more 1.5B samples over 20 rounds solved 3 problems; 49 train
   problems remain that resampling does not crack.
 
+**Bug found 26 Nov:** `budget.totalRequestsPerDay` was still sized for one cycle a day. With cycles back-to-back,
+the second and later cycles of a UTC day hit the daily cap, so `planEval` evaluated only the first 11-24 holdout
+problems for several variants (runs 45595694706 partly, 45633110704 mostly; e.g. the control's pass rate showed
+71.7% on its easier first 20 problems). Comparisons stayed paired on the common problems, so they are not biased
+between variants, only noisier; pass rates from those runs are not comparable with full-holdout runs. The daily cap
+is now 8 cycles' worth.
+
 Changes: `sample-filter-8` (8 candidates; share 5.5, 2 eval repeats so all 50 problems fit) tests whether the gain
 keeps growing with candidates; `sample-filter-5-7b` tests the significant setting on the 7B model; exploration is cut
 from 11 shards to 3 (its runners go to these variants). The product (`product.variant` auto) follows the pooled

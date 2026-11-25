@@ -182,7 +182,7 @@
   },
   "budget": {
     "totalRequestsPerRun": 9660,
-    "totalRequestsPerDay": 11040,
+    "totalRequestsPerDay": 77280,
     "holdoutFraction": 0.72,
     "maxRunMinutes": 125,
     "reserveMinutesForHoldout": 70
