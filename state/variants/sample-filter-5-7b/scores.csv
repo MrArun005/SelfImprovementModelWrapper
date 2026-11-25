@@ -1,0 +1,2 @@
+timestamp,runId,split,passRate,n,promptVersion,lessonsCount,skillsCount,requestsUsed,gateDecision,variant,track,repeats,sd,ciLow,ciHigh,tokensIn,tokensOut
+2026-11-25T14:22:55.010Z,gh45633110704-20261125T142255,holdout-champion,0.7600,50,v001,0,0,53,baseline,sample-filter-5-7b,multipl-e,1,NaN,0.6400,0.8600,8472,3954

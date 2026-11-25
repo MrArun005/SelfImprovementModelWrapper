@@ -1,0 +1,20 @@
+{
+  "promptVersion": "v001",
+  "lessonIds": [],
+  "skillIds": [],
+  "holdout": {
+    "passRate": 0.56,
+    "ciLow": 0.42,
+    "ciHigh": 0.69,
+    "n": 50,
+    "repeats": 2,
+    "sdAcrossRepeats": 0.02828427124746185,
+    "runId": "gh45633110704-20261125T142231"
+  },
+  "pending": {
+    "lessonIds": [],
+    "skillIds": [],
+    "promptVersion": null,
+    "sinceRun": null
+  }
+}
