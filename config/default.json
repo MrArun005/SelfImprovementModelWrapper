@@ -184,8 +184,8 @@
     "maxParallel": 12
   },
   "budget": {
-    "totalRequestsPerRun": 7980,
-    "totalRequestsPerDay": 63840,
+    "totalRequestsPerRun": 6510,
+    "totalRequestsPerDay": 52080,
     "holdoutFraction": 0.72,
     "maxRunMinutes": 125,
     "reserveMinutesForHoldout": 70
@@ -773,7 +773,9 @@
           "reserveMinutesForHoldout": 200
         }
       },
-      "jobMinutes": 330
+      "jobMinutes": 330,
+      "active": false,
+      "stoppedReason": "26 Nov: control of the 7B group; no active 7B variant left to compare with"
     },
     {
       "name": "full-7b",
@@ -827,7 +829,9 @@
           "reserveMinutesForHoldout": 200
         }
       },
-      "jobMinutes": 330
+      "jobMinutes": 330,
+      "active": false,
+      "stoppedReason": "26 Nov: flat over 7 cycles vs the 7B control (-0.5 pts pooled [-2.8,+1.6], Holm p 1.0)"
     },
     {
       "name": "sample-filter-5-7b",
@@ -854,7 +858,9 @@
           "reserveMinutesForHoldout": 250
         }
       },
-      "jobMinutes": 330
+      "jobMinutes": 330,
+      "active": false,
+      "stoppedReason": "26 Nov: flat over 7 cycles vs the 7B control (+0.5 pts pooled [-2.0,+3.0], Holm p 1.0)"
     }
   ],
   "eval": {

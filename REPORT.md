@@ -10,7 +10,7 @@ _Data: 170 evaluated runs across 19 variants, last run 2026-11-26._
 - **Mutation track:** killed mutants of `fast-uri` @ `3df33a5f` (BSD-3-Clause), judged by its own test suite; holdout mutants come from seed 9009, never trained on.
 - **Evaluation:** every holdout evaluation runs 3 times with different sampling seeds; scores are the mean per problem, CIs are 95% percentile bootstrap over problems (2000 resamples).
 - **Gate (ci):** accept if the candidate is at least +2.5 pts better and the paired CI of the difference excludes zero; reject if worse by more than +2.5 pts or the CI is entirely below zero; otherwise keep the change pending (max 3 runs). The first 2 runs of every variant only measure the starting point.
-- **Budget:** 7980 model requests per day split over 19 variants (420 each at equal shares, 72% reserved for evaluation).
+- **Budget:** 6510 model requests per day split over 19 variants (420 each at equal shares, 72% reserved for evaluation).
 
 ## Variants
 

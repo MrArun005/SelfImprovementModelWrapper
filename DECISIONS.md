@@ -391,6 +391,13 @@ aborts with HTTP 500 "token repeat limit reached"; retrying with the same seed l
 cycle. Such degenerate generations (`llm.degenerateErrorPatterns`) now return an empty reply, judged as a failed
 attempt (or no self-written examples), instead of crashing.
 
+## 4p. 26 Nov: pruning the 7B group
+
+Over 7 cycles neither 7B lever moved the 7B control: `sample-filter-7b` -0.5 pts pooled [-2.8, +1.6],
+`sample-filter-5-7b` +0.5 [-2.0, +3.0] (Holm p 1.0 for both). Sampling extra candidates helps the weak 1.5B model
+(+2.7 to +4.8 pts, significant) but not a model that already solves ~74%. The 7B variants and their control are
+stopped; the 1.5B inference-time variants keep the runners, and cycles get shorter.
+
 ## 5. Evaluation and statistics
 
 - **Repeats:** every holdout evaluation runs `eval.repeats` = 3 times at `eval.temperature` 0.2. Repeat `r` of
