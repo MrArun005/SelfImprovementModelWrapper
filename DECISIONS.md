@@ -329,6 +329,9 @@ Now `runtime.maxParallel` is 12 and a new `explore` job uses the rest:
   GITHUB_TOKEN may trigger); it has only `actions: write`, no checkout and runs no code. The new run queues behind
   the current one and its plan job still applies the due guard. `cycle.chain: false` turns it off; cron remains the
   backup.
+- **26 Nov:** with fine-tuning stopped a cycle takes under an hour, so the chained run found the last cycle less than
+  `minHoursBetween` (1 h) old, skipped everything and broke the chain (and the hourly cron had not fired for hours).
+  `minHoursBetween` is now 0.25 h: the guard only stops a duplicate trigger, never a chained cycle.
 
 ## 4m. 25 Nov: what the results say, and what changed because of them
 
