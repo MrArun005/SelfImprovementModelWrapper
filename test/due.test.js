@@ -47,7 +47,7 @@ test('the CLI skips a variant whose last cycle is too recent (a backup cron re-r
     paths: { stateDir, chartsDir: stateDir }, budget: { reserveMinutesForHoldout: 0 } }) };
   const run = () => execFileSync(process.execPath, ['src/run.js', '--variant=lessons-skills'], { cwd: ROOT, env }).toString();
   assert.match(run(), /\[lessons-skills\] done:/);
-  assert.match(run(), /under \d+ h ago; skipping/);
+  assert.match(run(), /under [\d.]+ h ago; skipping/);
   const forced = execFileSync(process.execPath, ['src/run.js', '--variant=lessons-skills'], { cwd: ROOT, env: { ...env, SIC_FORCE: '1' } }).toString();
   assert.match(forced, /\[lessons-skills\] done:/);
 });
