@@ -1813,5 +1813,235 @@
     "tries": 1,
     "lastRun": 13,
     "passed": true
+  },
+  "HumanEval_46_fib4": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "mbpp_451_remove_whitespaces": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "HumanEval_60_sum_to_n": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "HumanEval_63_fibfib": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "HumanEval_75_is_multiply_prime": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "mbpp_427_change_date_format": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "HumanEval_109_move_one_ball": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "mbpp_229_re_arrange_array": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": false
+  },
+  "HumanEval_114_minSubArraySum": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "mbpp_6_differ_At_One_Bit_Pos": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": false
+  },
+  "mbpp_778_pack_consecutive_duplicates": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "mbpp_436_neg_nos": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "mbpp_624_is_upper": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": false
+  },
+  "mbpp_414_overlapping": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "mbpp_71_comb_sort": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "mbpp_261_division_elements": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "mbpp_474_replace_char": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "mbpp_559_max_sub_array_sum": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "mbpp_737_check_str": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "mbpp_740_tuple_to_dict": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "mbpp_165_count_char_position": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "HumanEval_97_multiply": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": false
+  },
+  "mbpp_560_union_elements": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "mbpp_447_cube_nums": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "mbpp_101_kth_element": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "mbpp_592_sum_Of_product": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": false
+  },
+  "mbpp_143_find_lists": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": false
+  },
+  "mbpp_562_Find_Max_Length": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": false
+  },
+  "mbpp_468_max_product": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": false
+  },
+  "mbpp_113_check_integer": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "mbpp_305_start_withp": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": false
+  },
+  "mbpp_309_maximum": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "HumanEval_96_count_up_to": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "mbpp_441_surfacearea_cube": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "HumanEval_11_string_xor": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "mbpp_644_reverse_Array_Upto_K": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": false
+  },
+  "HumanEval_17_parse_music": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": false
+  },
+  "mbpp_796_return_sum": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "HumanEval_1_separate_paren_groups": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "HumanEval_86_anti_shuffle": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "mbpp_456_reverse_string_list": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "mbpp_724_power_base_sum": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": false
+  },
+  "mbpp_399_bitwise_xor": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "mbpp_406_find_Parity": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "HumanEval_20_find_closest_elements": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": true
+  },
+  "mbpp_610_remove_kth_element": {
+    "tries": 1,
+    "lastRun": 14,
+    "passed": false
   }
 }
