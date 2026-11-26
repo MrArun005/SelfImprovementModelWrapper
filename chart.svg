@@ -68,15 +68,15 @@
 <circle cx="540.5714285714286" cy="198.9404" r="4" fill="#db2777" stroke="#ffffff"><title>Sample + filter 2026-11-24: 53.3% [40.7–65.3] n=50×3, gate no-change</title></circle>
 <circle cx="638.2857142857142" cy="191.8596" r="4" fill="#db2777" stroke="#ffffff"><title>Sample + filter 2026-11-25: 56.7% [43.3–70.7] n=50×3, gate no-change</title></circle>
 <circle cx="736" cy="193.27999999999997" r="4" fill="#db2777" stroke="#ffffff"><title>Sample + filter 2026-11-26: 56.0% [44.0–69.3] n=50×3, gate no-change</title></circle>
-<polygon class="band" data-variant="sample-filter-5" points="540.5714285714286,165.0204 638.2857142857142,160.7804 736,138.5416 736,254.1876 638.2857142857142,211.66039999999998 540.5714285714286,218.72" fill="#f472b6" fill-opacity="0.15" stroke="none"/>
-<polyline data-variant="sample-filter-5" fill="none" stroke="#f472b6" stroke-width="2" points="540.5714285714286,190.4604 638.2857142857142,186.22039999999998 736,196.35399999999998"/>
+<polygon class="band" data-variant="sample-filter-5" points="540.5714285714286,165.0204 638.2857142857142,160.7804 736,100 736,259 638.2857142857142,211.66039999999998 540.5714285714286,218.72" fill="#f472b6" fill-opacity="0.15" stroke="none"/>
+<polyline data-variant="sample-filter-5" fill="none" stroke="#f472b6" stroke-width="2" points="540.5714285714286,190.4604 638.2857142857142,186.22039999999998 736,170.6596"/>
 <circle cx="540.5714285714286" cy="190.4604" r="4" fill="#f472b6" stroke="#ffffff"><title>Sample + filter, 5 candidates 2026-11-24: 57.3% [44.0–69.3] n=50×3, gate baseline</title></circle>
 <circle cx="638.2857142857142" cy="186.22039999999998" r="4" fill="#f472b6" stroke="#ffffff"><title>Sample + filter, 5 candidates 2026-11-25: 59.3% [47.3–71.3] n=50×3, gate no-change</title></circle>
-<circle cx="736" cy="196.35399999999998" r="4" fill="#f472b6" stroke="#ffffff"><title>Sample + filter, 5 candidates 2026-11-26: 54.5% [27.3–81.8] n=11×3, gate no-change</title></circle>
-<polygon class="band" data-variant="sample-filter-8" points="638.2857142857142,165.72 736,163.60000000000002 736,218.72 638.2857142857142,216.6" fill="#be185d" fill-opacity="0.15" stroke="none"/>
-<polyline data-variant="sample-filter-8" fill="none" stroke="#be185d" stroke-width="2" points="638.2857142857142,191.16000000000003 736,191.16000000000003"/>
+<circle cx="736" cy="170.6596" r="4" fill="#f472b6" stroke="#ffffff"><title>Sample + filter, 5 candidates 2026-11-26: 66.7% [25.0–100.0] n=4×3, gate no-change</title></circle>
+<polygon class="band" data-variant="sample-filter-8" points="638.2857142857142,165.72 736,165.72 736,222.96 638.2857142857142,216.6" fill="#be185d" fill-opacity="0.15" stroke="none"/>
+<polyline data-variant="sample-filter-8" fill="none" stroke="#be185d" stroke-width="2" points="638.2857142857142,191.16000000000003 736,195.39999999999998"/>
 <circle cx="638.2857142857142" cy="191.16000000000003" r="4" fill="#be185d" stroke="#ffffff"><title>Sample + filter, 8 candidates 2026-11-25: 57.0% [45.0–69.0] n=50×2, gate no-change</title></circle>
-<circle cx="736" cy="191.16000000000003" r="4" fill="#be185d" stroke="#ffffff"><title>Sample + filter, 8 candidates 2026-11-26: 57.0% [44.0–70.0] n=50×2, gate no-change</title></circle>
+<circle cx="736" cy="195.39999999999998" r="4" fill="#be185d" stroke="#ffffff"><title>Sample + filter, 8 candidates 2026-11-26: 55.0% [42.0–69.0] n=50×2, gate no-change</title></circle>
 <polygon class="band" data-variant="sample-filter-tests" points="540.5714285714286,174.2 638.2857142857142,169.95999999999998 736,124.4648 736,214.16199999999998 638.2857142857142,220.84 540.5714285714286,227.2" fill="#0ea5e9" fill-opacity="0.15" stroke="none"/>
 <polyline data-variant="sample-filter-tests" fill="none" stroke="#0ea5e9" stroke-width="2" points="540.5714285714286,199.64 638.2857142857142,195.39999999999998 736,165.23239999999998"/>
 <circle cx="540.5714285714286" cy="199.64" r="4" fill="#0ea5e9" stroke="#ffffff"><title>Sample + filter, ranked by self-written tests 2026-11-24: 53.0% [40.0–65.0] n=50×2, gate baseline</title></circle>
