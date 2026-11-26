@@ -401,6 +401,15 @@ Over 7 cycles neither 7B lever moved the 7B control: `sample-filter-7b` -0.5 pts
 (+2.7 to +4.8 pts, significant) but not a model that already solves ~74%. The 7B variants and their control are
 stopped; the 1.5B inference-time variants keep the runners, and cycles get shorter.
 
+## 4q. 26 Nov evening: pruning by the 7-cycle rule
+
+Over the last 7 cycles `sample-filter` (3 candidates) was flat (+0.8 pts pooled [-1.0, +2.6]) and so was `full`
+(+1.3 [-1.4, +4.2]); both stop under the standing rule (flat over 7+ cycles). Remaining learners: `sample-filter-5`
+(+2.8 [+0.1, +5.7], Holm p 0.52), `sample-filter-8` (+3.0 [-0.2, +7.1]) and `sample-filter-tests` (+2.9 [0.0, +6.1]).
+The early +6 for 5 candidates was partly luck; the effect of sampling more candidates looks like ~+2-3 pts. The
+analysis window was deliberately left unchanged after the estimates shrank. The product fallback moves to
+`sample-filter-5`.
+
 ## 5. Evaluation and statistics
 
 - **Repeats:** every holdout evaluation runs `eval.repeats` = 3 times at `eval.temperature` 0.2. Repeat `r` of
