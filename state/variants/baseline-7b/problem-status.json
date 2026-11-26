@@ -863,5 +863,245 @@
     "tries": 1,
     "lastRun": 9,
     "passed": true
+  },
+  "mbpp_16_text_lowercase_underscore": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "mbpp_734_sum_Of_Subarray_Prod": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "mbpp_18_remove_dirty_chars": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "mbpp_68_is_Monotonic": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "HumanEval_70_strange_sort_list": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "mbpp_123_amicable_numbers_sum": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "mbpp_125_find_length": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "mbpp_168_frequency": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "mbpp_109_odd_Equivalent": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "mbpp_237_check_occurences": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": false
+  },
+  "HumanEval_15_string_sequence": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "mbpp_639_sample_nam": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "mbpp_431_common_element": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": false
+  },
+  "mbpp_782_odd_length_sum": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "HumanEval_31_is_prime": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "mbpp_632_move_zero": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "HumanEval_39_prime_fib": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "mbpp_618_div_list": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "mbpp_164_are_equivalent": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "mbpp_429_and_tuples": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": false
+  },
+  "mbpp_75_find_tuples": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "HumanEval_110_exchange": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "HumanEval_61_correct_bracketing": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "mbpp_787_text_match_three": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "HumanEval_76_is_simple_power": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "mbpp_557_toggle_string": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "mbpp_619_move_num": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "mbpp_753_min_k": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": false
+  },
+  "HumanEval_155_even_odd_count": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "HumanEval_73_smallest_change": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "mbpp_172_count_occurance": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "HumanEval_25_factorize": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "mbpp_239_get_total_number_of_sequences": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": false
+  },
+  "HumanEval_144_simplify": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "mbpp_766_pair_wise": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "mbpp_59_is_octagonal": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "HumanEval_51_remove_vowels": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": false
+  },
+  "mbpp_631_replace_spaces": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": false
+  },
+  "HumanEval_143_words_in_sentence": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "mbpp_3_is_not_prime": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "mbpp_746_sector_area": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "HumanEval_134_check_if_last_char_is_a_letter": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "mbpp_807_first_odd": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "HumanEval_74_total_match": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "mbpp_405_check_tuplex": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": true
+  },
+  "mbpp_475_sort_counter": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": false
+  },
+  "HumanEval_84_solve": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": false
+  },
+  "HumanEval_91_is_bored": {
+    "tries": 1,
+    "lastRun": 10,
+    "passed": false
   }
 }

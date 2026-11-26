@@ -1,25 +1,4 @@
 {
-  "nextId": 469,
-  "items": [
-    {
-      "id": "L0346",
-      "text": "When a number is not a palindrome, you should increment it by 1 and check if the new number is a palindrome. If it is, return the new number; otherwise, increment the number again and repeat the process until you…",
-      "tags": [
-        "palindrome",
-        "increment",
-        "loop",
-        "next",
-        "smallest",
-        "specified"
-      ],
-      "sourceProblem": "mbpp_100_next_smallest_palindrome",
-      "sourceResult": "error",
-      "sourceClass": "runtime-error",
-      "sourceAttempt": 1,
-      "createdRun": 12,
-      "uses": 1,
-      "helped": 1,
-      "verified": true
-    }
-  ]
+  "nextId": 565,
+  "items": []
 }
