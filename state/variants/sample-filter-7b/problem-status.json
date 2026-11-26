@@ -1618,5 +1618,445 @@
     "tries": 1,
     "lastRun": 6,
     "passed": true
+  },
+  "HumanEval_77_iscube": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_603_get_ludic": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": false
+  },
+  "HumanEval_11_string_xor": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_138_is_Sum_Of_Powers_Of_Two": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": false
+  },
+  "HumanEval_64_vowels_count": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_463_max_subarray_product": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_615_average_tuple": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": false
+  },
+  "mbpp_778_pack_consecutive_duplicates": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "HumanEval_72_will_it_fly": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_399_bitwise_xor": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "HumanEval_114_minSubArraySum": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "HumanEval_161_solve": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_101_kth_element": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "HumanEval_150_x_or_y": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "HumanEval_80_is_happy": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_775_odd_position": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_437_remove_odd": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": false
+  },
+  "mbpp_228_all_Bits_Set_In_The_Given_Range": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_580_extract_even": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": false
+  },
+  "mbpp_106_add_lists": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": false
+  },
+  "mbpp_118_string_to_list": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_447_cube_nums": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_740_tuple_to_dict": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_583_catalan_number": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_747_lcs_of_three": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "HumanEval_20_find_closest_elements": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "HumanEval_21_rescale_to_unit": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "HumanEval_47_median": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_170_sum_range_list": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_412_remove_odd": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_143_find_lists": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": false
+  },
+  "mbpp_798__sum": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_559_max_sub_array_sum": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "HumanEval_128_prod_signs": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_622_get_median": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_439_multiple_to_single": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_77_is_Diff": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "HumanEval_143_words_in_sentence": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "HumanEval_54_same_chars": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": false
+  },
+  "mbpp_760_unique_Element": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "HumanEval_73_smallest_change": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "HumanEval_86_anti_shuffle": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_97_frequency_lists": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_754_extract_index_list": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_125_find_length": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_247_lps": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_271_even_Power_Sum": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_746_sector_area": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_442_positive_count": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": false
+  },
+  "mbpp_120_max_product_tuple": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "HumanEval_33_sort_third": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_424_extract_rear": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_780_find_combinations": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": false
+  },
+  "mbpp_389_find_lucas": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_166_find_even_pair": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_295_sum_div": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_739_find_Index": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": false
+  },
+  "mbpp_428_shell_sort": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_309_maximum": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_56_checks": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_260_newman_prime": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": false
+  },
+  "HumanEval_15_string_sequence": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_441_surfacearea_cube": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "HumanEval_62_derivative": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_75_find_tuples": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_65_recursive_list_sum": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "HumanEval_125_split_words": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_777_find_sum": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": false
+  },
+  "HumanEval_5_intersperse": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_255_combinations_colors": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_728_sum_list": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "HumanEval_120_maximum": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": false
+  },
+  "mbpp_471_find_remainder": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_587_list_tuple": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_614_cummulative_sum": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_808_check_K": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_87_merge_dictionaries_three": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": false
+  },
+  "mbpp_436_neg_nos": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_723_count_same_pair": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_259_maximize_elements": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": false
+  },
+  "HumanEval_76_is_simple_power": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "HumanEval_0_has_close_elements": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_749_sort_numeric_strings": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_296_get_Inv_Count": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "mbpp_434_text_match_one": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "HumanEval_52_below_threshold": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": true
+  },
+  "HumanEval_92_any_int": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": false
+  },
+  "HumanEval_93_encode": {
+    "tries": 1,
+    "lastRun": 7,
+    "passed": false
   }
 }

@@ -1,4 +1,25 @@
 {
-  "nextId": 565,
-  "items": []
+  "nextId": 649,
+  "items": [
+    {
+      "id": "L0565",
+      "text": "When encountering a mismatch in the number of 0s and 1s in a sub-string of a binary string, it's crucial to reset the count for the next sub-string. This ensures that the maximum difference is accurately calculated across all possible…",
+      "tags": [
+        "binary",
+        "sub-string",
+        "count",
+        "reset",
+        "mismatch",
+        "maximum"
+      ],
+      "sourceProblem": "mbpp_125_find_length",
+      "sourceResult": "fail",
+      "sourceClass": "wrong-output",
+      "sourceAttempt": 1,
+      "createdRun": 15,
+      "uses": 3,
+      "helped": 1,
+      "verified": true
+    }
+  ]
 }

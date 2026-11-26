@@ -55,9 +55,9 @@
     "passed": false
   },
   "mbpp_9_find_Rotations": {
-    "tries": 1,
-    "lastRun": 3,
-    "passed": false
+    "tries": 2,
+    "lastRun": 15,
+    "passed": true
   },
   "mbpp_597_find_kth": {
     "tries": 2,
@@ -155,8 +155,8 @@
     "passed": true
   },
   "mbpp_581_surface_Area": {
-    "tries": 1,
-    "lastRun": 3,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_433_check_greater": {
@@ -175,8 +175,8 @@
     "passed": true
   },
   "mbpp_63_max_difference": {
-    "tries": 1,
-    "lastRun": 3,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "HumanEval_6_parse_nested_parens": {
@@ -215,8 +215,8 @@
     "passed": true
   },
   "mbpp_86_centered_hexagonal_number": {
-    "tries": 1,
-    "lastRun": 3,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_96_divisor": {
@@ -355,8 +355,8 @@
     "passed": true
   },
   "mbpp_627_find_First_Missing": {
-    "tries": 2,
-    "lastRun": 14,
+    "tries": 3,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_568_empty_list": {
@@ -400,8 +400,8 @@
     "passed": false
   },
   "HumanEval_122_add_elements": {
-    "tries": 1,
-    "lastRun": 4,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_447_cube_nums": {
@@ -415,8 +415,8 @@
     "passed": true
   },
   "mbpp_735_toggle_middle_bits": {
-    "tries": 1,
-    "lastRun": 4,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "HumanEval_94_skjkasdkd": {
@@ -490,8 +490,8 @@
     "passed": true
   },
   "HumanEval_91_is_bored": {
-    "tries": 1,
-    "lastRun": 4,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "HumanEval_69_search": {
@@ -530,8 +530,8 @@
     "passed": true
   },
   "HumanEval_95_check_dict_case": {
-    "tries": 2,
-    "lastRun": 14,
+    "tries": 3,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_102_snake_to_camel": {
@@ -545,8 +545,8 @@
     "passed": true
   },
   "mbpp_784_mul_even_odd": {
-    "tries": 1,
-    "lastRun": 4,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_801_test_three_equal": {
@@ -620,9 +620,9 @@
     "passed": false
   },
   "mbpp_754_extract_index_list": {
-    "tries": 1,
-    "lastRun": 4,
-    "passed": false
+    "tries": 2,
+    "lastRun": 15,
+    "passed": true
   },
   "HumanEval_125_split_words": {
     "tries": 2,
@@ -665,14 +665,14 @@
     "passed": true
   },
   "HumanEval_46_fib4": {
-    "tries": 1,
-    "lastRun": 4,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_808_check_K": {
-    "tries": 1,
-    "lastRun": 4,
-    "passed": false
+    "tries": 2,
+    "lastRun": 15,
+    "passed": true
   },
   "mbpp_106_add_lists": {
     "tries": 2,
@@ -705,13 +705,13 @@
     "passed": false
   },
   "mbpp_268_find_star_num": {
-    "tries": 2,
-    "lastRun": 14,
+    "tries": 3,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_446_count_Occurrence": {
-    "tries": 1,
-    "lastRun": 4,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_598_armstrong_number": {
@@ -780,8 +780,8 @@
     "passed": true
   },
   "mbpp_805_max_sum_list": {
-    "tries": 1,
-    "lastRun": 5,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "HumanEval_67_fruit_distribution": {
@@ -790,9 +790,9 @@
     "passed": true
   },
   "mbpp_229_re_arrange_array": {
-    "tries": 2,
-    "lastRun": 14,
-    "passed": false
+    "tries": 3,
+    "lastRun": 15,
+    "passed": true
   },
   "mbpp_143_find_lists": {
     "tries": 2,
@@ -810,8 +810,8 @@
     "passed": true
   },
   "mbpp_756_text_match_zero_one": {
-    "tries": 1,
-    "lastRun": 5,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_639_sample_nam": {
@@ -930,8 +930,8 @@
     "passed": true
   },
   "mbpp_264_dog_age": {
-    "tries": 1,
-    "lastRun": 5,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_75_find_tuples": {
@@ -980,8 +980,8 @@
     "passed": true
   },
   "HumanEval_54_same_chars": {
-    "tries": 2,
-    "lastRun": 12,
+    "tries": 3,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_726_multiply_elements": {
@@ -990,9 +990,9 @@
     "passed": true
   },
   "mbpp_790_even_position": {
-    "tries": 1,
-    "lastRun": 5,
-    "passed": false
+    "tries": 2,
+    "lastRun": 15,
+    "passed": true
   },
   "HumanEval_59_largest_prime_factor": {
     "tries": 1,
@@ -1075,8 +1075,8 @@
     "passed": true
   },
   "mbpp_240_replace_list": {
-    "tries": 1,
-    "lastRun": 5,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_285_text_match_two_three": {
@@ -1110,8 +1110,8 @@
     "passed": true
   },
   "mbpp_87_merge_dictionaries_three": {
-    "tries": 1,
-    "lastRun": 5,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "HumanEval_33_sort_third": {
@@ -1230,8 +1230,8 @@
     "passed": true
   },
   "mbpp_244_next_Perfect_Square": {
-    "tries": 2,
-    "lastRun": 14,
+    "tries": 3,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_414_overlapping": {
@@ -1240,8 +1240,8 @@
     "passed": true
   },
   "HumanEval_10_make_palindrome": {
-    "tries": 1,
-    "lastRun": 6,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "HumanEval_68_pluck": {
@@ -1270,8 +1270,8 @@
     "passed": true
   },
   "HumanEval_140_fix_spaces": {
-    "tries": 2,
-    "lastRun": 13,
+    "tries": 3,
+    "lastRun": 15,
     "passed": false
   },
   "HumanEval_62_derivative": {
@@ -1285,9 +1285,9 @@
     "passed": true
   },
   "mbpp_611_max_of_nth": {
-    "tries": 2,
-    "lastRun": 14,
-    "passed": false
+    "tries": 3,
+    "lastRun": 15,
+    "passed": true
   },
   "mbpp_11_remove_Occ": {
     "tries": 2,
@@ -1295,13 +1295,13 @@
     "passed": false
   },
   "mbpp_622_get_median": {
-    "tries": 1,
-    "lastRun": 6,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_274_even_binomial_Coeff_Sum": {
-    "tries": 1,
-    "lastRun": 6,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_299_max_aggregate": {
@@ -1325,8 +1325,8 @@
     "passed": false
   },
   "HumanEval_139_special_factorial": {
-    "tries": 2,
-    "lastRun": 14,
+    "tries": 3,
+    "lastRun": 15,
     "passed": false
   },
   "HumanEval_101_words_string": {
@@ -1360,8 +1360,8 @@
     "passed": true
   },
   "mbpp_20_is_woodall": {
-    "tries": 1,
-    "lastRun": 6,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_644_reverse_Array_Upto_K": {
@@ -1380,8 +1380,8 @@
     "passed": true
   },
   "mbpp_417_group_tuples": {
-    "tries": 1,
-    "lastRun": 6,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_74_is_samepatterns": {
@@ -1430,8 +1430,8 @@
     "passed": true
   },
   "mbpp_119_search": {
-    "tries": 1,
-    "lastRun": 6,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "HumanEval_159_eat": {
@@ -1480,8 +1480,8 @@
     "passed": true
   },
   "mbpp_69_is_sublist": {
-    "tries": 1,
-    "lastRun": 6,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_260_newman_prime": {
@@ -1490,8 +1490,8 @@
     "passed": false
   },
   "HumanEval_92_any_int": {
-    "tries": 2,
-    "lastRun": 12,
+    "tries": 3,
+    "lastRun": 15,
     "passed": false
   },
   "HumanEval_19_sort_numbers": {
@@ -1520,8 +1520,8 @@
     "passed": false
   },
   "mbpp_450_extract_string": {
-    "tries": 1,
-    "lastRun": 7,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_451_remove_whitespaces": {
@@ -1535,13 +1535,13 @@
     "passed": false
   },
   "mbpp_306_max_sum_increasing_subseq": {
-    "tries": 2,
-    "lastRun": 13,
+    "tries": 3,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_442_positive_count": {
-    "tries": 2,
-    "lastRun": 14,
+    "tries": 3,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_764_number_ctr": {
@@ -1590,9 +1590,9 @@
     "passed": true
   },
   "mbpp_558_digit_distance_nums": {
-    "tries": 1,
-    "lastRun": 7,
-    "passed": false
+    "tries": 2,
+    "lastRun": 15,
+    "passed": true
   },
   "mbpp_567_issort_list": {
     "tries": 1,
@@ -1735,8 +1735,8 @@
     "passed": true
   },
   "mbpp_607_find_literals": {
-    "tries": 2,
-    "lastRun": 13,
+    "tries": 3,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_239_get_total_number_of_sequences": {
@@ -1760,8 +1760,8 @@
     "passed": true
   },
   "mbpp_640_remove_parenthesis": {
-    "tries": 2,
-    "lastRun": 13,
+    "tries": 3,
+    "lastRun": 15,
     "passed": false
   },
   "HumanEval_93_encode": {
@@ -1795,13 +1795,13 @@
     "passed": false
   },
   "mbpp_475_sort_counter": {
-    "tries": 1,
-    "lastRun": 7,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_785_tuple_str_int": {
-    "tries": 1,
-    "lastRun": 7,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_629_Split": {
@@ -1820,8 +1820,8 @@
     "passed": false
   },
   "mbpp_408_k_smallest_pairs": {
-    "tries": 2,
-    "lastRun": 14,
+    "tries": 3,
+    "lastRun": 15,
     "passed": false
   },
   "HumanEval_51_remove_vowels": {
@@ -1870,13 +1870,13 @@
     "passed": true
   },
   "HumanEval_130_tri": {
-    "tries": 1,
-    "lastRun": 8,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_434_text_match_one": {
-    "tries": 1,
-    "lastRun": 8,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_760_unique_Element": {
@@ -1990,8 +1990,8 @@
     "passed": true
   },
   "mbpp_295_sum_div": {
-    "tries": 1,
-    "lastRun": 8,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_603_get_ludic": {
@@ -2050,8 +2050,8 @@
     "passed": false
   },
   "mbpp_608_bell_Number": {
-    "tries": 1,
-    "lastRun": 8,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "HumanEval_34_unique": {
@@ -2065,8 +2065,8 @@
     "passed": true
   },
   "mbpp_615_average_tuple": {
-    "tries": 2,
-    "lastRun": 13,
+    "tries": 3,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_166_find_even_pair": {
@@ -2175,8 +2175,8 @@
     "passed": true
   },
   "HumanEval_160_do_algebra": {
-    "tries": 1,
-    "lastRun": 8,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_16_text_lowercase_underscore": {
@@ -2220,14 +2220,14 @@
     "passed": true
   },
   "mbpp_245_max_sum": {
-    "tries": 1,
-    "lastRun": 8,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_129_magic_square_test": {
-    "tries": 1,
-    "lastRun": 8,
-    "passed": false
+    "tries": 2,
+    "lastRun": 15,
+    "passed": true
   },
   "mbpp_572_two_unique_nums": {
     "tries": 2,
@@ -2250,8 +2250,8 @@
     "passed": true
   },
   "HumanEval_49_modp": {
-    "tries": 1,
-    "lastRun": 8,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_471_find_remainder": {
@@ -2260,8 +2260,8 @@
     "passed": true
   },
   "HumanEval_17_parse_music": {
-    "tries": 1,
-    "lastRun": 8,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "HumanEval_18_how_many_times": {
@@ -2350,8 +2350,8 @@
     "passed": true
   },
   "mbpp_279_is_num_decagonal": {
-    "tries": 1,
-    "lastRun": 12,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_742_area_tetrahedron": {
@@ -2430,8 +2430,8 @@
     "passed": false
   },
   "mbpp_390_add_string": {
-    "tries": 2,
-    "lastRun": 14,
+    "tries": 3,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_296_get_Inv_Count": {
@@ -2485,14 +2485,14 @@
     "passed": true
   },
   "mbpp_641_is_nonagonal": {
-    "tries": 1,
-    "lastRun": 12,
+    "tries": 2,
+    "lastRun": 15,
     "passed": false
   },
   "mbpp_125_find_length": {
-    "tries": 1,
-    "lastRun": 12,
-    "passed": false
+    "tries": 2,
+    "lastRun": 15,
+    "passed": true
   },
   "HumanEval_115_max_fill": {
     "tries": 2,
