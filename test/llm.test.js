@@ -56,3 +56,11 @@ test('mock returns buggy code until the fixing phrase is in the prompt', async (
   assert.match(await llm.chat([{ role: 'user', content: 'x' }], { meta }), /i < n/);
   assert.match(await llm.chat([{ role: 'user', content: 'include both ends' }], { meta }), /i <= n/);
 });
+
+test('a degenerate generation aborted by the server (token repeat limit) becomes an empty reply, not a crash or retries', async () => {
+  let n = 0;
+  const res = { ok: false, status: 500, headers: { get: () => null }, text: async () => '{"error":{"message":"prediction aborted, token repeat limit reached"}}' };
+  const llm = createOpenAICompatible(cfg, { fetch: async () => { n++; return res; }, sleep: async () => {}, env: {} });
+  assert.equal(await llm.chat([{ role: 'user', content: 'x' }]), '');
+  assert.equal(n, 1, 'not retried');
+});

@@ -386,6 +386,11 @@ significantly WORSE than the 7B control over 3 cycles (-3.3 pts [-6.7, -0.7], Ho
 a stronger model replace its good first answer more often than they rescue a wrong one. Kept for 2 more cycles to
 confirm, then stopped; `sample-filter-5-7b` (-1.0 [-7.0, +5.0]) is watched the same way.
 
+`sample-filter-tests` failed in 3 cycles on 26 Nov: when asked to write examples the model sometimes loops and Ollama
+aborts with HTTP 500 "token repeat limit reached"; retrying with the same seed loops again, and the error crashed the
+cycle. Such degenerate generations (`llm.degenerateErrorPatterns`) now return an empty reply, judged as a failed
+attempt (or no self-written examples), instead of crashing.
+
 ## 5. Evaluation and statistics
 
 - **Repeats:** every holdout evaluation runs `eval.repeats` = 3 times at `eval.temperature` 0.2. Repeat `r` of

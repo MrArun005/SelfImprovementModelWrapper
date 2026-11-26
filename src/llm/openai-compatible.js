@@ -36,6 +36,12 @@ export function createOpenAICompatible(cfg, deps = {}) {
     }
     if (!res.ok) {
       const text = await res.text().catch(() => '');
+      // The server aborted a degenerate generation (e.g. Ollama's "token repeat limit reached": the model looped).
+      // Retrying with the same seed loops again, and it is the model's answer, not an outage: return an empty
+      // reply, which the caller judges as a failed attempt, instead of crashing the whole cycle.
+      if (cfg.llm.degenerateErrorPatterns?.some((pat) => new RegExp(pat, 'i').test(text))) {
+        return { content: '', usage: { tokensIn: 0, tokensOut: 0 }, degenerate: true };
+      }
       const retryable = retry.retryOnStatus.includes(res.status);
       const err = new LLMError(`HTTP ${res.status}: ${text.slice(0, cfg.llm.errorSnippetChars)}`, { status: res.status, retryable });
       err.retryAfter = Number(res.headers?.get?.('retry-after'));

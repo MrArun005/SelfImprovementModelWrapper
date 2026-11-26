@@ -24,6 +24,9 @@
         504
       ]
     },
+    "degenerateErrorPatterns": [
+      "token repeat limit"
+    ],
     "mock": {
       "mode": "scripted",
       "scriptPath": "test/fixtures/problems.json",
