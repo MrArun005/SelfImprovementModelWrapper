@@ -368,6 +368,18 @@ keeps growing with candidates; `sample-filter-5-7b` tests the significant settin
 from 11 shards to 3 (its runners go to these variants). The product (`product.variant` auto) follows the pooled
 evidence and so now picks `sample-filter-5`.
 
+## 4o. 26 Nov: fine-tuning stopped (the agreed rule)
+
+Fine-tuning on the 1.5B model's own verified solutions (no 7B data) against its untrained twin, 3 cycles:
+-1.3 pts [-9.3, +6.0]; +5.0 [0.0, +13.3] (only 20 problems, the daily-cap bug); -1.3 [-8.7, +5.3]. Roughly zero.
+Stacked on the winning lever it added nothing either: `full-finetuned` vs `sample-filter-5` on the same 50 problems
+0.0 [-7.3, +7.3]. By the rule agreed with the user (stop if not positive after 2 own-data cycles), `finetune`,
+`finetune-base` and `full-finetuned` are stopped (history kept), so the fine-tuning job no longer runs, and the
+exploration shards that fed it are stopped too (they had also hit diminishing returns). The runners go to the
+inference-time variants. Conclusion so far: at 1.5B on CPU, the system improves by searching better at answer time
+(sample + filter, +6 pts, significant), not by retraining on its own outputs; testing self-training again needs a
+larger model and a GPU.
+
 ## 5. Evaluation and statistics
 
 - **Repeats:** every holdout evaluation runs `eval.repeats` = 3 times at `eval.temperature` 0.2. Repeat `r` of

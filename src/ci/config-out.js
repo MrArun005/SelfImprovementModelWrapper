@@ -41,7 +41,8 @@ const out = {
   timeouts: JSON.stringify(Object.fromEntries(activeVariants(cfg).map((v) => [v.name, v.jobMinutes ?? rt.improveJobMinutes]))),
 };
 // fine-tuning (expert iteration): the first variant with the finetune lever, and everything its job needs
-const ftVariant = cfg.variants.find((v) => v.levers?.finetune)?.name ?? '';
+// only an ACTIVE fine-tuned variant needs the fine-tuning job (stopped variants keep their history)
+const ftVariant = activeVariants(cfg).find((v) => v.levers?.finetune)?.name ?? '';
 const ft = cfg.finetune;
 Object.assign(out, {
   finetune_variant: ftVariant,

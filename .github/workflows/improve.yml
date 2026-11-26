@@ -228,7 +228,7 @@ jobs:
     # Spare runners find new verified solutions to train problems no variant has solved (holdout never touched);
     # they feed the next day's fine-tuning. Runs LLM-written code in the sandbox: read-only, no credentials.
     needs: plan
-    if: ${{ needs.plan.outputs.due == 'true' }}
+    if: ${{ needs.plan.outputs.due == 'true' && needs.plan.outputs.explore_matrix != '[]' }}
     runs-on: ubuntu-latest
     timeout-minutes: ${{ matrix.shard.minutes }}
     permissions:

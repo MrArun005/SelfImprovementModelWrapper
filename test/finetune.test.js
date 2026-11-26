@@ -44,7 +44,9 @@ test('finetune variant: same track and budget unit as the others, served under t
   assert.equal(vc.variant.levers.finetune, true);
   assert.equal(vc.llm.model, cfg.finetune.ollamaModel);
   assert.equal(variantConfig(cfg, 'baseline').llm.model, cfg.llm.model);
-  assert.equal(variantBudget(cfg, 'finetune').requestsPerRun, variantBudget(cfg, 'baseline').requestsPerRun);
+  // every ACTIVE variant gets the same requests per unit share (stopped variants are budgeted on their own)
+  const perUnit = (n) => variantBudget(cfg, n).requestsPerRun / cfg.variants.find((v) => v.name === n).budgetShare;
+  for (const v of cfg.variants.filter((x) => x.active !== false)) assert.ok(Math.abs(perUnit(v.name) - perUnit('baseline')) <= 1, v.name);
   assert.equal(variantConfig(cfg, 'finetune-base').llm.model, cfg.finetune.baseOllamaModel);
   assert.notEqual(cfg.finetune.baseOllamaModel, cfg.finetune.ollamaModel);
 });
