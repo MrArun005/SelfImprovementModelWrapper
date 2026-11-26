@@ -1,5 +1,5 @@
 {
-  "nextId": 153,
+  "nextId": 222,
   "items": [
     {
       "id": "L0121",
@@ -37,6 +37,26 @@
       "sourceClass": "wrong-output",
       "sourceAttempt": 1,
       "createdRun": 8,
+      "uses": 2,
+      "helped": 2,
+      "verified": true
+    },
+    {
+      "id": "L0205",
+      "text": "When you encounter an assertion error indicating that two values are not equal, it often means there's a mistake in how you're comparing or manipulating your data. To fix this issue, ensure that both sides of the comparison are correctly…",
+      "tags": [
+        "assertion",
+        "comparison",
+        "data integrity",
+        "closest",
+        "smaller",
+        "num"
+      ],
+      "sourceProblem": "mbpp_89_closest_num",
+      "sourceResult": "fail",
+      "sourceClass": "wrong-output",
+      "sourceAttempt": 1,
+      "createdRun": 9,
       "uses": 1,
       "helped": 1,
       "verified": true

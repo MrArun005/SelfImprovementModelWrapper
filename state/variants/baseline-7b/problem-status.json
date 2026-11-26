@@ -408,5 +408,230 @@
     "tries": 1,
     "lastRun": 4,
     "passed": true
+  },
+  "mbpp_422_find_Average_Of_Cube": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "mbpp_284_check_element": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "HumanEval_142_sum_squares": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "mbpp_641_is_nonagonal": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "mbpp_58_opposite_Signs": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "mbpp_459_remove_uppercase": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "HumanEval_145_order_by_points": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": false
+  },
+  "mbpp_584_find_adverbs": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": false
+  },
+  "mbpp_104_sort_sublists": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "mbpp_426_filter_oddnumbers": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "mbpp_308_large_product": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "mbpp_765_is_polite": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": false
+  },
+  "HumanEval_66_digitSum": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "mbpp_629_Split": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "mbpp_735_toggle_middle_bits": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "mbpp_556_find_Odd_Pair": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "mbpp_266_lateralsurface_cube": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "HumanEval_89_encrypt": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "HumanEval_146_specialFilter": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "mbpp_415_max_Product": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": false
+  },
+  "mbpp_413_extract_nth_element": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "HumanEval_48_is_palindrome": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "mbpp_171_perimeter_pentagon": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "mbpp_274_even_binomial_Coeff_Sum": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "HumanEval_22_filter_integers": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "mbpp_130_max_occurrences": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "mbpp_103_eulerian_num": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": false
+  },
+  "HumanEval_54_same_chars": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": false
+  },
+  "mbpp_418_Find_Max": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "mbpp_394_check_distinct": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "mbpp_773_occurance_substring": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": false
+  },
+  "mbpp_285_text_match_two_three": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "mbpp_721_maxAverageOfPath": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": false
+  },
+  "mbpp_400_extract_freq": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": false
+  },
+  "mbpp_738_geometric_sum": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "HumanEval_140_fix_spaces": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": false
+  },
+  "mbpp_65_recursive_list_sum": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "mbpp_794_text_starta_endb": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "mbpp_438_count_bidirectional": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": false
+  },
+  "HumanEval_160_do_algebra": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": false
+  },
+  "mbpp_240_replace_list": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": false
+  },
+  "mbpp_799_left_rotate": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "mbpp_432_median_trapezium": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "mbpp_471_find_remainder": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
+  },
+  "mbpp_730_consecutive_duplicates": {
+    "tries": 1,
+    "lastRun": 8,
+    "passed": true
   }
 }
