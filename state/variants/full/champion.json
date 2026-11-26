@@ -13,7 +13,8 @@
   },
   "pending": {
     "lessonIds": [
-      "L0565"
+      "L0565",
+      "L0673"
     ],
     "skillIds": [],
     "promptVersion": null,

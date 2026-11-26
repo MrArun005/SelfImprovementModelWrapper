@@ -1,5 +1,5 @@
 {
-  "nextId": 649,
+  "nextId": 734,
   "items": [
     {
       "id": "L0565",
@@ -18,6 +18,26 @@
       "sourceAttempt": 1,
       "createdRun": 15,
       "uses": 3,
+      "helped": 1,
+      "verified": true
+    },
+    {
+      "id": "L0673",
+      "text": "When checking if a number can be represented as the difference of two squares, it's important to ensure that the number is not divisible by 4. This is because the difference of two squares is always even, and any even…",
+      "tags": [
+        "divisibility",
+        "squares",
+        "evenness",
+        "jsthon",
+        "represented",
+        "difference"
+      ],
+      "sourceProblem": "mbpp_72_dif_Square",
+      "sourceResult": "fail",
+      "sourceClass": "wrong-output",
+      "sourceAttempt": 1,
+      "createdRun": 16,
+      "uses": 1,
       "helped": 1,
       "verified": true
     }
