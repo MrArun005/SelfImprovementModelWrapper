@@ -633,5 +633,235 @@
     "tries": 1,
     "lastRun": 8,
     "passed": true
+  },
+  "mbpp_257_swap_numbers": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "mbpp_614_cummulative_sum": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "mbpp_750_add_tuple": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "mbpp_578_interleave_lists": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "mbpp_19_test_duplicate": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "mbpp_583_catalan_number": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "mbpp_579_find_dissimilar": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": false
+  },
+  "mbpp_809_check_smaller": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "mbpp_784_mul_even_odd": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "mbpp_272_rear_extract": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "HumanEval_147_get_max_triples": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "mbpp_278_count_first_elements": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": false
+  },
+  "mbpp_138_is_Sum_Of_Powers_Of_Two": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": false
+  },
+  "mbpp_160_find_solution": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "mbpp_617_min_Jumps": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": false
+  },
+  "mbpp_69_is_sublist": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "mbpp_798__sum": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "HumanEval_8_sum_product": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "mbpp_64_subject_marks": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "mbpp_133_sum_negativenum": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "HumanEval_24_largest_divisor": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "mbpp_611_max_of_nth": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "mbpp_223_is_majority": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "mbpp_411_snake_to_camel": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": false
+  },
+  "mbpp_86_centered_hexagonal_number": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "HumanEval_72_will_it_fly": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "mbpp_412_remove_odd": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "mbpp_267_square_Sum": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "mbpp_310_string_to_tuple": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": false
+  },
+  "mbpp_785_tuple_str_int": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": false
+  },
+  "mbpp_723_count_same_pair": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "mbpp_120_max_product_tuple": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": false
+  },
+  "HumanEval_93_encode": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": false
+  },
+  "mbpp_587_list_tuple": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "mbpp_306_max_sum_increasing_subseq": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": false
+  },
+  "mbpp_70_get_equal": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "mbpp_417_group_tuples": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": false
+  },
+  "HumanEval_148_bf": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": false
+  },
+  "HumanEval_126_is_sorted": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "mbpp_434_text_match_one": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "mbpp_127_multiply_int": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "mbpp_790_even_position": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "mbpp_99_decimal_to_binary": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "mbpp_455_check_monthnumb_number": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "HumanEval_67_fruit_distribution": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
+  },
+  "HumanEval_2_truncate_number": {
+    "tries": 1,
+    "lastRun": 9,
+    "passed": true
   }
 }
