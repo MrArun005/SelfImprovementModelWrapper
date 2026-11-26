@@ -171,3 +171,13 @@ test('pooledComparison: same-day pairs only, averages per problem across days, w
   assert.equal(pooledComparison(v, c, 1, opts).days, 1);
   assert.equal(pooledComparison(v, [], 7, opts), null);
 });
+
+test('a cycle without a control run still reports the pooled estimate from earlier cycles', async () => {
+  const { pooledComparison } = await import('../src/analysis.js');
+  const run = (runId, ts, results) => ({ runId, ts, batch: { ids: ['a', 'b'], results: results.map((x) => [x]) } });
+  const v = [run('gh1-x', '2026-01-01T05:00Z', [1, 1]), run('gh2-x', '2026-01-01T12:00Z', [1, 0])];
+  const c = [run('gh1-y', '2026-01-01T04:00Z', [0, 1])]; // no control in cycle gh2
+  const p = pooledComparison(v, c, 7, { resamples: 100, confidence: 0.95, seed: 1 });
+  assert.equal(p.days, 1);
+  assert.ok(Math.abs(p.estimate - 0.5) < 1e-9);
+});

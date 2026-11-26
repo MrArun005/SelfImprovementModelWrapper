@@ -344,7 +344,8 @@ export function analyze(cfg) {
       const vKey = cycleKey(v._runs.at(-1));
       const vDay = isoDay(v._runs.at(-1).ts);
       const cRun = [...control._runs].reverse().find((r) => cycleKey(r) === vKey);
-      if (!cRun) { comparisons.push({ variant: v.name, control: control.name, missing: `no control run on ${vDay}` }); continue; }
+      // no control in the latest cycle: no single-cycle comparison, but the pooled estimate over earlier cycles still counts
+      if (!cRun) { comparisons.push({ variant: v.name, control: control.name, missing: `no control run in the cycle of ${vDay}`, pooled: pooledComparison(v._runs, control._runs, cfg.analysis.poolDays, statOpts(cfg, hash32(`pooled:${v.name}`))) }); continue; }
       const p = pairedCI(cfg, salt, problemGroups(cRun.batch), problemGroups(v._runs.at(-1).batch));
       if (!p.ids.length) continue;
       const d = p.d;
@@ -377,7 +378,7 @@ export function analyze(cfg) {
     const adjusted = holm(tested.map((c) => c.pValue));
     tested.forEach((c, i) => { c.pHolm = adjusted[i]; c.significantHolm = adjusted[i] < 1 - cfg.stats.confidence; });
     // the same correction for the pooled estimates (a separate family: one pooled test per variant)
-    const pooled = tested.filter((c) => c.pooled);
+    const pooled = comparisons.filter((c) => c.pooled);
     const adjPooled = holm(pooled.map((c) => c.pooled.pValue));
     pooled.forEach((c, i) => { c.pooled.pHolm = adjPooled[i]; c.pooled.significantHolm = adjPooled[i] < 1 - cfg.stats.confidence; });
     result.tracks[track] = { control: control?.name ?? null, variants: vs.map((v) => v.name), comparisons, taxonomyChange, difficulty: difficultyCheck(vs, vs[0]?.track ?? track, cfg) };
@@ -394,10 +395,11 @@ export function leaderboard(a, track) {
   const t = a.tracks[track];
   if (!t) return [];
   const comp = new Map(t.comparisons.filter((c) => !c.missing).map((c) => [c.variant, c]));
+  const pooledOf = new Map(t.comparisons.filter((c) => c.pooled).map((c) => [c.variant, c.pooled]));
   return t.variants.filter((n) => !a.variants[n].control).map((n) => {
     const v = a.variants[n];
     const c = comp.get(n) ?? null;
     return { variant: n, label: v.label, active: v.active !== false, passRate: v.latest?.passRate ?? null, vsControl: c, vsStart: v.vsBaselineAdjusted ?? null,
-      pValue: c?.pValue ?? null, pHolm: c?.pHolm ?? null, significant: !!c?.significant, significantHolm: !!c?.significantHolm, pooled: c?.pooled ?? null };
+      pValue: c?.pValue ?? null, pHolm: c?.pHolm ?? null, significant: !!c?.significant, significantHolm: !!c?.significantHolm, pooled: pooledOf.get(n) ?? null };
   }).sort((x, y) => (y.vsControl?.estimate ?? -Infinity) - (x.vsControl?.estimate ?? -Infinity) || x.variant.localeCompare(y.variant));
 }

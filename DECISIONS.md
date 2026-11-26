@@ -380,6 +380,12 @@ inference-time variants. Conclusion so far: at 1.5B on CPU, the system improves 
 (sample + filter, +6 pts, significant), not by retraining on its own outputs; testing self-training again needs a
 larger model and a GPU.
 
+Also 26 Nov: the pooled estimate is now computed even when a variant's latest cycle has no control run (it was
+silently missing for every 1.5B variant after the daily-cap bug). And on 7B, sample + filter (3 candidates) is
+significantly WORSE than the 7B control over 3 cycles (-3.3 pts [-6.7, -0.7], Holm p 0.02): hotter extra samples from
+a stronger model replace its good first answer more often than they rescue a wrong one. Kept for 2 more cycles to
+confirm, then stopped; `sample-filter-5-7b` (-1.0 [-7.0, +5.0]) is watched the same way.
+
 ## 5. Evaluation and statistics
 
 - **Repeats:** every holdout evaluation runs `eval.repeats` = 3 times at `eval.temperature` 0.2. Repeat `r` of
