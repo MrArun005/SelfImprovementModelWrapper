@@ -1,45 +1,4 @@
 {
-  "nextId": 734,
-  "items": [
-    {
-      "id": "L0565",
-      "text": "When encountering a mismatch in the number of 0s and 1s in a sub-string of a binary string, it's crucial to reset the count for the next sub-string. This ensures that the maximum difference is accurately calculated across all possible…",
-      "tags": [
-        "binary",
-        "sub-string",
-        "count",
-        "reset",
-        "mismatch",
-        "maximum"
-      ],
-      "sourceProblem": "mbpp_125_find_length",
-      "sourceResult": "fail",
-      "sourceClass": "wrong-output",
-      "sourceAttempt": 1,
-      "createdRun": 15,
-      "uses": 3,
-      "helped": 1,
-      "verified": true
-    },
-    {
-      "id": "L0673",
-      "text": "When checking if a number can be represented as the difference of two squares, it's important to ensure that the number is not divisible by 4. This is because the difference of two squares is always even, and any even…",
-      "tags": [
-        "divisibility",
-        "squares",
-        "evenness",
-        "jsthon",
-        "represented",
-        "difference"
-      ],
-      "sourceProblem": "mbpp_72_dif_Square",
-      "sourceResult": "fail",
-      "sourceClass": "wrong-output",
-      "sourceAttempt": 1,
-      "createdRun": 16,
-      "uses": 1,
-      "helped": 1,
-      "verified": true
-    }
-  ]
+  "nextId": 822,
+  "items": []
 }
