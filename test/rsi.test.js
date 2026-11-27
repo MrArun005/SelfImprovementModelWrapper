@@ -157,4 +157,6 @@ test('rsi workflow: only commit can write; search and exam run with read-only to
   assert.doesNotMatch(J.commit, /node |npm /, 'the commit job never runs project code');
   assert.match(J['next-round'], /needs\.record\.outputs\.continue == 'true'/);
   assert.match(yml, /group: rsi\n\s+cancel-in-progress: false/);
+  // the plan imports the track (npm packages) and must fail loudly, not hand empty outputs to every later job
+  assert.match(J.plan, /npm ci --ignore-scripts[\s\S]*set -euo pipefail/);
 });

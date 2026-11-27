@@ -56,9 +56,15 @@ jobs:
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
+          cache: npm
+      - name: Install dependencies (no install scripts)
+        run: npm ci --ignore-scripts
       - name: This round's plan (from rsi/rounds.json and config)
         id: rsi
-        run: node src/rsi/cli.js plan | tee -a "$GITHUB_OUTPUT"
+        run: |
+          set -euo pipefail
+          node src/rsi/cli.js plan | tee -a "$GITHUB_OUTPUT"
+          grep -q '^enabled=' "$GITHUB_OUTPUT"
 
   search:
     # Runs model-written code in the sandbox: read-only token, no repo credentials. actions: read only to download
