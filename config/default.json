@@ -1285,9 +1285,9 @@
         "down_proj"
       ],
       "learningRate": 0.0001,
-      "weightDecay": 0.0,
+      "weightDecay": 0,
       "warmupFraction": 0.05,
-      "maxGradNorm": 1.0,
+      "maxGradNorm": 1,
       "epochs": 1,
       "gradAccumSteps": 8,
       "maxSeqTokens": 1024,
@@ -1337,5 +1337,60 @@
     "about": "How often a cycle may run. Cron fires every hour; a cycle starts when the last one began at least minHoursBetween hours ago, and the workflow's concurrency group queues it until the previous one finishes, so cycles run back-to-back all day. Raise minHoursBetween to use the runners less (e.g. 6 for ~4 cycles a day).",
     "minHoursBetween": 0.25,
     "chain": true
+  },
+  "rsi": {
+    "about": "Recursive self-improvement by expert iteration in rounds (src/rsi, .github/workflows/rsi.yml): round r's model searches the training problems, is judged by their tests, the base model is fine-tuned on every verified solution so far, and the new model sits a fixed exam it never trains on. One round per workflow run; each run starts the next.",
+    "enabled": true,
+    "stateDir": "rsi",
+    "reportFile": "RSI.md",
+    "files": {
+      "rounds": "rounds.json",
+      "solutions": "solutions.jsonl",
+      "searchStats": "search.jsonl",
+      "exam": "exam.jsonl"
+    },
+    "promptVariant": "baseline",
+    "modelName": "sic-rsi",
+    "artifactPrefix": "sic-rsi",
+    "artifactRetentionDays": 90,
+    "maxParallel": 10,
+    "maxRounds": 6,
+    "stopAfterNonImproving": 2,
+    "evalExtraFromTrain": 100,
+    "evalSeed": 20261127,
+    "search": {
+      "shards": 8,
+      "samples": 10,
+      "temperature": 0.8,
+      "keepPerProblem": 2,
+      "maxMinutes": 75,
+      "jobMinutes": 100
+    },
+    "eval": {
+      "shards": 6,
+      "samples": 10,
+      "temperature": 0.2,
+      "maxMinutes": 60,
+      "jobMinutes": 90
+    },
+    "data": {
+      "cumulative": true,
+      "maxPerProblem": 2,
+      "hardPassFraction": 0.5,
+      "hardWeight": 2,
+      "maxExamples": 700,
+      "seed": 77
+    },
+    "train": {
+      "learningRate": 0.0002,
+      "epochs": 1,
+      "maxTrainSeconds": 8400
+    },
+    "trainJobMinutes": 210,
+    "preregistered": {
+      "registered": "2026-11-27T04:15:00Z",
+      "primaryRound": 3,
+      "hypothesis": "Expert iteration makes the 1.5B model better at writing code on its own: the round-3 model's exam pass@1 (10 single attempts per problem at temperature 0.2, 150 problems never searched or trained on) beats the untrained model with a paired 95% bootstrap CI above zero, AND beats the round-1 model's gain (later rounds add to the first). Single pre-declared test; reported whatever the outcome; a loop that stops before round 3 counts as not confirmed."
+    }
   }
 }

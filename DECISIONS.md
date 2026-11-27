@@ -420,6 +420,33 @@ difference averaged over them, percentile bootstrap over problems, two-sided 95%
 multiplicity correction. The README and report show its status while collecting and its verdict once complete,
 whatever it is; the exploratory leaderboard stays as it was.
 
+## 4s. 27 Nov: recursive self-improvement in rounds (expert iteration), with its own pre-registered test
+
+Sampling 5 candidates (§4r) is search at answer time: the model itself never changes, so it is not self-improvement.
+The new loop (`src/rsi/`, `.github/workflows/rsi.yml`, config `rsi`) makes the model's own verified work change its
+weights, and judges every round only by what the new model does alone:
+
+- **Round r**: model M(r-1) samples every search-pool problem (`rsi.search.samples` at temperature 0.8); the
+  problem's tests keep what passes. The base model is LoRA-fine-tuned on all verified solutions found so far
+  (STaR-style: retrained from the base each round, so the gain must come from better data, not drift). Hard wins
+  (solved in at most half of the samples) get two solutions, weighted twice; problems it always solves get one.
+  The merged model is quantized exactly like M(0), the base through the same pipeline.
+- **Exam** (the only evidence): 150 fixed problems (the 50 holdout + 100 train problems picked by `rsi.evalSeed`),
+  never searched or trained on (asserted: the job fails if one reaches the data). 10 single attempts per problem
+  at temperature 0.2, no search and no tests shown, the same seeds for every model, so models are paired per
+  problem. pass@1 = passed / 10 per problem; M(r) vs M(0) and vs M(r-1) by paired bootstrap over problems.
+- **Why the earlier fine-tuning (§4o) is different**: it trained once on a mixed pile (including other variants' and
+  a larger model's solutions) and was judged with search on top. Here each round's data comes from the previous
+  round's model, so improvements can compound, and the exam measures the weights alone.
+- **Pre-registered** (config `rsi.preregistered`, 04:15Z 27 Nov, before any round ran): RSI is claimed only if the
+  round-3 model beats M(0) with a 95% CI above zero AND its gain exceeds round 1's (compounding). Stopping before
+  round 3 (`rsi.stopAfterNonImproving` rounds in a row that do not beat the previous round, or `rsi.maxRounds`)
+  counts as not confirmed. Reported in RSI.md and the README whatever the outcome.
+- **Runs**: one round per workflow run (search 8 shards, about 40 min; training at most 140 min; exam 6 shards
+  (12 in round 1), about 20 min), each run dispatching the next; a 2-hourly cron restarts a broken chain. Models pass between runs as
+  artifacts kept 90 days. State lives in `rsi/`, outside `state/`, because the improve workflow's commit replaces
+  `state/` wholesale.
+
 ## 5. Evaluation and statistics
 
 - **Repeats:** every holdout evaluation runs `eval.repeats` = 3 times at `eval.temperature` 0.2. Repeat `r` of

@@ -1,0 +1,486 @@
+name: rsi
+
+# Recursive self-improvement by expert iteration: ONE ROUND per run, and each successful run starts the next
+# (src/rsi/core.js planRound decides the round and when to stop). Round r:
+#   search    the previous round's model samples every training problem; the problem's tests keep what passes
+#   train     the base model is LoRA-fine-tuned on every verified solution found so far -> this round's model
+#   exam      this round's model (and in round 1 the untrained base) sits a fixed exam it never trains on
+#   record    rsi/ and RSI.md are updated; commit pushes them; next-round dispatches the following round
+# Values come from config/default.json (rsi, finetune, runtime) through src/rsi/cli.js plan and src/ci/config-out.js.
+
+on:
+  schedule:
+    # backup only (a failed round does not dispatch the next one): resumes the loop within two hours
+    - cron: '41 */2 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: rsi
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    outputs:
+      enabled: ${{ steps.rsi.outputs.enabled }}
+      stop: ${{ steps.rsi.outputs.stop }}
+      round: ${{ steps.rsi.outputs.round }}
+      search_model: ${{ steps.rsi.outputs.search_model }}
+      search_served: ${{ steps.rsi.outputs.search_served }}
+      prev_run_id: ${{ steps.rsi.outputs.prev_run_id }}
+      prev_artifact: ${{ steps.rsi.outputs.prev_artifact }}
+      model_name: ${{ steps.rsi.outputs.model_name }}
+      model_artifact: ${{ steps.rsi.outputs.model_artifact }}
+      base_artifact: ${{ steps.rsi.outputs.base_artifact }}
+      build_base: ${{ steps.rsi.outputs.build_base }}
+      search_matrix: ${{ steps.rsi.outputs.search_matrix }}
+      eval_matrix: ${{ steps.rsi.outputs.eval_matrix }}
+      search_minutes: ${{ steps.rsi.outputs.search_minutes }}
+      exam_minutes: ${{ steps.rsi.outputs.exam_minutes }}
+      train_minutes: ${{ steps.rsi.outputs.train_minutes }}
+      artifact_prefix: ${{ steps.rsi.outputs.artifact_prefix }}
+      retention_days: ${{ steps.rsi.outputs.retention_days }}
+      state_dir: ${{ steps.rsi.outputs.state_dir }}
+      report_file: ${{ steps.rsi.outputs.report_file }}
+      max_parallel: ${{ steps.rsi.outputs.max_parallel }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          ref: ${{ github.ref }}
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+      - name: This round's plan (from rsi/rounds.json and config)
+        id: rsi
+        run: node src/rsi/cli.js plan | tee -a "$GITHUB_OUTPUT"
+
+  search:
+    # Runs model-written code in the sandbox: read-only token, no repo credentials. actions: read only to download
+    # the previous round's model, an artifact of the previous run.
+    needs: plan
+    if: ${{ needs.plan.outputs.enabled == 'true' && needs.plan.outputs.stop == '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: ${{ fromJSON(needs.plan.outputs.search_minutes) }}
+    permissions:
+      contents: read
+      actions: read
+    strategy:
+      fail-fast: false
+      max-parallel: ${{ fromJSON(needs.plan.outputs.max_parallel) }}
+      matrix:
+        shard: ${{ fromJSON(needs.plan.outputs.search_matrix) }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          ref: ${{ github.ref }}
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install dependencies (no install scripts)
+        run: npm ci --ignore-scripts
+      - name: Read runtime settings from config/default.json
+        id: cfg
+        run: node src/ci/config-out.js >> "$GITHUB_OUTPUT"
+      - name: Cache Ollama binary and model weights
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/.sic-ollama
+            ~/.ollama/models
+          key: ollama-${{ steps.cfg.outputs.ollama_version }}-${{ steps.cfg.outputs.model }}
+      - name: Install and start Ollama, pull the stock model, check it answers
+        env:
+          OLLAMA_URL: ${{ steps.cfg.outputs.ollama_url }}
+          OLLAMA_HOST: ${{ steps.cfg.outputs.ollama_host }}
+          MODEL: ${{ steps.cfg.outputs.model }}
+          READY_TIMEOUT: ${{ steps.cfg.outputs.ollama_ready_timeout }}
+          RETRIES: ${{ steps.cfg.outputs.setup_retries }}
+          RETRY_DELAY: ${{ steps.cfg.outputs.setup_retry_delay }}
+          WARMUP_TIMEOUT: ${{ steps.cfg.outputs.warmup_timeout }}
+          WARMUP_TOKENS: ${{ steps.cfg.outputs.warmup_tokens }}
+          OLLAMA_CONTEXT_LENGTH: ${{ steps.cfg.outputs.ollama_context_length }}
+        run: bash tools/ci/ollama-setup.sh
+      - name: Download the previous round's model (another run's artifact)
+        if: needs.plan.outputs.search_served == 'true'
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: ${{ needs.plan.outputs.prev_artifact }}
+          path: ${{ runner.temp }}/model
+          run-id: ${{ needs.plan.outputs.prev_run_id }}
+          github-token: ${{ github.token }}
+      - name: Serve it like the stock model (same template and parameters)
+        if: needs.plan.outputs.search_served == 'true'
+        env:
+          OLLAMA_HOST: ${{ steps.cfg.outputs.ollama_host }}
+          BASE: ${{ steps.cfg.outputs.model }}
+          SERVED_MODEL: ${{ needs.plan.outputs.search_model }}
+          MODEL_GGUF: ${{ steps.cfg.outputs.ft_model_gguf }}
+          WARMUP_TIMEOUT: ${{ steps.cfg.outputs.warmup_timeout }}
+          WARMUP_TOKENS: ${{ steps.cfg.outputs.warmup_tokens }}
+        run: bash tools/ci/serve-gguf.sh "$RUNNER_TEMP/model/$MODEL_GGUF"
+      - name: Search this shard (sample, judge with the training problem's tests)
+        env:
+          ROUND: ${{ needs.plan.outputs.round }}
+          SHARD: ${{ matrix.shard }}
+          MODEL: ${{ needs.plan.outputs.search_model }}
+        run: node src/rsi/cli.js search "--round=$ROUND" "--shard=$SHARD" "--model=$MODEL" "--out=$RUNNER_TEMP/search/search-$SHARD.jsonl"
+      - name: Upload this shard's results
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ${{ needs.plan.outputs.artifact_prefix }}-search-${{ matrix.shard }}
+          path: ${{ runner.temp }}/search/
+          retention-days: ${{ needs.plan.outputs.retention_days }}
+          if-no-files-found: error
+
+  train:
+    # Fine-tunes the base model on verified solutions (model-written code used as text only; nothing executed).
+    needs: [plan, search]
+    if: ${{ !cancelled() && needs.plan.outputs.enabled == 'true' && needs.plan.outputs.stop == '' && (needs.search.result == 'success' || needs.search.result == 'failure') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: ${{ fromJSON(needs.plan.outputs.train_minutes) }}
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          ref: ${{ github.ref }}
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install dependencies (no install scripts)
+        run: npm ci --ignore-scripts
+      - name: Read fine-tuning settings
+        id: cfg
+        run: node src/ci/config-out.js >> "$GITHUB_OUTPUT"
+      - name: Free disk space (two full-precision models are written)
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+          df -h "$HOME"
+      - name: Restore cached Python packages and base model files
+        id: ftcache
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.sic-hf
+          key: finetune-${{ steps.cfg.outputs.ft_base_revision }}-${{ steps.cfg.outputs.ft_torch_package }}
+      - name: Python environment (pinned versions)
+        env:
+          TORCH_INDEX: ${{ steps.cfg.outputs.ft_torch_index }}
+          TORCH_PACKAGE: ${{ steps.cfg.outputs.ft_torch_package }}
+          PACKAGES: ${{ steps.cfg.outputs.ft_python_packages }}
+        run: |
+          set -euo pipefail
+          python3 -m venv "$HOME/.sic-venv"
+          "$HOME/.sic-venv/bin/pip" install -q --index-url "$TORCH_INDEX" "$TORCH_PACKAGE"
+          read -ra pkgs <<< "$PACKAGES"
+          "$HOME/.sic-venv/bin/pip" install -q "${pkgs[@]}"
+      - name: Base model files (pinned SHA-256; mirrors tried in turn, resumable retries, time limit)
+        timeout-minutes: ${{ fromJSON(steps.cfg.outputs.ft_download_step_minutes) }}
+        env:
+          BASE_REVISION: ${{ steps.cfg.outputs.ft_base_revision }}
+          FILES: ${{ steps.cfg.outputs.ft_base_files }}
+          MIRRORS: ${{ steps.cfg.outputs.ft_base_mirrors }}
+          RETRIES: ${{ steps.cfg.outputs.ft_download_retries }}
+          MAX_SECONDS: ${{ steps.cfg.outputs.ft_download_max_seconds }}
+        run: bash tools/finetune/fetch-base.sh
+      - name: Save the cache now
+        if: steps.ftcache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.sic-hf
+          key: finetune-${{ steps.cfg.outputs.ft_base_revision }}-${{ steps.cfg.outputs.ft_torch_package }}
+      - name: Restore the cached converter + quantizer build (pinned commit)
+        id: llamacache
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.sic-llama
+          key: quantizer-${{ steps.cfg.outputs.ft_llama_commit }}
+      - name: Build the quantizer and fetch the converter (pinned commit; static CPU build)
+        if: steps.llamacache.outputs.cache-hit != 'true'
+        env:
+          TOOL: ${{ steps.cfg.outputs.ft_quantize_tool }}
+          LLAMA_REPO: ${{ steps.cfg.outputs.ft_llama_repo }}
+          LLAMA_COMMIT: ${{ steps.cfg.outputs.ft_llama_commit }}
+        run: |
+          set -euo pipefail
+          src="$RUNNER_TEMP/quantizer-src"
+          git init -q "$src"
+          cd "$src"
+          git remote add origin "$LLAMA_REPO"
+          git fetch -q --depth=1 origin "$LLAMA_COMMIT"
+          git checkout -q FETCH_HEAD
+          cmake -S . -B build -DBUILD_SHARED_LIBS=OFF -DGGML_NATIVE=OFF -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_SERVER=OFF > /dev/null
+          cmake --build build --target "$TOOL" -j "$(nproc)" > /dev/null
+          mkdir -p "$HOME/.sic-llama/bin"
+          cp "build/bin/$TOOL" "$HOME/.sic-llama/bin/"
+          cp -R convert_hf_to_gguf.py conversion gguf-py "$HOME/.sic-llama/"
+      - name: Save the converter + quantizer build
+        if: steps.llamacache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.sic-llama
+          key: quantizer-${{ steps.cfg.outputs.ft_llama_commit }}
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: ${{ needs.plan.outputs.artifact_prefix }}-search-*
+          path: ${{ runner.temp }}/search
+      - name: Training set (every verified solution so far; exam problems rejected)
+        env:
+          ROUND: ${{ needs.plan.outputs.round }}
+          BASE_REVISION: ${{ steps.cfg.outputs.ft_base_revision }}
+        run: node src/rsi/cli.js prepare "--round=$ROUND" "--search-dir=$RUNNER_TEMP/search" "--out=$RUNNER_TEMP/ft" "--base-dir=$HOME/.sic-hf/$BASE_REVISION"
+      - name: LoRA training (CPU, time-limited)
+        env:
+          SETTINGS: ${{ steps.cfg.outputs.ft_settings_file }}
+        run: |
+          set -o pipefail
+          "$HOME/.sic-venv/bin/python" tools/finetune/train.py --settings "$RUNNER_TEMP/ft/$SETTINGS" 2>&1 | grep -v -i 'warn'
+      - name: Merge the adapter into the base weights
+        env:
+          SETTINGS: ${{ steps.cfg.outputs.ft_settings_file }}
+        run: |
+          set -o pipefail
+          "$HOME/.sic-venv/bin/python" tools/finetune/merge.py --settings "$RUNNER_TEMP/ft/$SETTINGS" 2>&1 | grep -v -i 'warn'
+      - name: Convert and quantize this round's model (and in round 1 the untrained base, same tools and settings)
+        env:
+          BASE_REVISION: ${{ steps.cfg.outputs.ft_base_revision }}
+          OUT_TYPE: ${{ steps.cfg.outputs.ft_out_type }}
+          QUANT: ${{ steps.cfg.outputs.ft_quantize }}
+          TOOL: ${{ steps.cfg.outputs.ft_quantize_tool }}
+          MERGED_DIR: ${{ steps.cfg.outputs.ft_merged_dir }}
+          MODEL_GGUF: ${{ steps.cfg.outputs.ft_model_gguf }}
+          BUILD_BASE: ${{ needs.plan.outputs.build_base }}
+        run: |
+          set -euo pipefail
+          L="$HOME/.sic-llama"
+          build() { # <hf dir> <out gguf>
+            PYTHONPATH="$L/gguf-py" "$HOME/.sic-venv/bin/python" "$L/convert_hf_to_gguf.py" --outtype "$OUT_TYPE" --outfile "$2.full" "$1"
+            "$L/bin/$TOOL" "$2.full" "$2" "$QUANT"
+            rm -f "$2.full"
+          }
+          mkdir -p "$RUNNER_TEMP/model" "$RUNNER_TEMP/base"
+          build "$RUNNER_TEMP/ft/$MERGED_DIR" "$RUNNER_TEMP/model/$MODEL_GGUF"
+          rm -rf "$RUNNER_TEMP/ft/$MERGED_DIR"
+          if [ "$BUILD_BASE" = "true" ]; then build "$HOME/.sic-hf/$BASE_REVISION" "$RUNNER_TEMP/base/$MODEL_GGUF"; fi
+          ls -la "$RUNNER_TEMP/model" "$RUNNER_TEMP/base"
+      - name: Upload this round's model (the next round searches with it)
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ${{ needs.plan.outputs.model_artifact }}
+          path: ${{ runner.temp }}/model/${{ steps.cfg.outputs.ft_model_gguf }}
+          retention-days: ${{ needs.plan.outputs.retention_days }}
+          compression-level: 1
+          if-no-files-found: error
+      - name: Upload the untrained base (round 1 only)
+        if: needs.plan.outputs.build_base == 'true'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ${{ needs.plan.outputs.base_artifact }}
+          path: ${{ runner.temp }}/base/${{ steps.cfg.outputs.ft_model_gguf }}
+          retention-days: ${{ needs.plan.outputs.retention_days }}
+          compression-level: 1
+          if-no-files-found: error
+      - name: Upload the training record
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ${{ needs.plan.outputs.artifact_prefix }}-train
+          path: |
+            ${{ runner.temp }}/ft/${{ steps.cfg.outputs.ft_manifest_file }}
+            ${{ runner.temp }}/ft/${{ steps.cfg.outputs.ft_metrics_file }}
+          retention-days: ${{ needs.plan.outputs.retention_days }}
+          if-no-files-found: error
+
+  exam:
+    # Runs model-written code in the sandbox: read-only token, no credentials.
+    needs: [plan, train]
+    if: ${{ !cancelled() && needs.train.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: ${{ fromJSON(needs.plan.outputs.exam_minutes) }}
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      max-parallel: ${{ fromJSON(needs.plan.outputs.max_parallel) }}
+      matrix:
+        job: ${{ fromJSON(needs.plan.outputs.eval_matrix) }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          ref: ${{ github.ref }}
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install dependencies (no install scripts)
+        run: npm ci --ignore-scripts
+      - name: Read runtime settings from config/default.json
+        id: cfg
+        run: node src/ci/config-out.js >> "$GITHUB_OUTPUT"
+      - name: Cache Ollama binary and model weights
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/.sic-ollama
+            ~/.ollama/models
+          key: ollama-${{ steps.cfg.outputs.ollama_version }}-${{ steps.cfg.outputs.model }}
+      - name: Install and start Ollama, pull the stock model (for its template), check it answers
+        env:
+          OLLAMA_URL: ${{ steps.cfg.outputs.ollama_url }}
+          OLLAMA_HOST: ${{ steps.cfg.outputs.ollama_host }}
+          MODEL: ${{ steps.cfg.outputs.model }}
+          READY_TIMEOUT: ${{ steps.cfg.outputs.ollama_ready_timeout }}
+          RETRIES: ${{ steps.cfg.outputs.setup_retries }}
+          RETRY_DELAY: ${{ steps.cfg.outputs.setup_retry_delay }}
+          WARMUP_TIMEOUT: ${{ steps.cfg.outputs.warmup_timeout }}
+          WARMUP_TOKENS: ${{ steps.cfg.outputs.warmup_tokens }}
+          OLLAMA_CONTEXT_LENGTH: ${{ steps.cfg.outputs.ollama_context_length }}
+        run: bash tools/ci/ollama-setup.sh
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: ${{ matrix.job.artifact }}
+          path: ${{ runner.temp }}/model
+      - name: Serve the examined model like the stock model
+        env:
+          OLLAMA_HOST: ${{ steps.cfg.outputs.ollama_host }}
+          BASE: ${{ steps.cfg.outputs.model }}
+          SERVED_MODEL: ${{ matrix.job.name }}
+          MODEL_GGUF: ${{ steps.cfg.outputs.ft_model_gguf }}
+          WARMUP_TIMEOUT: ${{ steps.cfg.outputs.warmup_timeout }}
+          WARMUP_TOKENS: ${{ steps.cfg.outputs.warmup_tokens }}
+        run: bash tools/ci/serve-gguf.sh "$RUNNER_TEMP/model/$MODEL_GGUF"
+      - name: Exam (single attempts, no search, no tests shown)
+        env:
+          MODEL_ROUND: ${{ matrix.job.model }}
+          SHARD: ${{ matrix.job.shard }}
+          MODEL: ${{ matrix.job.name }}
+        run: node src/rsi/cli.js exam "--model-round=$MODEL_ROUND" "--shard=$SHARD" "--model=$MODEL" "--out=$RUNNER_TEMP/exam/exam-$MODEL_ROUND-$SHARD.jsonl"
+      - name: Upload this shard's exam results
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ${{ needs.plan.outputs.artifact_prefix }}-exam-${{ matrix.job.model }}-${{ matrix.job.shard }}
+          path: ${{ runner.temp }}/exam/
+          retention-days: ${{ needs.plan.outputs.retention_days }}
+          if-no-files-found: error
+
+  record:
+    # Read-only: folds the round into rsi/ and writes RSI.md (this repo's scripts on the artifacts as data).
+    needs: [plan, search, train, exam]
+    if: ${{ !cancelled() && needs.exam.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    outputs:
+      continue: ${{ steps.rec.outputs.continue }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          ref: ${{ github.ref }}
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: ${{ needs.plan.outputs.artifact_prefix }}-search-*
+          path: ${{ runner.temp }}/search
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: ${{ needs.plan.outputs.artifact_prefix }}-exam-*
+          path: ${{ runner.temp }}/exam
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: ${{ needs.plan.outputs.artifact_prefix }}-train
+          path: ${{ runner.temp }}/train
+      - name: Record the round
+        id: rec
+        env:
+          ROUND: ${{ needs.plan.outputs.round }}
+        run: node src/rsi/cli.js record "--round=$ROUND" "--run-id=$GITHUB_RUN_ID" "--search-dir=$RUNNER_TEMP/search" "--exam-dir=$RUNNER_TEMP/exam" "--train-dir=$RUNNER_TEMP/train"
+      - name: Upload files to commit
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ${{ needs.plan.outputs.artifact_prefix }}-publish
+          path: |
+            ${{ needs.plan.outputs.state_dir }}/
+            ${{ needs.plan.outputs.report_file }}
+          retention-days: ${{ needs.plan.outputs.retention_days }}
+          if-no-files-found: error
+
+  commit:
+    # Can push, but never runs anything from the artifacts: it only copies files.
+    needs: [plan, record]
+    if: ${{ !cancelled() && needs.record.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: ${{ needs.plan.outputs.artifact_prefix }}-publish
+          path: ${{ runner.temp }}/publish
+      - name: Copy rsi/ and the report into the repo (data only)
+        env:
+          STATE_DIR: ${{ needs.plan.outputs.state_dir }}
+          REPORT: ${{ needs.plan.outputs.report_file }}
+        run: |
+          set -euo pipefail
+          src="$RUNNER_TEMP/publish"
+          if [ -n "$(find "$src" -type l)" ]; then echo "::error::artifact contains symlinks"; exit 1; fi
+          test -d "$src/$STATE_DIR"
+          rm -rf "$STATE_DIR"
+          cp -R "$src/$STATE_DIR" "$STATE_DIR"
+          cp "$src/$REPORT" "$REPORT"
+      - name: Commit and push
+        env:
+          STATE_DIR: ${{ needs.plan.outputs.state_dir }}
+          REPORT: ${{ needs.plan.outputs.report_file }}
+          ROUND: ${{ needs.plan.outputs.round }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- "$STATE_DIR" "$REPORT"
+          if git diff --cached --quiet; then echo "No changes."; exit 0; fi
+          git commit -m "rsi: round $ROUND (run ${GITHUB_RUN_ID})"
+          for _ in 1 2 3 4 5; do
+            if git push; then exit 0; fi
+            git pull --rebase
+          done
+          exit 1
+
+  next-round:
+    # Starts the next round once this one is committed, unless the plan says stop. Only dispatches a workflow.
+    needs: [record, commit]
+    if: ${{ !cancelled() && needs.commit.result == 'success' && needs.record.outputs.continue == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: write
+    steps:
+      - name: Dispatch the next round
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          REF: ${{ github.ref_name }}
+        run: gh workflow run rsi.yml --repo "$REPO" --ref "$REF"
