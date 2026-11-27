@@ -83,3 +83,4 @@ timestamp,runId,split,passRate,n,promptVersion,lessonsCount,skillsCount,requests
 2026-11-27T14:58:11.589Z,gh46020497649-20261127T145811,holdout-champion,0.5400,50,v001,0,0,428,no-change,sample-filter-5,multipl-e,3,0.0400,0.4067,0.6667,73845,34487
 2026-11-27T15:35:48.670Z,gh46026163013-20261127T153548,train,0.0667,15,v001,0,0,236,no-change,sample-filter-5,multipl-e,1,,,,40631,20655
 2026-11-27T15:35:48.670Z,gh46026163013-20261127T153548,holdout-champion,0.5800,50,v001,0,0,236,no-change,sample-filter-5,multipl-e,3,0.0346,0.4533,0.7067,40631,20655
+2026-11-27T16:00:15.386Z,gh46029651786-20261127T160015,holdout-champion,0.5800,50,v001,0,0,197,no-change,sample-filter-5,multipl-e,3,0.0200,0.4400,0.7067,34328,15795
