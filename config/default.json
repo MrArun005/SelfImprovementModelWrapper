@@ -1392,5 +1392,95 @@
       "primaryRound": 3,
       "hypothesis": "Expert iteration makes the 1.5B model better at writing code on its own: the round-3 model's exam pass@1 (10 single attempts per problem at temperature 0.2, 150 problems never searched or trained on) beats the untrained model with a paired 95% bootstrap CI above zero, AND beats the round-1 model's gain (later rounds add to the first). Single pre-declared test; reported whatever the outcome; a loop that stops before round 3 counts as not confirmed."
     }
+  },
+  "kaggle": {
+    "about": "The 7B self-improvement loop runs one round per Kaggle GPU job (2x T4): tools/kaggle/round.sh inside the job, tools/kaggle/driver.py outside it (token from the environment, never committed).",
+    "nodeUrl": "https://nodejs.org/dist/v22.23.5/node-v22.23.5-linux-x64.tar.xz",
+    "repoUrl": "https://github.com/MrArun005/SelfImprovementModelWrapper.git",
+    "ollamaPorts": [
+      11434,
+      11435
+    ],
+    "parallelPerServer": 8,
+    "machineShape": "NvidiaTeslaT4",
+    "kernelPrefix": "sic-rsi7b-r",
+    "pythonPackages": [
+      "transformers==4.56.2",
+      "peft==0.17.1",
+      "safetensors==0.6.2",
+      "accelerate==1.10.1",
+      "sentencepiece==0.2.1",
+      "zstandard==0.25.0"
+    ],
+    "pollSeconds": 60,
+    "smokeOverrides": {
+      "rsi": {
+        "search": {
+          "maxMinutes": 2
+        },
+        "eval": {
+          "maxMinutes": 2
+        },
+        "train": {
+          "maxTrainSeconds": 90
+        }
+      }
+    }
+  },
+  "profiles": {
+    "rsi-7b": {
+      "llm": {
+        "model": "qwen2.5-coder:7b"
+      },
+      "rsi": {
+        "stateDir": "rsi-7b",
+        "reportFile": "RSI-7B.md",
+        "modelName": "sic-rsi7b",
+        "artifactPrefix": "sic-rsi7b",
+        "search": {
+          "shards": 16
+        },
+        "eval": {
+          "shards": 16
+        },
+        "train": {
+          "learningRate": 0.0001,
+          "epochs": 1,
+          "maxTrainSeconds": 5400,
+          "dtype": "float16",
+          "deviceMap": "auto",
+          "lossScaling": true,
+          "gradientCheckpointing": true,
+          "threads": 0
+        },
+        "preregistered": {
+          "registered": "2026-11-27T21:30:00Z",
+          "primaryRound": 3,
+          "hypothesis": "Expert iteration makes the 7B model better at writing code on its own: the round-3 model's exam pass@1 (10 single attempts per problem at temperature 0.2, the same 150 problems as the 1.5B loop, never searched or trained on) beats the untrained 7B (same conversion and quantization) with a paired 95% bootstrap CI above zero, AND beats the round-1 model's gain. Single pre-declared test; reported whatever the outcome; a loop that stops before round 3 counts as not confirmed."
+        }
+      },
+      "finetune": {
+        "baseModel": "Qwen/Qwen2.5-Coder-7B-Instruct",
+        "baseRevision": "c03e6d358207e414f1eca0bb1891e29f1db0e242",
+        "baseFiles": {
+          "config.json": "c0242402ad6a13b331ea320feea8c7e3776ffb7a4eff0757b9cd667e116d9a28",
+          "generation_config.json": "1a628a5775bc69cde01c6749a531150ca4d3189652c618a174f7077923acf3b1",
+          "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+          "model.safetensors.index.json": "998a078123ffc97763690de7f2a677eb89168af5eaf8a5e12e6bc24d18e25bdb",
+          "model-00001-of-00004.safetensors": "0b6f069918b07c064cbba8ae4f00f529aa9bbf84b7cdfcb7fc2694a40f6aa8ef",
+          "model-00002-of-00004.safetensors": "c3d46733e7aa054ea7b063fbccd0a5a08446e7bd1814bef26936c5aa1331da62",
+          "model-00003-of-00004.safetensors": "9fe45dacee087385b3d2d6dd27a7413a8a56d95f145772facc148fa86fc73446",
+          "model-00004-of-00004.safetensors": "5aa6e5cbe642377fd441fb4e60e83cca96b2bcd9820e245b9ea06d94653f17f2",
+          "tokenizer.json": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+          "tokenizer_config.json": "959e7f1d9a1b7641a6d6ce05ca97b75c7894fcb66cbe5a040406458fb1128ee4",
+          "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        },
+        "mergedDtype": "float16",
+        "downloadMaxSeconds": 1800
+      },
+      "replace": [
+        "finetune.baseFiles"
+      ]
+    }
   }
 }

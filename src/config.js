@@ -88,6 +88,18 @@ export function loadConfig(opts = {}) {
   if (opts.dryRun) cfg = deepMerge(cfg, cfg.dryRun ?? {});
   // SIC_SMOKE=1: tiny real-model run to measure speed and exercise every code path (state goes elsewhere)
   if (env[ENV_PREFIX + 'SMOKE'] === '1') cfg = deepMerge(cfg, cfg.smoke ?? {});
+  // SIC_PROFILE=<name>: a named overlay from config `profiles` (e.g. the 7B self-improvement loop on Kaggle)
+  if (env[ENV_PREFIX + 'PROFILE']) {
+    const prof = cfg.profiles?.[env[ENV_PREFIX + 'PROFILE']];
+    if (!prof) throw new Error(`unknown profile ${env[ENV_PREFIX + 'PROFILE']}; known: ${Object.keys(cfg.profiles ?? {}).join(', ')}`);
+    cfg = deepMerge(cfg, prof);
+    // listed paths are replaced, not merged (e.g. a different model's file list must not keep the other's files)
+    for (const dotted of prof.replace ?? []) {
+      const keys = dotted.split('.');
+      const parent = keys.slice(0, -1).reduce((o, k) => o[k], cfg);
+      parent[keys.at(-1)] = get(prof, dotted);
+    }
+  }
   if (env[ENV_PREFIX + 'CONFIG_OVERRIDES']) cfg = deepMerge(cfg, JSON.parse(env[ENV_PREFIX + 'CONFIG_OVERRIDES']));
   cfg = applyEnvOverrides(cfg, env);
   if (opts.overrides) cfg = deepMerge(cfg, opts.overrides);

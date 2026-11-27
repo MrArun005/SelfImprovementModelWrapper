@@ -160,3 +160,13 @@ test('rsi workflow: only commit can write; search and exam run with read-only to
   // the plan imports the track (npm packages) and must fail loudly, not hand empty outputs to every later job
   assert.match(J.plan, /npm ci --ignore-scripts[\s\S]*set -euo pipefail/);
 });
+
+test('profiles: SIC_PROFILE overlays config; listed paths are replaced, not merged; unknown profiles fail', () => {
+  const p = loadConfig({ env: { SIC_PROFILE: 'rsi-7b' } });
+  assert.equal(p.rsi.stateDir, cfg.profiles['rsi-7b'].rsi.stateDir);
+  assert.equal(p.rsi.search.samples, cfg.rsi.search.samples, 'unlisted values keep the base config');
+  assert.deepEqual(Object.keys(p.finetune.baseFiles).sort(), Object.keys(cfg.profiles['rsi-7b'].finetune.baseFiles).sort());
+  assert.notEqual(p.rsi.stateDir, cfg.rsi.stateDir);
+  assert.notEqual(p.rsi.preregistered.registered, undefined);
+  assert.throws(() => loadConfig({ env: { SIC_PROFILE: 'nope' } }), /unknown profile/);
+});

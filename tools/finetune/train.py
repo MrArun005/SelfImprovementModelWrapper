@@ -51,7 +51,9 @@ def main():
     torch.set_num_threads(s.get("threads") or os.cpu_count())
 
     tok = AutoTokenizer.from_pretrained(s["baseDir"])
-    model = AutoModelForCausalLM.from_pretrained(s["baseDir"], dtype=getattr(torch, s["dtype"]))
+    # deviceMap "auto" (GPU runs, e.g. 7B on two T4s) spreads the layers over the GPUs; absent = CPU as before
+    placement = {"device_map": s["deviceMap"]} if s.get("deviceMap") else {}
+    model = AutoModelForCausalLM.from_pretrained(s["baseDir"], dtype=getattr(torch, s["dtype"]), **placement)
     if s.get("gradientCheckpointing"):
         # recompute activations in the backward pass: long examples otherwise exceed the runner's memory
         model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
@@ -72,6 +74,9 @@ def main():
         random.shuffle(ep)
         order += ep
     accum = s["gradAccumSteps"]
+    in_dev = model.get_input_embeddings().weight.device
+    # fp16 weights (GPUs without bf16): scale the loss so small gradients do not underflow
+    scaler = torch.amp.GradScaler("cuda") if s.get("lossScaling") else None
     total_steps = max(1, math.ceil(len(order) / accum))
     params = [p for p in model.parameters() if p.requires_grad]
     opt = torch.optim.AdamW(params, lr=s["learningRate"], weight_decay=s["weightDecay"])
@@ -116,13 +121,19 @@ def main():
             stopped = "time-limit"
             break
         ids, labels = encoded[idx]
-        loss = model(input_ids=ids, labels=labels).loss / accum
-        loss.backward()
+        loss = model(input_ids=ids.to(in_dev), labels=labels.to(in_dev)).loss / accum
+        (scaler.scale(loss) if scaler else loss).backward()
         running += loss.item()
         seen += 1
         if seen % accum == 0 or i == len(order) - 1:
+            if scaler:
+                scaler.unscale_(opt)
             torch.nn.utils.clip_grad_norm_(params, s["maxGradNorm"])
-            opt.step()
+            if scaler:
+                scaler.step(opt)
+                scaler.update()
+            else:
+                opt.step()
             sched.step()
             opt.zero_grad()
             steps += 1
