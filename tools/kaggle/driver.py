@@ -60,6 +60,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--profile", default="rsi-7b")
     ap.add_argument("--kaggle", default="kaggle")
+    ap.add_argument("--restart", action="store_true", help="with --smoke: start a new smoke job even if one finished")
     ap.add_argument("--smoke", action="store_true", help="start a short job that exercises every step (config kaggle.smokeOverrides); records nothing")
     a = ap.parse_args()
     user = os.environ.get("KAGGLE_USER")
@@ -80,7 +81,7 @@ def main():
         if st in ("queued", "running"):
             print(f"smoke: {slug} {st}")
             return
-        if st == "missing" or "--restart" in sys.argv:
+        if st == "missing" or a.restart:
             commit = sh("git", "rev-parse", "origin/main").strip()
             with tempfile.TemporaryDirectory() as d:
                 Path(d, "run.py").write_text(run_py(kg["repoUrl"], commit, a.profile, json.dumps(kg["smokeOverrides"])))
