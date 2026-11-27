@@ -15,6 +15,7 @@ Each round: the previous round's model searches (10 samples per training problem
 | 3 | 54.1% (150) | -0.7 pts [-5.5, +4.3], p 0.798 | -0.5 pts [-3.7, +2.9], p 0.799 | 326 / 408 (mean pass 66.1%) | 503 (63 problems) | 0.1466 -> 0.0504 (finished) | 45980356253 |
 | 4 | 54.5% (150) | -0.3 pts [-4.9, +4.7], p 0.954 | +0.4 pts [-3.9, +4.9], p 0.850 | 327 / 408 (mean pass 67.8%) | 473 (49 problems) | 0.1438 -> 0.072 (time-limit) | 46002740095 |
 | 5 | 54.3% (150) | -0.5 pts [-5.6, +4.4], p 0.829 | -0.3 pts [-4.0, +3.5], p 0.863 | 328 / 408 (mean pass 68.6%) | 493 (54 problems) | 0.1878 -> 0.0764 (finished) | 46033093092 |
+| 6 | 53.4% (150) | -1.4 pts [-7.3, +4.1], p 0.630 | -0.9 pts [-5.4, +3.9], p 0.717 | 330 / 408 (mean pass 68.3%) | 497 (56 problems) | 0.2094 -> 0.0145 (finished) | 46056239630 |
 
 Reading it: a round counts as self-improvement only through the exam columns. The search column is measured on problems the model has trained on, so it rises even without real learning.
 
