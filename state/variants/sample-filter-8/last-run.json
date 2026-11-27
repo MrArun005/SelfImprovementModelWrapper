@@ -1,34 +1,34 @@
 {
-  "runId": "gh45914027980-20261126T235942",
-  "runIndex": 27,
-  "timestamp": "2026-11-26T23:59:42.905Z",
+  "runId": "gh45916004675-20261127T001950",
+  "runIndex": 28,
+  "timestamp": "2026-11-27T00:19:50.041Z",
   "variant": "sample-filter-8",
   "decision": "no-change",
   "baselineMode": false,
   "train": {
-    "problems": 99,
-    "passed": 1,
+    "problems": 98,
+    "passed": 0,
     "newLessons": [],
     "newSkills": [],
     "levelEvents": [],
     "discardedLessons": []
   },
   "champion": {
-    "passRate": 0.56,
-    "ciLow": 0.43,
-    "ciHigh": 0.7,
+    "passRate": 0.59,
+    "ciLow": 0.46,
+    "ciHigh": 0.72,
     "n": 50,
     "repeats": 2,
-    "sdAcrossRepeats": 0
+    "sdAcrossRepeats": 0.014142135623730963
   },
   "candidate": null,
   "diff": null,
   "pruned": [],
-  "requestsUsed": 434,
-  "requestsToday": 11980,
-  "tokensIn": 79235,
-  "tokensOut": 38053,
-  "llmMs": 1088143,
+  "requestsUsed": 446,
+  "requestsToday": 446,
+  "tokensIn": 84886,
+  "tokensOut": 40010,
+  "llmMs": 1328778,
   "budgetPerRun": 2310,
   "maxRunMinutes": 300
 }
