@@ -187,5 +187,68 @@
       "pValue": 0.7986006996501749,
       "significant": false
     }
+  },
+  {
+    "round": 4,
+    "runId": "46002740095",
+    "ts": "2026-11-27T16:22:21.962Z",
+    "searchModel": "sic-rsi-r3",
+    "search": {
+      "problems": 408,
+      "solved": 327,
+      "meanPassFraction": 0.6779411764705884,
+      "solutionsKept": 545
+    },
+    "data": {
+      "round": 4,
+      "examples": 473,
+      "problems": 338,
+      "hardProblems": 49,
+      "freshSolutions": 545,
+      "earlierSolutions": 1777,
+      "examLeaks": 0,
+      "datasetHash": 762526756,
+      "baseModel": "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+      "baseRevision": "2e1fd397ee46e1388853d2af2c993145b0f1098a"
+    },
+    "train": {
+      "examples": 473,
+      "usable": 473,
+      "skippedTooLong": 0,
+      "examplesSeen": 468,
+      "epochsPlanned": 1,
+      "steps": 58,
+      "stepsPlanned": 60,
+      "stopped": "time-limit",
+      "lossFirst": 0.1438,
+      "lossLast": 0.072,
+      "lossMeanLastTenth": 0.0797,
+      "secondsTotal": 8416,
+      "secondsPerExample": 17.98
+    },
+    "exam": {
+      "problems": 150,
+      "passAt1": 0.5453333333333334
+    },
+    "vsBase": {
+      "n": 150,
+      "a": 0.548,
+      "b": 0.5453333333333334,
+      "estimate": -0.0026666666666666666,
+      "low": -0.04868333333333332,
+      "high": 0.047333333333333345,
+      "pValue": 0.9535232383808095,
+      "significant": false
+    },
+    "vsPrevious": {
+      "n": 150,
+      "a": 0.5413333333333332,
+      "b": 0.5453333333333334,
+      "estimate": 0.004000000000000001,
+      "low": -0.03866666666666667,
+      "high": 0.04933333333333335,
+      "pValue": 0.8495752123938031,
+      "significant": false
+    }
   }
 ]
