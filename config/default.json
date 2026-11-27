@@ -1030,7 +1030,16 @@
       }
     },
     "lessonEffectMinUses": 5,
-    "poolDays": 7
+    "poolDays": 7,
+    "confirmatory": {
+      "registered": "2026-11-27T03:40:00Z",
+      "hypothesis": "Sampling 5 candidates and keeping the one that passes the statement's examples (sample-filter-5) raises the holdout pass rate of the 1.5B model over the no-memory control.",
+      "variant": "sample-filter-5",
+      "control": "baseline",
+      "startAfter": "2026-11-27T03:45:00Z",
+      "cycles": 14,
+      "analysis": "per-problem variant-minus-control difference averaged over the first 14 paired cycles after startAfter, percentile bootstrap over problems, two-sided 95%; single pre-declared test, no multiplicity correction; reported whatever the outcome"
+    }
   },
   "reproduce": {
     "days": 7,

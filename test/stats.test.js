@@ -181,3 +181,19 @@ test('a cycle without a control run still reports the pooled estimate from earli
   assert.equal(p.days, 1);
   assert.ok(Math.abs(p.estimate - 0.5) < 1e-9);
 });
+
+test('confirmatoryTest uses only cycles after registration, the FIRST N of them, and gives no verdict while collecting', async () => {
+  const { confirmatoryTest } = await import('../src/analysis.js');
+  const run = (runId, ts, results) => ({ runId, ts, batch: { ids: ['a', 'b'], results: results.map((x) => [x]) } });
+  const v = [run('gh1-v', '2026-01-01T01:00Z', [1, 1]), run('gh2-v', '2026-01-02T01:00Z', [1, 0]), run('gh3-v', '2026-01-03T01:00Z', [1, 1]), run('gh4-v', '2026-01-04T01:00Z', [0, 0])];
+  const c = v.map((r) => ({ ...r, runId: r.runId.replace('-v', '-c'), batch: { ids: ['a', 'b'], results: [[0], [0]] } }));
+  const opts = { resamples: 200, confidence: 0.95, seed: 1 };
+  const spec = { variant: 'x', control: 'y', startAfter: '2026-01-02T00:00Z', cycles: 2 };
+  const t = confirmatoryTest(v, c, spec, opts);
+  assert.equal(t.status, 'complete');
+  assert.equal(t.cyclesSoFar, 2, 'gh1 is before registration, gh4 is after the first 2');
+  assert.ok(Math.abs(t.estimate - 0.75) < 1e-9, 'a: (1+1)/2, b: (0+1)/2 -> 0.75');
+  const partial = confirmatoryTest(v, c, { ...spec, cycles: 5 }, opts);
+  assert.equal(partial.status, 'collecting');
+  assert.equal(partial.significant, false);
+});

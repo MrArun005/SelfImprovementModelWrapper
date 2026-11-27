@@ -87,6 +87,29 @@ export function pooledComparison(vRuns, cRuns, days, opts) {
   return { estimate: ci.estimate, low: ci.low, high: ci.high, days: pairs.length, daysList: pairs.map((p) => p.day).reverse(), n: ids.length, pValue, significant: ci.low > 0 || ci.high < 0 };
 }
 
+/**
+ * Pre-registered confirmatory test (analysis.confirmatory): ONE variant vs the control, using only cycles that start
+ * after the registration time, the FIRST `cycles` such paired cycles (not the latest: the sample size is fixed in
+ * advance), pooled the same way as pooledComparison, two-sided at 1 - stats.confidence. A single declared test, so no
+ * multiple-comparison correction applies. Exploratory numbers elsewhere never feed it.
+ */
+export function confirmatoryTest(vRuns, cRuns, spec, opts) {
+  const after = (r) => String(r.ts) >= spec.startAfter;
+  const cByCycle = new Map(cRuns.filter(after).map((r) => [cycleKey(r), r]));
+  const pairs = [];
+  for (const r of [...vRuns].filter(after).sort((x, y) => String(x.ts).localeCompare(String(y.ts)))) {
+    const c = cByCycle.get(cycleKey(r));
+    if (c && !pairs.some((p) => p.key === cycleKey(r))) pairs.push({ key: cycleKey(r), r, c });
+    if (pairs.length >= spec.cycles) break;
+  }
+  const status = pairs.length >= spec.cycles ? 'complete' : 'collecting';
+  if (!pairs.length) return { ...spec, status, cyclesSoFar: 0 };
+  // reuse the pooled estimator on exactly these pairs (newest-first order, all of them)
+  const p = pooledComparison(pairs.map((x) => x.r), pairs.map((x) => x.c), pairs.length, opts);
+  return { ...spec, status, cyclesSoFar: pairs.length, estimate: p.estimate, low: p.low, high: p.high, pValue: p.pValue,
+    significant: status === 'complete' && (p.low > 0 || p.high < 0) };
+}
+
 /** Champion eval batch that represents each run (the accepted candidate's batch if the gate accepted). */
 function runBatches(vs) {
   const out = [];
@@ -361,6 +384,10 @@ export function analyze(cfg) {
         }
       }
       cmp.pooled = pooledComparison(v._runs, control._runs, cfg.analysis.poolDays, statOpts(cfg, hash32(`pooled:${v.name}`)));
+      const conf = cfg.analysis.confirmatory;
+      if (conf && conf.variant === v.name && conf.control === control.name) {
+        result.confirmatory = confirmatoryTest(v._runs, control._runs, conf, statOpts(cfg, hash32(`confirmatory:${v.name}`)));
+      }
       comparisons.push(cmp);
     }
     // failure types: share at the start (first run) vs latest, learning variants vs control

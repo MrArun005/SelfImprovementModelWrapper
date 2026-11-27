@@ -410,6 +410,16 @@ The early +6 for 5 candidates was partly luck; the effect of sampling more candi
 analysis window was deliberately left unchanged after the estimates shrank. The product fallback moves to
 `sample-filter-5`.
 
+## 4r. 27 Nov: a pre-registered confirmatory test
+
+Exploratory pooled estimates over the latest 7 cycles hover around +3 pts for the sampling variants, never quite
+significant after Holm, and re-cutting the existing data (wider windows, other baselines) to find significance would
+be p-hacking. Instead, before the data exists, one test is registered in `analysis.confirmatory` and committed:
+`sample-filter-5` vs `baseline`, only cycles starting after 2026-11-27T03:45Z, the FIRST 14 paired cycles, per-problem
+difference averaged over them, percentile bootstrap over problems, two-sided 95%. A single pre-declared test needs no
+multiplicity correction. The README and report show its status while collecting and its verdict once complete,
+whatever it is; the exploratory leaderboard stays as it was.
+
 ## 5. Evaluation and statistics
 
 - **Repeats:** every holdout evaluation runs `eval.repeats` = 3 times at `eval.temperature` 0.2. Repeat `r` of
