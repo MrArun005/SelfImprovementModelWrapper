@@ -1,7 +1,7 @@
 {
-  "runId": "gh45912179869-20261126T233954",
-  "runIndex": 29,
-  "timestamp": "2026-11-26T23:39:54.996Z",
+  "runId": "gh45914027980-20261126T235950",
+  "runIndex": 30,
+  "timestamp": "2026-11-26T23:59:50.569Z",
   "variant": "sample-filter-5",
   "decision": "no-change",
   "baselineMode": false,
@@ -25,10 +25,10 @@
   "diff": null,
   "pruned": [],
   "requestsUsed": 3,
-  "requestsToday": 8396,
+  "requestsToday": 8399,
   "tokensIn": 429,
-  "tokensOut": 316,
-  "llmMs": 8597,
+  "tokensOut": 357,
+  "llmMs": 11902,
   "budgetPerRun": 1050,
   "maxRunMinutes": 300
 }
