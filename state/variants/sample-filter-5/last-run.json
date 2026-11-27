@@ -1,7 +1,7 @@
 {
-  "runId": "gh45934836783-20261127T033418",
-  "runIndex": 35,
-  "timestamp": "2026-11-27T03:34:18.569Z",
+  "runId": "gh45940929473-20261127T043726",
+  "runIndex": 36,
+  "timestamp": "2026-11-27T04:37:26.836Z",
   "variant": "sample-filter-5",
   "decision": "no-change",
   "baselineMode": false,
@@ -14,21 +14,21 @@
     "discardedLessons": []
   },
   "champion": {
-    "passRate": 0.5666666666666667,
-    "ciLow": 0.44,
-    "ciHigh": 0.7,
+    "passRate": 0.5266666666666666,
+    "ciLow": 0.4000000000000001,
+    "ciHigh": 0.66,
     "n": 50,
     "repeats": 3,
-    "sdAcrossRepeats": 0.023094010767584987
+    "sdAcrossRepeats": 0.011547005383792525
   },
   "candidate": null,
   "diff": null,
   "pruned": [],
-  "requestsUsed": 457,
-  "requestsToday": 2323,
-  "tokensIn": 79334,
-  "tokensOut": 38064,
-  "llmMs": 1770728,
+  "requestsUsed": 462,
+  "requestsToday": 2785,
+  "tokensIn": 80246,
+  "tokensOut": 38385,
+  "llmMs": 2551467,
   "budgetPerRun": 1050,
   "maxRunMinutes": 300
 }
