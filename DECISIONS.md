@@ -610,3 +610,11 @@ GitHub Actions (§2). Baseline run 1 started 2026-11-19 (run 44604991368). Still
 path works against Ollama (the smoke runs' `full` variant ran it every run; check its gate-log `optimizer` field). The first scheduled runs will produce them;
 REPORT.md and the dashboard fill in automatically. Update §5 (repeats) and §7 (budget) once the real per-call
 time is known.
+
+## 4t. 27 Nov: daily request cap raised (the control had stopped running)
+
+With the RSI loop sharing runners, cycles are shorter but more frequent (~24 a day instead of ~8). At 12:03Z the
+control (`baseline`, budget share 1) hit `budget.totalRequestsPerDay` (8 runs' worth) and every later cycle ran it with
+0 requests, so no paired cycles were added to the pre-registered test. The cap is now 30 runs' worth (151200). This
+changes how often variants run, not the confirmatory spec or its analysis: it still uses the first 14 cycles in
+which both variants ran after 03:45Z.
