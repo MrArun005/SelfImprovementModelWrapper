@@ -41,7 +41,8 @@ def status(kaggle, slug):
     for s in ("complete", "error", "cancel", "running", "queued"):
         if s in text:
             return s
-    return "missing" if ("404" in text or "not found" in text) else f"unknown: {text.strip()[-200:]}"
+    missing = ("404" in text or "not found" in text or "cannot access kernel" in text)
+    return "missing" if missing else f"unknown: {text.strip()[-200:]}"
 
 
 def run_py(repo, commit, profile, overrides=""):

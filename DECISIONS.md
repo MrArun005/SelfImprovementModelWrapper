@@ -618,3 +618,17 @@ control (`baseline`, budget share 1) hit `budget.totalRequestsPerDay` (8 runs' w
 0 requests, so no paired cycles were added to the pre-registered test. The cap is now 30 runs' worth (151200). This
 changes how often variants run, not the confirmatory spec or its analysis: it still uses the first 14 cycles in
 which both variants ran after 03:45Z.
+
+## 4u. 27 Nov: the same loop on the 7B model, on Kaggle GPUs (pre-registered before any 7B round)
+
+The 1.5B loop's verdict was "not confirmed" (§4s: round 3 -0.7 pts vs untrained). Self-training results in the
+literature come from larger models, so the identical loop now runs on Qwen2.5-Coder-7B (config profile `rsi-7b`,
+state `rsi-7b/`, report RSI-7B.md). GitHub's CPU runners are too slow for 7B training, so each round is one Kaggle
+job on two T4 GPUs (`tools/kaggle/round.sh`): one Ollama server per GPU for search and exam (about 40 requests/min
+each), LoRA training in fp16 with loss scaling across both GPUs, merge on CPU, then the same pinned converter and
+Q4_K_M quantizer as the 1.5B loop. Rounds chain through Kaggle job outputs (each job mounts the previous one's model).
+`tools/kaggle/driver.py` starts, watches and records rounds from outside; the Kaggle token is only ever read from the
+environment. Same exam (the 150 problems, 10 samples at temperature 0.2, same seeds), same data rule, same stopping
+rule; pre-registered verdict (`profiles.rsi-7b.rsi.preregistered`, 21:30Z 27 Nov): round 3 must beat the untrained 7B
+with a 95% CI above zero and beat round 1's gain. A short smoke job (`--smoke`, tiny time limits, records nothing)
+exercises every step first.
