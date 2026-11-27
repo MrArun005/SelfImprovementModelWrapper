@@ -8,7 +8,9 @@
 set -euo pipefail
 OUT=/kaggle/working/out
 T=/tmp/sic
-mkdir -p "$OUT/search" "$OUT/exam" "$OUT/train" "$T"
+mkdir -p "$OUT/search" "$OUT/exam" "$OUT/train" "$OUT/logs" "$T"
+# on any failure, show the end of every step log (they are also kept in the job output)
+trap 'rc=$?; [ $rc -ne 0 ] && for f in "$OUT"/logs/*.log; do echo "--- $f"; tail -n 25 "$f"; done; exit $rc' EXIT
 cd "$(dirname "$0")/../.."
 cfgv() { python3 -c "import json,sys; c=json.load(open('config/default.json')); print(c['kaggle'][sys.argv[1]])" "$1"; }
 stamp() { echo "== $(date -u +%H:%M:%S) $*"; }
@@ -42,7 +44,7 @@ servers_up() { # one server per GPU, same model store
   local i=0
   for port in "${PORTS[@]}"; do
     CUDA_VISIBLE_DEVICES=$i OLLAMA_HOST="127.0.0.1:$port" OLLAMA_NUM_PARALLEL="$PAR" OLLAMA_CONTEXT_LENGTH="$C_ollama_context_length" \
-      nohup "$OLLAMA" serve > "$T/ollama-$port.log" 2>&1 &
+      nohup "$OLLAMA" serve > "$OUT/logs/ollama-$port.log" 2>&1 &
     i=$((i + 1))
   done
   for port in "${PORTS[@]}"; do
@@ -56,7 +58,7 @@ serve_gguf() { # <gguf> <name>: same template and parameters as the stock model
 }
 endpoint() { echo "http://127.0.0.1:$1/v1/chat/completions"; }
 servers_up
-OLLAMA_HOST="127.0.0.1:${PORTS[0]}" "$OLLAMA" pull "$C_model" > /dev/null
+OLLAMA_HOST="127.0.0.1:${PORTS[0]}" "$OLLAMA" pull "$C_model" > "$OUT/logs/pull.log" 2>&1
 
 stamp "search"
 if [ "$P_search_served" = "true" ]; then
@@ -68,11 +70,11 @@ pids=()
 for shard in $(python3 -c "import json,sys; print(' '.join(map(str, json.loads(sys.argv[1]))))" "$P_search_matrix"); do
   port="${PORTS[$((shard % ${#PORTS[@]}))]}"
   SIC_LLM__ENDPOINT="$(endpoint "$port")" node src/rsi/cli.js search "--round=$ROUND" "--shard=$shard" "--model=$P_search_model" \
-    "--out=$OUT/search/search-$shard.jsonl" > "$T/search-$shard.log" 2>&1 &
+    "--out=$OUT/search/search-$shard.jsonl" > "$OUT/logs/search-$shard.log" 2>&1 &
   pids+=($!)
 done
 for p in "${pids[@]}"; do wait "$p"; done
-tail -q -n 1 "$T"/search-*.log
+tail -q -n 1 "$OUT"/logs/search-*.log
 servers_down
 
 stamp "base model files"
@@ -111,11 +113,11 @@ for job in $(python3 -c "import json,sys; print(' '.join(sorted({str(j['model'])
   for shard in $(python3 -c "import json,sys; print(' '.join(str(j['shard']) for j in json.loads(sys.argv[1]) if j['model']==int(sys.argv[2])))" "$P_eval_matrix" "$m"); do
     port="${PORTS[$((shard % ${#PORTS[@]}))]}"
     SIC_LLM__ENDPOINT="$(endpoint "$port")" node src/rsi/cli.js exam "--model-round=$m" "--shard=$shard" "--model=$name" \
-      "--out=$OUT/exam/exam-$m-$shard.jsonl" > "$T/exam-$m-$shard.log" 2>&1 &
+      "--out=$OUT/exam/exam-$m-$shard.jsonl" > "$OUT/logs/exam-$m-$shard.log" 2>&1 &
     pids+=($!)
   done
   for p in "${pids[@]}"; do wait "$p"; done
-  tail -q -n 1 "$T"/exam-"$m"-*.log
+  tail -q -n 1 "$OUT"/logs/exam-"$m"-*.log
   for port in "${PORTS[@]}"; do OLLAMA_HOST="127.0.0.1:$port" "$OLLAMA" stop "$name" || true; done
 done
 servers_down

@@ -124,7 +124,7 @@ def main():
         print(f"round {r}: {slug} {st}")
         sys.exit(2)
     with tempfile.TemporaryDirectory() as d:
-        sh(a.kaggle, "kernels", "output", slug, "-p", d, "--file-pattern", r"\.(jsonl|json|txt)$")
+        sh(a.kaggle, "kernels", "output", slug, "-p", d, "--file-pattern", r"\.(jsonl|json|txt|log)$")
         out = next((x for x in Path(d).rglob("plan.txt")), None)
         if out is None:
             raise SystemExit(f"round {r}: {slug} finished without results")
