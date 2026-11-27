@@ -363,6 +363,11 @@ export function analyze(cfg) {
     for (const v of vs) {
       if (!control || v === control || !v._runs.length || !control._runs.length) continue;
       const salt = hash32(`comparison:${v.name}`);
+      // the pre-registered test does not depend on which cycle came last (a cycle without a control run must not hide it)
+      const conf = cfg.analysis.confirmatory;
+      if (conf && conf.variant === v.name && conf.control === control.name) {
+        result.confirmatory = confirmatoryTest(v._runs, control._runs, conf, statOpts(cfg, hash32(`confirmatory:${v.name}`)));
+      }
       // same-cycle comparison only: the control run from the same workflow run as this variant's latest run
       const vKey = cycleKey(v._runs.at(-1));
       const vDay = isoDay(v._runs.at(-1).ts);
@@ -384,10 +389,6 @@ export function analyze(cfg) {
         }
       }
       cmp.pooled = pooledComparison(v._runs, control._runs, cfg.analysis.poolDays, statOpts(cfg, hash32(`pooled:${v.name}`)));
-      const conf = cfg.analysis.confirmatory;
-      if (conf && conf.variant === v.name && conf.control === control.name) {
-        result.confirmatory = confirmatoryTest(v._runs, control._runs, conf, statOpts(cfg, hash32(`confirmatory:${v.name}`)));
-      }
       comparisons.push(cmp);
     }
     // failure types: share at the start (first run) vs latest, learning variants vs control
