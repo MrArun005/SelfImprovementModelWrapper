@@ -1416,10 +1416,10 @@
     "smokeOverrides": {
       "rsi": {
         "search": {
-          "maxMinutes": 2
+          "maxMinutes": 4
         },
         "eval": {
-          "maxMinutes": 2
+          "maxMinutes": 3
         },
         "train": {
           "maxTrainSeconds": 90

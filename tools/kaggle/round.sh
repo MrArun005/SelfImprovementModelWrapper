@@ -25,6 +25,7 @@ pip install -q "${PY_PKGS[@]}"
 
 # every key=value from the config and the round plan, as shell variables C_<key> and P_<key>
 load() { while IFS= read -r line; do printf -v "$1${line%%=*}" '%s' "${line#*=}"; done; }
+node src/dataset/fetch.js   # once, before parallel steps (they would race writing the same cache file)
 load C_ < <(node src/ci/config-out.js)
 load P_ < <(node src/rsi/cli.js plan)
 node src/rsi/cli.js plan > "$OUT/plan.txt"
