@@ -1,7 +1,7 @@
 {
-  "runId": "gh45920042673-20261127T010124",
-  "runIndex": 30,
-  "timestamp": "2026-11-27T01:01:24.601Z",
+  "runId": "gh45924362390-20261127T014613",
+  "runIndex": 31,
+  "timestamp": "2026-11-27T01:46:13.752Z",
   "variant": "sample-filter-tests",
   "decision": "no-change",
   "baselineMode": false,
@@ -19,16 +19,16 @@
     "ciHigh": 0.71,
     "n": 50,
     "repeats": 2,
-    "sdAcrossRepeats": 0.056568542494923775
+    "sdAcrossRepeats": 0
   },
   "candidate": null,
   "diff": null,
   "pruned": [],
   "requestsUsed": 753,
-  "requestsToday": 1506,
-  "tokensIn": 114148,
-  "tokensOut": 76006,
-  "llmMs": 2549569,
+  "requestsToday": 2259,
+  "tokensIn": 117813,
+  "tokensOut": 75008,
+  "llmMs": 3529168,
   "budgetPerRun": 1260,
   "maxRunMinutes": 190
 }
