@@ -1,7 +1,7 @@
 {
-  "runId": "gh46034707538-20261127T163525",
-  "runIndex": 47,
-  "timestamp": "2026-11-27T16:35:25.360Z",
+  "runId": "gh46040022148-20261127T171354",
+  "runIndex": 48,
+  "timestamp": "2026-11-27T17:13:54.372Z",
   "variant": "sample-filter-8",
   "decision": "no-change",
   "baselineMode": false,
@@ -19,16 +19,16 @@
     "ciHigh": 0.69,
     "n": 50,
     "repeats": 2,
-    "sdAcrossRepeats": 0.056568542494923775
+    "sdAcrossRepeats": 0
   },
   "candidate": null,
   "diff": null,
   "pruned": [],
-  "requestsUsed": 409,
-  "requestsToday": 8598,
-  "tokensIn": 75248,
-  "tokensOut": 36369,
-  "llmMs": 2173452,
+  "requestsUsed": 408,
+  "requestsToday": 9006,
+  "tokensIn": 76582,
+  "tokensOut": 37230,
+  "llmMs": 2443162,
   "budgetPerRun": 2310,
   "maxRunMinutes": 300
 }
