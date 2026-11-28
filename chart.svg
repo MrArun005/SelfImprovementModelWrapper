@@ -26,8 +26,8 @@
 <text x="394" y="354" text-anchor="middle" fill="#6b7280">run date (MM-DD) · bands = 95% bootstrap CI over holdout problems</text>
 <line x1="52" x2="736" y1="192.32681538461537" y2="192.32681538461537" stroke="#f59e0b" stroke-dasharray="6 4" stroke-width="1.5"/>
 <text x="58" y="207.32681538461537" fill="#f59e0b">starting baseline 56.4%</text>
-<polygon class="band" data-variant="baseline" points="52,169.2604 128,169.2604 204,172.07999999999998 280,169.2604 356,162.1796 432,166.4196 508,169.2604 584,179.1396 660,164.978 736,173.5004 736,228.62040000000002 660,217.2996 584,234.25959999999998 508,224.3804 432,224.3804 356,215.9004 280,222.96 204,227.2424 128,224.3804 52,225.77960000000002" fill="#6b7280" fill-opacity="0.15" stroke="none"/>
-<polyline data-variant="baseline" fill="none" stroke="#6b7280" stroke-width="2" points="52,196.0996 128,197.51999999999998 204,200.33960000000002 280,196.0996 356,189.04000000000002 432,196.0996 508,197.51999999999998 584,206 660,191.8596 736,200.33960000000002"/>
+<polygon class="band" data-variant="baseline" points="52,169.2604 128,169.2604 204,172.07999999999998 280,169.2604 356,162.1796 432,166.4196 508,169.2604 584,179.1396 660,164.978 736,167.84 736,225.77960000000002 660,217.2996 584,234.25959999999998 508,224.3804 432,224.3804 356,215.9004 280,222.96 204,227.2424 128,224.3804 52,225.77960000000002" fill="#6b7280" fill-opacity="0.15" stroke="none"/>
+<polyline data-variant="baseline" fill="none" stroke="#6b7280" stroke-width="2" points="52,196.0996 128,197.51999999999998 204,200.33960000000002 280,196.0996 356,189.04000000000002 432,196.0996 508,197.51999999999998 584,206 660,191.8596 736,197.51999999999998"/>
 <circle cx="52" cy="196.0996" r="4" fill="#6b7280" stroke="#ffffff"><title>No memory (control) 2026-11-19: 54.7% [40.7–67.3] n=50×3, gate baseline</title></circle>
 <circle cx="128" cy="197.51999999999998" r="4" fill="#6b7280" stroke="#ffffff"><title>No memory (control) 2026-11-20: 54.0% [41.3–67.3] n=50×3, gate no-change</title></circle>
 <circle cx="204" cy="200.33960000000002" r="4" fill="#6b7280" stroke="#ffffff"><title>No memory (control) 2026-11-21: 52.7% [40.0–66.0] n=50×3, gate no-change</title></circle>
@@ -37,7 +37,7 @@
 <circle cx="508" cy="197.51999999999998" r="4" fill="#6b7280" stroke="#ffffff"><title>No memory (control) 2026-11-25: 54.0% [41.3–67.3] n=50×3, gate no-change</title></circle>
 <circle cx="584" cy="206" r="4" fill="#6b7280" stroke="#ffffff"><title>No memory (control) 2026-11-26: 50.0% [36.7–62.7] n=50×3, gate no-change</title></circle>
 <circle cx="660" cy="191.8596" r="4" fill="#6b7280" stroke="#ffffff"><title>No memory (control) 2026-11-27: 56.7% [44.7–69.3] n=50×3, gate no-change</title></circle>
-<circle cx="736" cy="200.33960000000002" r="4" fill="#6b7280" stroke="#ffffff"><title>No memory (control) 2026-11-28: 52.7% [39.3–65.3] n=50×3, gate no-change</title></circle>
+<circle cx="736" cy="197.51999999999998" r="4" fill="#6b7280" stroke="#ffffff"><title>No memory (control) 2026-11-28: 54.0% [40.7–68.0] n=50×3, gate no-change</title></circle>
 <polygon class="band" data-variant="lessons" points="52,167.84 128,167.84 204,173.5004 280,166.4196 280,218.72 204,228.62040000000002 128,221.5396 52,221.5396" fill="#2563eb" fill-opacity="0.15" stroke="none"/>
 <polyline data-variant="lessons" fill="none" stroke="#2563eb" stroke-width="2" points="52,193.27999999999997 128,194.7004 204,200.33960000000002 280,193.27999999999997"/>
 <circle cx="52" cy="193.27999999999997" r="4" fill="#2563eb" stroke="#ffffff"><title>Lessons 2026-11-19: 56.0% [42.7–68.0] n=50×3, gate baseline</title></circle>
@@ -72,26 +72,26 @@
 <circle cx="432" cy="198.9404" r="4" fill="#db2777" stroke="#ffffff"><title>Sample + filter 2026-11-24: 53.3% [40.7–65.3] n=50×3, gate no-change</title></circle>
 <circle cx="508" cy="191.8596" r="4" fill="#db2777" stroke="#ffffff"><title>Sample + filter 2026-11-25: 56.7% [43.3–70.7] n=50×3, gate no-change</title></circle>
 <circle cx="584" cy="193.27999999999997" r="4" fill="#db2777" stroke="#ffffff"><title>Sample + filter 2026-11-26: 56.0% [44.0–69.3] n=50×3, gate no-change</title></circle>
-<polygon class="band" data-variant="sample-filter-5" points="432,165.0204 508,160.7804 584,312 660,165.0204 736,162.1796 736,217.2996 660,221.5396 584,312 508,211.66039999999998 432,218.72" fill="#f472b6" fill-opacity="0.15" stroke="none"/>
-<polyline data-variant="sample-filter-5" fill="none" stroke="#f472b6" stroke-width="2" points="432,190.4604 508,186.22039999999998 584,312 660,193.27999999999997 736,189.04000000000002"/>
+<polygon class="band" data-variant="sample-filter-5" points="432,165.0204 508,160.7804 584,312 660,165.0204 736,160.738 736,211.66039999999998 660,221.5396 584,312 508,211.66039999999998 432,218.72" fill="#f472b6" fill-opacity="0.15" stroke="none"/>
+<polyline data-variant="sample-filter-5" fill="none" stroke="#f472b6" stroke-width="2" points="432,190.4604 508,186.22039999999998 584,312 660,193.27999999999997 736,184.8"/>
 <circle cx="432" cy="190.4604" r="4" fill="#f472b6" stroke="#ffffff"><title>Sample + filter, 5 candidates 2026-11-24: 57.3% [44.0–69.3] n=50×3, gate baseline</title></circle>
 <circle cx="508" cy="186.22039999999998" r="4" fill="#f472b6" stroke="#ffffff"><title>Sample + filter, 5 candidates 2026-11-25: 59.3% [47.3–71.3] n=50×3, gate no-change</title></circle>
 <circle cx="584" cy="312" r="4" fill="#f472b6" stroke="#ffffff"><title>Sample + filter, 5 candidates 2026-11-26: 0.0% [0.0–0.0] n=1×3, gate no-change</title></circle>
 <circle cx="660" cy="193.27999999999997" r="4" fill="#f472b6" stroke="#ffffff"><title>Sample + filter, 5 candidates 2026-11-27: 56.0% [42.7–69.3] n=50×3, gate no-change</title></circle>
-<circle cx="736" cy="189.04000000000002" r="4" fill="#f472b6" stroke="#ffffff"><title>Sample + filter, 5 candidates 2026-11-28: 58.0% [44.7–70.7] n=50×3, gate no-change</title></circle>
-<polygon class="band" data-variant="sample-filter-8" points="508,165.72 584,163.60000000000002 660,155.12 736,165.72 736,222.96 660,210.24 584,220.84 508,216.6" fill="#be185d" fill-opacity="0.15" stroke="none"/>
-<polyline data-variant="sample-filter-8" fill="none" stroke="#be185d" stroke-width="2" points="508,191.16000000000003 584,193.27999999999997 660,182.68 736,195.39999999999998"/>
+<circle cx="736" cy="184.8" r="4" fill="#f472b6" stroke="#ffffff"><title>Sample + filter, 5 candidates 2026-11-28: 60.0% [47.3–71.4] n=50×3, gate no-change</title></circle>
+<polygon class="band" data-variant="sample-filter-8" points="508,165.72 584,163.60000000000002 660,155.12 736,161.48000000000002 736,214.48 660,210.24 584,220.84 508,216.6" fill="#be185d" fill-opacity="0.15" stroke="none"/>
+<polyline data-variant="sample-filter-8" fill="none" stroke="#be185d" stroke-width="2" points="508,191.16000000000003 584,193.27999999999997 660,182.68 736,186.92000000000002"/>
 <circle cx="508" cy="191.16000000000003" r="4" fill="#be185d" stroke="#ffffff"><title>Sample + filter, 8 candidates 2026-11-25: 57.0% [45.0–69.0] n=50×2, gate no-change</title></circle>
 <circle cx="584" cy="193.27999999999997" r="4" fill="#be185d" stroke="#ffffff"><title>Sample + filter, 8 candidates 2026-11-26: 56.0% [43.0–70.0] n=50×2, gate no-change</title></circle>
 <circle cx="660" cy="182.68" r="4" fill="#be185d" stroke="#ffffff"><title>Sample + filter, 8 candidates 2026-11-27: 61.0% [48.0–74.0] n=50×2, gate no-change</title></circle>
-<circle cx="736" cy="195.39999999999998" r="4" fill="#be185d" stroke="#ffffff"><title>Sample + filter, 8 candidates 2026-11-28: 55.0% [42.0–69.0] n=50×2, gate no-change</title></circle>
-<polygon class="band" data-variant="sample-filter-tests" points="432,174.2 508,169.95999999999998 584,124.4648 660,165.72 736,165.72 736,218.72 660,220.84 584,214.16199999999998 508,220.84 432,227.2" fill="#0ea5e9" fill-opacity="0.15" stroke="none"/>
-<polyline data-variant="sample-filter-tests" fill="none" stroke="#0ea5e9" stroke-width="2" points="432,199.64 508,195.39999999999998 584,165.23239999999998 660,193.27999999999997 736,191.16000000000003"/>
+<circle cx="736" cy="186.92000000000002" r="4" fill="#be185d" stroke="#ffffff"><title>Sample + filter, 8 candidates 2026-11-28: 59.0% [46.0–71.0] n=50×2, gate no-change</title></circle>
+<polygon class="band" data-variant="sample-filter-tests" points="432,174.2 508,169.95999999999998 584,124.4648 660,165.72 736,167.84 736,225.07999999999998 660,220.84 584,214.16199999999998 508,220.84 432,227.2" fill="#0ea5e9" fill-opacity="0.15" stroke="none"/>
+<polyline data-variant="sample-filter-tests" fill="none" stroke="#0ea5e9" stroke-width="2" points="432,199.64 508,195.39999999999998 584,165.23239999999998 660,193.27999999999997 736,195.39999999999998"/>
 <circle cx="432" cy="199.64" r="4" fill="#0ea5e9" stroke="#ffffff"><title>Sample + filter, ranked by self-written tests 2026-11-24: 53.0% [40.0–65.0] n=50×2, gate baseline</title></circle>
 <circle cx="508" cy="195.39999999999998" r="4" fill="#0ea5e9" stroke="#ffffff"><title>Sample + filter, ranked by self-written tests 2026-11-25: 55.0% [43.0–67.0] n=50×2, gate no-change</title></circle>
 <circle cx="584" cy="165.23239999999998" r="4" fill="#0ea5e9" stroke="#ffffff"><title>Sample + filter, ranked by self-written tests 2026-11-26: 69.2% [46.2–88.5] n=13×2, gate no-change</title></circle>
 <circle cx="660" cy="193.27999999999997" r="4" fill="#0ea5e9" stroke="#ffffff"><title>Sample + filter, ranked by self-written tests 2026-11-27: 56.0% [43.0–69.0] n=50×2, gate no-change</title></circle>
-<circle cx="736" cy="191.16000000000003" r="4" fill="#0ea5e9" stroke="#ffffff"><title>Sample + filter, ranked by self-written tests 2026-11-28: 57.0% [44.0–69.0] n=50×2, gate no-change</title></circle>
+<circle cx="736" cy="195.39999999999998" r="4" fill="#0ea5e9" stroke="#ffffff"><title>Sample + filter, ranked by self-written tests 2026-11-28: 55.0% [41.0–68.0] n=50×2, gate no-change</title></circle>
 <polygon class="band" data-variant="full" points="52,169.2604 128,155.4804 204,162.2644 280,163.60000000000002 356,153.848 432,157.19760000000002 508,160.7804 584,169.2604 584,225.77960000000002 508,218.72 432,216.09120000000001 356,214.4164 280,217.2996 204,221.1368 128,214.4164 52,222.96" fill="#9333ea" fill-opacity="0.15" stroke="none"/>
 <polyline data-variant="full" fill="none" stroke="#9333ea" stroke-width="2" points="52,194.7004 128,184.1216 204,190.8632 280,190.4604 356,184.1216 432,185.81760000000003 508,190.4604 584,197.51999999999998"/>
 <circle cx="52" cy="194.7004" r="4" fill="#9333ea" stroke="#ffffff"><title>Full (lessons, self-repair, sample+filter, optimizer) 2026-11-19: 55.3% [42.0–67.3] n=50×3, gate baseline</title></circle>
