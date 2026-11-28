@@ -61,5 +61,68 @@
       "pValue": 0.9805097451274363,
       "significant": false
     }
+  },
+  {
+    "round": 2,
+    "runId": "kaggle:arunmallikarjuna/sic-rsi7b-r2",
+    "ts": "2026-11-28T02:05:00.645Z",
+    "searchModel": "sic-rsi7b-r1",
+    "search": {
+      "problems": 408,
+      "solved": 333,
+      "meanPassFraction": 0.775980392156863,
+      "solutionsKept": 568
+    },
+    "data": {
+      "round": 2,
+      "examples": 386,
+      "problems": 335,
+      "hardProblems": 19,
+      "freshSolutions": 568,
+      "earlierSolutions": 656,
+      "examLeaks": 0,
+      "datasetHash": 4015017284,
+      "baseModel": "Qwen/Qwen2.5-Coder-7B-Instruct",
+      "baseRevision": "c03e6d358207e414f1eca0bb1891e29f1db0e242"
+    },
+    "train": {
+      "examples": 386,
+      "usable": 386,
+      "skippedTooLong": 0,
+      "examplesSeen": 386,
+      "epochsPlanned": 1,
+      "steps": 49,
+      "stepsPlanned": 49,
+      "stopped": "finished",
+      "lossFirst": 0.0762,
+      "lossLast": 0.0066,
+      "lossMeanLastTenth": 0.0331,
+      "secondsTotal": 416.8,
+      "secondsPerExample": 0.91
+    },
+    "exam": {
+      "problems": 150,
+      "passAt1": 0.6926666666666668
+    },
+    "vsBase": {
+      "n": 150,
+      "a": 0.7026666666666667,
+      "b": 0.6926666666666668,
+      "estimate": -0.01,
+      "low": -0.04266666666666667,
+      "high": 0.022666666666666658,
+      "pValue": 0.5367316341829086,
+      "significant": false
+    },
+    "vsPrevious": {
+      "n": 150,
+      "a": 0.7026666666666667,
+      "b": 0.6926666666666668,
+      "estimate": -0.01,
+      "low": -0.02933333333333333,
+      "high": 0.011333333333333332,
+      "pValue": 0.3168415792103948,
+      "significant": false
+    }
   }
 ]
